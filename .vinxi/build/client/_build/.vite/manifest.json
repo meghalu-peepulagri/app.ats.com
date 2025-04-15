@@ -1,0 +1,44 @@
+{
+  "__vite-browser-external": {
+    "file": "assets/__vite-browser-external-BIHI7g3E.js",
+    "name": "__vite-browser-external",
+    "src": "__vite-browser-external",
+    "isDynamicEntry": true
+  },
+  "_client-BYNfT0z-.js": {
+    "file": "assets/client-BYNfT0z-.js",
+    "name": "client",
+    "dynamicImports": [
+      "__vite-browser-external",
+      "__vite-browser-external",
+      "__vite-browser-external",
+      "__vite-browser-external",
+      "app/routes/index.tsx?tsr-split=component"
+    ],
+    "css": [
+      "assets/client-Ba2xC1Va.css"
+    ]
+  },
+  "_client-Ba2xC1Va.css": {
+    "file": "assets/client-Ba2xC1Va.css",
+    "src": "_client-Ba2xC1Va.css"
+  },
+  "app/routes/index.tsx?tsr-split=component": {
+    "file": "assets/index-Bj9Xevey.js",
+    "name": "index",
+    "src": "app/routes/index.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_client-BYNfT0z-.js"
+    ]
+  },
+  "virtual:$vinxi/handler/client": {
+    "file": "assets/client-gqJa7_be.js",
+    "name": "client",
+    "src": "virtual:$vinxi/handler/client",
+    "isEntry": true,
+    "imports": [
+      "_client-BYNfT0z-.js"
+    ]
+  }
+}
