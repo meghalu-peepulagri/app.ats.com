@@ -1,25 +1,25 @@
 {
-  "_ssr-C8Zx2duw.js": {
-    "file": "assets/ssr-C8Zx2duw.js",
+  "_ssr-iKnu8Bdl.css": {
+    "file": "assets/ssr-iKnu8Bdl.css",
+    "src": "_ssr-iKnu8Bdl.css"
+  },
+  "_ssr-kQQD0auL.js": {
+    "file": "assets/ssr-kQQD0auL.js",
     "name": "ssr",
     "dynamicImports": [
       "app/routes/index.tsx?tsr-split=component"
     ],
     "css": [
-      "assets/ssr-CVVSJji1.css"
+      "assets/ssr-iKnu8Bdl.css"
     ]
   },
-  "_ssr-CVVSJji1.css": {
-    "file": "assets/ssr-CVVSJji1.css",
-    "src": "_ssr-CVVSJji1.css"
-  },
   "app/routes/index.tsx?tsr-split=component": {
-    "file": "assets/index-BIZlZw6h.js",
+    "file": "assets/index-BpDYOtbM.js",
     "name": "index",
     "src": "app/routes/index.tsx?tsr-split=component",
     "isDynamicEntry": true,
     "imports": [
-      "_ssr-C8Zx2duw.js"
+      "_ssr-kQQD0auL.js"
     ]
   },
   "virtual:$vinxi/handler/ssr": {
@@ -28,7 +28,7 @@
     "src": "virtual:$vinxi/handler/ssr",
     "isEntry": true,
     "imports": [
-      "_ssr-C8Zx2duw.js"
+      "_ssr-kQQD0auL.js"
     ]
   }
 }

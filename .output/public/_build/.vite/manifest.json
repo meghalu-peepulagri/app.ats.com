@@ -5,8 +5,8 @@
     "src": "__vite-browser-external",
     "isDynamicEntry": true
   },
-  "_client-BYNfT0z-.js": {
-    "file": "assets/client-BYNfT0z-.js",
+  "_client-DDoeziHZ.js": {
+    "file": "assets/client-DDoeziHZ.js",
     "name": "client",
     "dynamicImports": [
       "__vite-browser-external",
@@ -16,29 +16,29 @@
       "app/routes/index.tsx?tsr-split=component"
     ],
     "css": [
-      "assets/client-Ba2xC1Va.css"
+      "assets/client-iKnu8Bdl.css"
     ]
   },
-  "_client-Ba2xC1Va.css": {
-    "file": "assets/client-Ba2xC1Va.css",
-    "src": "_client-Ba2xC1Va.css"
+  "_client-iKnu8Bdl.css": {
+    "file": "assets/client-iKnu8Bdl.css",
+    "src": "_client-iKnu8Bdl.css"
   },
   "app/routes/index.tsx?tsr-split=component": {
-    "file": "assets/index-Bj9Xevey.js",
+    "file": "assets/index-Drr62TRn.js",
     "name": "index",
     "src": "app/routes/index.tsx?tsr-split=component",
     "isDynamicEntry": true,
     "imports": [
-      "_client-BYNfT0z-.js"
+      "_client-DDoeziHZ.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-gqJa7_be.js",
+    "file": "assets/client-VcRXSAkQ.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
     "imports": [
-      "_client-BYNfT0z-.js"
+      "_client-DDoeziHZ.js"
     ]
   }
 }

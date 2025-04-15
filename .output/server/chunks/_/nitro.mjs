@@ -4216,7 +4216,7 @@ async function errorHandler(error, event) {
 }
 
 const appConfig = {"name":"vinxi","routers":[{"name":"public","type":"static","dir":"./public","base":"/","root":"C:\\Users\\ANIL KUMAR\\Desktop\\TANSTACK PROJECT (1)","order":0,"outDir":"C:/Users/ANIL KUMAR/Desktop/TANSTACK PROJECT (1)/.vinxi/build/public"},{"name":"client","type":"client","target":"browser","handler":"app/client.tsx","base":"/_build","build":{"sourcemap":true},"root":"C:\\Users\\ANIL KUMAR\\Desktop\\TANSTACK PROJECT (1)","outDir":"C:/Users/ANIL KUMAR/Desktop/TANSTACK PROJECT (1)/.vinxi/build/client","order":1},{"name":"ssr","type":"http","target":"server","handler":"app/ssr.tsx","link":{"client":"client"},"root":"C:\\Users\\ANIL KUMAR\\Desktop\\TANSTACK PROJECT (1)","base":"/","outDir":"C:/Users/ANIL KUMAR/Desktop/TANSTACK PROJECT (1)/.vinxi/build/ssr","order":2},{"name":"server","type":"http","target":"server","base":"/_server","handler":"node_modules/@tanstack/start-server-functions-handler/dist/esm/index.js","root":"C:\\Users\\ANIL KUMAR\\Desktop\\TANSTACK PROJECT (1)","outDir":"C:/Users/ANIL KUMAR/Desktop/TANSTACK PROJECT (1)/.vinxi/build/server","order":3}],"server":{"preset":"node-server","experimental":{"asyncContext":true}},"root":"C:\\Users\\ANIL KUMAR\\Desktop\\TANSTACK PROJECT (1)"};
-				const buildManifest = {"client":{"__vite-browser-external":{"file":"assets/__vite-browser-external-BIHI7g3E.js","name":"__vite-browser-external","src":"__vite-browser-external","isDynamicEntry":true},"_client-BYNfT0z-.js":{"file":"assets/client-BYNfT0z-.js","name":"client","dynamicImports":["__vite-browser-external","__vite-browser-external","__vite-browser-external","__vite-browser-external","app/routes/index.tsx?tsr-split=component"],"css":["assets/client-Ba2xC1Va.css"]},"_client-Ba2xC1Va.css":{"file":"assets/client-Ba2xC1Va.css","src":"_client-Ba2xC1Va.css"},"app/routes/index.tsx?tsr-split=component":{"file":"assets/index-Bj9Xevey.js","name":"index","src":"app/routes/index.tsx?tsr-split=component","isDynamicEntry":true,"imports":["_client-BYNfT0z-.js"]},"virtual:$vinxi/handler/client":{"file":"assets/client-gqJa7_be.js","name":"client","src":"virtual:$vinxi/handler/client","isEntry":true,"imports":["_client-BYNfT0z-.js"]}},"ssr":{"_ssr-C8Zx2duw.js":{"file":"assets/ssr-C8Zx2duw.js","name":"ssr","dynamicImports":["app/routes/index.tsx?tsr-split=component"],"css":["assets/ssr-CVVSJji1.css"]},"_ssr-CVVSJji1.css":{"file":"assets/ssr-CVVSJji1.css","src":"_ssr-CVVSJji1.css"},"app/routes/index.tsx?tsr-split=component":{"file":"assets/index-BIZlZw6h.js","name":"index","src":"app/routes/index.tsx?tsr-split=component","isDynamicEntry":true,"imports":["_ssr-C8Zx2duw.js"]},"virtual:$vinxi/handler/ssr":{"file":"ssr.js","name":"ssr","src":"virtual:$vinxi/handler/ssr","isEntry":true,"imports":["_ssr-C8Zx2duw.js"]}},"server":{"_index-ujMS-7Qz.js":{"file":"assets/index-ujMS-7Qz.js","name":"index"},"app/routes/index.tsx?tsr-directive-use-server=":{"file":"assets/index-C9x6fQ0W.js","name":"index","src":"app/routes/index.tsx?tsr-directive-use-server=","isDynamicEntry":true,"imports":["_index-ujMS-7Qz.js"],"dynamicImports":["app/routes/index.tsx?tsr-split=component"]},"app/routes/index.tsx?tsr-split=component":{"file":"assets/index-BdG24594.js","name":"index","src":"app/routes/index.tsx?tsr-split=component","isDynamicEntry":true,"imports":["_index-ujMS-7Qz.js"]},"app/routes/index.tsx?tsr-split=component&tsr-directive-use-server=":{"file":"assets/index-CATF-Vyw.js","name":"index","src":"app/routes/index.tsx?tsr-split=component&tsr-directive-use-server=","isDynamicEntry":true,"imports":["_index-ujMS-7Qz.js"]},"virtual:$vinxi/handler/server":{"file":"server.js","name":"server","src":"virtual:$vinxi/handler/server","isEntry":true,"dynamicImports":["app/routes/index.tsx?tsr-directive-use-server=","app/routes/index.tsx?tsr-split=component&tsr-directive-use-server="]}}};
+				const buildManifest = {"client":{"__vite-browser-external":{"file":"assets/__vite-browser-external-BIHI7g3E.js","name":"__vite-browser-external","src":"__vite-browser-external","isDynamicEntry":true},"_client-DDoeziHZ.js":{"file":"assets/client-DDoeziHZ.js","name":"client","dynamicImports":["__vite-browser-external","__vite-browser-external","__vite-browser-external","__vite-browser-external","app/routes/index.tsx?tsr-split=component"],"css":["assets/client-iKnu8Bdl.css"]},"_client-iKnu8Bdl.css":{"file":"assets/client-iKnu8Bdl.css","src":"_client-iKnu8Bdl.css"},"app/routes/index.tsx?tsr-split=component":{"file":"assets/index-Drr62TRn.js","name":"index","src":"app/routes/index.tsx?tsr-split=component","isDynamicEntry":true,"imports":["_client-DDoeziHZ.js"]},"virtual:$vinxi/handler/client":{"file":"assets/client-VcRXSAkQ.js","name":"client","src":"virtual:$vinxi/handler/client","isEntry":true,"imports":["_client-DDoeziHZ.js"]}},"ssr":{"_ssr-iKnu8Bdl.css":{"file":"assets/ssr-iKnu8Bdl.css","src":"_ssr-iKnu8Bdl.css"},"_ssr-kQQD0auL.js":{"file":"assets/ssr-kQQD0auL.js","name":"ssr","dynamicImports":["app/routes/index.tsx?tsr-split=component"],"css":["assets/ssr-iKnu8Bdl.css"]},"app/routes/index.tsx?tsr-split=component":{"file":"assets/index-BpDYOtbM.js","name":"index","src":"app/routes/index.tsx?tsr-split=component","isDynamicEntry":true,"imports":["_ssr-kQQD0auL.js"]},"virtual:$vinxi/handler/ssr":{"file":"ssr.js","name":"ssr","src":"virtual:$vinxi/handler/ssr","isEntry":true,"imports":["_ssr-kQQD0auL.js"]}},"server":{"_index-ujMS-7Qz.js":{"file":"assets/index-ujMS-7Qz.js","name":"index"},"app/routes/index.tsx?tsr-directive-use-server=":{"file":"assets/index-C9x6fQ0W.js","name":"index","src":"app/routes/index.tsx?tsr-directive-use-server=","isDynamicEntry":true,"imports":["_index-ujMS-7Qz.js"],"dynamicImports":["app/routes/index.tsx?tsr-split=component"]},"app/routes/index.tsx?tsr-split=component":{"file":"assets/index-BdG24594.js","name":"index","src":"app/routes/index.tsx?tsr-split=component","isDynamicEntry":true,"imports":["_index-ujMS-7Qz.js"]},"app/routes/index.tsx?tsr-split=component&tsr-directive-use-server=":{"file":"assets/index-CATF-Vyw.js","name":"index","src":"app/routes/index.tsx?tsr-split=component&tsr-directive-use-server=","isDynamicEntry":true,"imports":["_index-ujMS-7Qz.js"]},"virtual:$vinxi/handler/server":{"file":"server.js","name":"server","src":"virtual:$vinxi/handler/server","isEntry":true,"dynamicImports":["app/routes/index.tsx?tsr-directive-use-server=","app/routes/index.tsx?tsr-split=component&tsr-directive-use-server="]}}};
 
 				const routeManifest = {};
 
@@ -4476,52 +4476,52 @@ app
 ];
 
 const assets = {
-  "/assets/ssr-CVVSJji1.css": {
+  "/assets/ssr-iKnu8Bdl.css": {
     "type": "text/css; charset=utf-8",
-    "etag": "\"630f-oIkvSAtDybAwkS8oCVMGVIU3sfA\"",
-    "mtime": "2025-04-15T11:15:23.055Z",
-    "size": 25359,
-    "path": "../public/assets/ssr-CVVSJji1.css"
+    "etag": "\"63e5-nO/N4NTSMuVmjGZrGTGsMwP7DqQ\"",
+    "mtime": "2025-04-15T11:22:54.520Z",
+    "size": 25573,
+    "path": "../public/assets/ssr-iKnu8Bdl.css"
   },
   "/_build/.vite/manifest.json": {
     "type": "application/json",
-    "etag": "\"473-tV5V/8mZLI9hd1hu8uVMncd8Y54\"",
-    "mtime": "2025-04-15T11:15:19.675Z",
+    "etag": "\"473-Xs7ICmL+uExoDnFNdENnWr8UCjg\"",
+    "mtime": "2025-04-15T11:22:50.724Z",
     "size": 1139,
     "path": "../public/_build/.vite/manifest.json"
   },
-  "/_build/assets/client-Ba2xC1Va.css": {
-    "type": "text/css; charset=utf-8",
-    "etag": "\"2c82-a3lfVryfYeVa78Kd4Ujqodu84/I\"",
-    "mtime": "2025-04-15T11:15:19.854Z",
-    "size": 11394,
-    "path": "../public/_build/assets/client-Ba2xC1Va.css"
-  },
-  "/_build/assets/client-BYNfT0z-.js": {
+  "/_build/assets/client-DDoeziHZ.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"40e01-KzvTnUO+1Psm2V4oL/flqwmu12g\"",
-    "mtime": "2025-04-15T11:15:19.854Z",
+    "etag": "\"40e01-CROfZXmTeF3iKTxES8DErP28Auo\"",
+    "mtime": "2025-04-15T11:22:50.728Z",
     "size": 265729,
-    "path": "../public/_build/assets/client-BYNfT0z-.js"
+    "path": "../public/_build/assets/client-DDoeziHZ.js"
   },
-  "/_build/assets/client-gqJa7_be.js": {
+  "/_build/assets/client-iKnu8Bdl.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"63e5-nO/N4NTSMuVmjGZrGTGsMwP7DqQ\"",
+    "mtime": "2025-04-15T11:22:50.724Z",
+    "size": 25573,
+    "path": "../public/_build/assets/client-iKnu8Bdl.css"
+  },
+  "/_build/assets/client-VcRXSAkQ.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"3f-+dQOXX6cyn73tM7FDe1vLXo5VW4\"",
-    "mtime": "2025-04-15T11:15:19.855Z",
+    "etag": "\"3f-2kessJkoxAjVoMD1mUCVjPlagVo\"",
+    "mtime": "2025-04-15T11:22:50.726Z",
     "size": 63,
-    "path": "../public/_build/assets/client-gqJa7_be.js"
+    "path": "../public/_build/assets/client-VcRXSAkQ.js"
   },
-  "/_build/assets/index-Bj9Xevey.js": {
+  "/_build/assets/index-Drr62TRn.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"a042-aC99iWRdsjD5c4Xz9TSICLaB3ZE\"",
-    "mtime": "2025-04-15T11:15:19.855Z",
+    "etag": "\"a042-UR7gvFX81AkZliNEtfpKnE89qNw\"",
+    "mtime": "2025-04-15T11:22:50.728Z",
     "size": 41026,
-    "path": "../public/_build/assets/index-Bj9Xevey.js"
+    "path": "../public/_build/assets/index-Drr62TRn.js"
   },
   "/_build/assets/__vite-browser-external-BIHI7g3E.js": {
     "type": "text/javascript; charset=utf-8",
     "etag": "\"21-TnSDqNzuAbz1l2Zfx/fW4jY7tlk\"",
-    "mtime": "2025-04-15T11:15:19.856Z",
+    "mtime": "2025-04-15T11:22:50.726Z",
     "size": 33,
     "path": "../public/_build/assets/__vite-browser-external-BIHI7g3E.js"
   }
@@ -4773,7 +4773,7 @@ function R(n) {
 function _(e) {
   return jsx(RouterProvider, { router: e.router });
 }
-const U = defineHandlerCallback(async ({ request: e, router: t, responseHeaders: a }) => {
+const X = defineHandlerCallback(async ({ request: e, router: t, responseHeaders: a }) => {
   if (typeof u.renderToReadableStream == "function") {
     const n = await u.renderToReadableStream(jsx(_, { router: t }), { signal: e.signal });
     isbot(e.headers.get("User-Agent")) && await n.allReady;
@@ -4797,33 +4797,33 @@ const U = defineHandlerCallback(async ({ request: e, router: t, responseHeaders:
     return new Response(o, { status: t.state.statusCode, headers: a });
   }
   throw new Error("No renderToReadableStream or renderToPipeableStream found in react-dom/server. Ensure you are using a version of react-dom that supports streaming.");
-}), X = () => ({ routes: { __root__: { filePath: "__root.tsx", children: ["/"], preloads: ["\\_build\\assets\\client-gqJa7_be.js", "\\_build\\assets\\client-BYNfT0z-.js"] }, "/": { filePath: "index.tsx" } } });
-function Y(e) {
+}), B = () => ({ routes: { __root__: { filePath: "__root.tsx", children: ["/"], preloads: ["\\_build\\assets\\client-VcRXSAkQ.js", "\\_build\\assets\\client-DDoeziHZ.js"] }, "/": { filePath: "index.tsx" } } });
+function Q(e) {
   return globalThis.MANIFEST[e];
 }
-function I() {
+function V() {
   var _a;
-  const e = X(), t = e.routes.__root__ = e.routes.__root__ || {};
+  const e = B(), t = e.routes.__root__ = e.routes.__root__ || {};
   t.assets = t.assets || [];
   let a = "";
-  const n = Y("client"), o = (_a = n.inputs[n.handler]) == null ? void 0 : _a.output.path;
+  const n = Q("client"), o = (_a = n.inputs[n.handler]) == null ? void 0 : _a.output.path;
   return o || T(o, "Could not find client entry in vinxi manifest"), t.assets.push({ tag: "script", attrs: { type: "module", suppressHydrationWarning: true, async: true }, children: `${a}import("${o}")` }), e;
 }
-function K() {
-  const e = I();
+function Z() {
+  const e = V();
   return { ...e, routes: Object.fromEntries(Object.entries(e.routes).map(([t, a]) => {
     const { preloads: n, assets: o } = a;
     return [t, { preloads: n, assets: o }];
   })) };
 }
-const S = createRootRoute({ head: () => ({ meta: [{ charSet: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { title: "TanStack Start Starter" }] }), component: L });
-function L() {
-  return jsx(Q, { children: jsx(Outlet, {}) });
+const g = createRootRoute({ head: () => ({ meta: [{ charSet: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { title: "TanStack Start Starter" }] }), component: I });
+function I() {
+  return jsx(K, { children: jsx(Outlet, {}) });
 }
-function Q({ children: e }) {
+function K({ children: e }) {
   return jsxs("html", { children: [jsx("head", { children: jsx(HeadContent, {}) }), jsxs("body", { className: "", children: [e, jsx(Scripts, {})] })] });
 }
-async function V(e, t, a) {
+async function L(e, t, a) {
   var n;
   const o = t[0];
   if (isPlainObject$1(o) && o.method) {
@@ -4833,7 +4833,7 @@ async function V(e, t, a) {
       i && (e.includes("?") ? e += `&${i}` : e += `?${i}`);
     }
     e.includes("?") ? e += "&createServerFn" : e += "?createServerFn", r.response === "raw" && (e += "&raw");
-    const b = await a(e, { method: r.method, headers: f, signal: r.signal, ...Z(r) }), m = await g(b);
+    const b = await a(e, { method: r.method, headers: f, signal: r.signal, ...Y(r) }), m = await S(b);
     if ((n = m.headers.get("content-type")) != null && n.includes("application/json")) {
       const i = startSerializer.decode(await m.json());
       if (isRedirect(i) || isNotFound(i) || i instanceof Error) throw i;
@@ -4841,14 +4841,14 @@ async function V(e, t, a) {
     }
     return m;
   }
-  const s = await g(await a(e, { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify(t) })), c = s.headers.get("content-type");
+  const s = await S(await a(e, { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify(t) })), c = s.headers.get("content-type");
   return c && c.includes("application/json") ? startSerializer.decode(await s.json()) : s.text();
 }
-function Z(e) {
+function Y(e) {
   var _a;
   return e.method === "POST" ? e.data instanceof FormData ? (e.data.set("__TSR_CONTEXT", startSerializer.stringify(e.context)), { body: e.data }) : { body: startSerializer.stringify({ data: (_a = e.data) != null ? _a : null, context: e.context }) } : {};
 }
-async function g(e) {
+async function S(e) {
   if (!e.ok) {
     const t = e.headers.get("content-type");
     throw t && t.includes("application/json") ? startSerializer.decode(await e.json()) : new Error(await e.text());
@@ -4860,16 +4860,16 @@ function q(e) {
 }
 const ee = (e, t) => {
   const a = `/${q(t)}/${e}`;
-  return Object.assign((...o) => V(a, o, async (s, c) => {
+  return Object.assign((...o) => L(a, o, async (s, c) => {
     c.headers = mergeHeaders$2(getHeaders(), c.headers);
     const r = await $fetch.native(s, c), p = getEvent(), f = mergeHeaders$2(r.headers, p.___ssrRpcResponseHeaders);
     return p.___ssrRpcResponseHeaders = f, r;
   }), { url: a, functionId: e });
-}, te = () => import('../build/index-BIZlZw6h.mjs'), re = ee("app_routes_index_tsx--getCount_createServerFn_handler", "/_server"), ne = createServerFn({ method: "GET" }).handler(re), w = createFileRoute("/")({ component: lazyRouteComponent(te, "component", () => w.ssr), loader: async () => await ne() }), oe = w.update({ id: "/", path: "/", getParentRoute: () => S }), ae = { IndexRoute: oe }, se = S._addFileChildren(ae)._addFileTypes();
+}, te = () => import('../build/index-BpDYOtbM.mjs'), re = ee("app_routes_index_tsx--getCount_createServerFn_handler", "/_server"), ne = createServerFn({ method: "GET" }).handler(re), w = createFileRoute("/")({ component: lazyRouteComponent(te, "component", () => w.ssr), loader: async () => await ne() }), oe = w.update({ id: "/", path: "/", getParentRoute: () => g }), ae = { IndexRoute: oe }, se = g._addFileChildren(ae)._addFileTypes();
 function ie() {
   return createRouter$2({ routeTree: se, scrollRestoration: true });
 }
-const ye = createStartHandler({ createRouter: ie, getRouterManifest: K })(U);
+const ye = createStartHandler({ createRouter: ie, getRouterManifest: Z })(X);
 
 const handlers = [
   { route: '', handler: _B84BZJ, lazy: false, middleware: true, method: undefined },
