@@ -177,7 +177,7 @@ export function CandidateTable({
       <div className="flex items-center justify-between px-4 py-2.75">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Select value={selectedRole} onValueChange={handleRoleChange}>
-            <SelectTrigger className="!h-7 rounded gap-3 font-normal text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)]">
+            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0">
               <div className="flex items-center gap-2">
                 <ListFilter />
                 <SelectValue placeholder="Select Role"/>
@@ -185,19 +185,24 @@ export function CandidateTable({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="All">All</SelectItem>
-              <SelectItem value="Frontend">Frontend</SelectItem>
-              <SelectItem value="Backend">Backend</SelectItem>
-              <SelectItem value="Fullstack">Fullstack</SelectItem>
+              <SelectItem value="Product Design">Product Design</SelectItem>
+              <SelectItem value="Developer">Developer</SelectItem>
+              <SelectItem value="Application Developer">Application Developer</SelectItem>
+              <SelectItem value="Testing">Testing</SelectItem>
+              <SelectItem value="Frontend Developer">Frontend Developer</SelectItem>
+              <SelectItem value="Flutter Developer">Flutter Developer</SelectItem>
+              <SelectItem value="UI Developer">UI Developer</SelectItem>
+              <SelectItem value="Backend Developer">Backend Developer</SelectItem>
             </SelectContent>
           </Select>
           <div className="relative flex items-center">
           <Search className="w-4.5 h-4.5 pl-1 text-gray-500"/>
           <Input
-            type="text"
+            type="search"
             placeholder="Search by name"
             value={searchValue}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="border rounded !h-7 text-[#4F4F4F] bg-[rgba(0,0,0,0.08)] font-normal py-1 pl-6 text-sm w-45 absolute"
+            className="border rounded !h-7 text-[#4F4F4F] bg-[rgba(0,0,0,0.08)] font-normal py-1 pl-6 text-sm w-45 absolute focus:ring-0 focus-visible:ring-0 border-none"
           />
           </div>
         </div>

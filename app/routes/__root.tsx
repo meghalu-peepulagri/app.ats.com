@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-router'
 import '../src/styles/global.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { authMiddleware } from '../lib/helper/middleware'
 const queryclient = new QueryClient()
 
 export const Route = createRootRoute({
@@ -26,6 +27,7 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootComponent,
+  beforeLoad: authMiddleware
 })
 
 function RootComponent() {

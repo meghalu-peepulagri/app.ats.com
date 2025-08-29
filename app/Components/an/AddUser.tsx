@@ -111,8 +111,12 @@ export function AddUserCard({
                 <SelectContent>
                   <SelectItem value="Product Design">Product Design</SelectItem>
                   <SelectItem value="Developer">Developer</SelectItem>
-                  <SelectItem value="Manager">Manager</SelectItem>
-                  <SelectItem value="QA">QA</SelectItem>
+                  <SelectItem value="Application Developer">Application Developer</SelectItem>
+                  <SelectItem value="Testing">Testing</SelectItem>
+                  <SelectItem value="Frontend Developer">Frontend Developer</SelectItem>
+                  <SelectItem value="Flutter Developer">Flutter Developer</SelectItem>
+                  <SelectItem value="UI Developer">UI Developer</SelectItem>
+                  <SelectItem value="Backend Developer">Backend Developer</SelectItem>
                 </SelectContent>
               </Select>
               {errors.role && (

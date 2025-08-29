@@ -1,4 +1,4 @@
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useNavigate } from "@tanstack/react-router";
 import { Header } from "../an/Header";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
@@ -8,6 +8,8 @@ export function Stats({adminrole, adminName}){
         name: adminName || '',
         user_type: adminrole || ''
       });
+
+      const navigate = useNavigate();
 
       useEffect(() => {
         const storedUserData = Cookies.get('user_data');
@@ -39,10 +41,19 @@ export function Stats({adminrole, adminName}){
           }
         }
       }, [adminName, adminrole]);
+
+      const handleLogout = () => {
+        Cookies.remove("token");
+        Cookies.remove("user_data");
+        Cookies.remove("name");
+        Cookies.remove("user_type");
+        navigate({ to: "/" });
+      };
+
     return(
         <div>
             <div>
-               <Header adminrole={userData.user_type} adminName={userData.name}/>
+               <Header adminrole={userData.user_type} adminName={userData.name} onLogout={handleLogout}/>
             </div>
             <Outlet />
         </div>

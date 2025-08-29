@@ -3,14 +3,18 @@ import { BellIcon } from "../icons/BellIcon";
 import { PeepulAgriIcon } from "../icons/Peepulagri";
 import { DropdownIcon } from "../icons/Dropdown";
 import { ProfileIcon } from "../icons/Profile";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { LogOut } from "lucide-react";
 
 interface HeaderCardProps {
   adminrole: string;
   adminName: string;
+  onLogout: () => void
 }
 export function Header({
   adminrole,
   adminName,
+  onLogout
 }: HeaderCardProps) {
   return (
     <Card
@@ -19,7 +23,11 @@ export function Header({
         <div className="flex items-center text-sm 2xl:text-base 3xl:!text-lg font-(--an-card-font-weight) text-(--an-card-email-color) leading-(--an-card-line-height) space-x-2">
           <PeepulAgriIcon className="w-17 h-17" />
         </div>
-        <div className="flex items-center space-x-3">
+         <div className="flex items-center gap-2 m-2 rounded-sm">
+        <div className="relative group">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+              <div className="flex items-center space-x-3">
           <BellIcon className="!w-5 !h-5" />
           <div className="flex items-center space-x-2">
             <ProfileIcon/> 
@@ -34,6 +42,23 @@ export function Header({
               </div>
               <DropdownIcon />
             </div>
+          </div>
+        </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="min-w-32 border-none shadow-[0px_0px_10px_rgba(0,0,0,0.15)] rounded-sm p-1"
+              >
+                  <DropdownMenuItem onClick={onLogout}>
+                    <div className="flex items-center gap-2">
+                      <LogOut className="text-red-600" strokeWidth={1.5}/>
+                      <p className="text-sm 3xl:!text-base font-normal text-gray-600">
+                        logout
+                      </p>
+                      </div>
+                  </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </CardContent>

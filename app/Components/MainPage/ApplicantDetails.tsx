@@ -79,7 +79,7 @@ export function Resume() {
           downloadUrl={resume.presignedUrl.download_url || ''}
         />
         <CommentsSection 
-          key={`${id}`}
+          key={`comments-${id}`}
           comments={commentsData}
           onSubmitComment={(newComment) => addCommentMutation.mutate(newComment)}
         />
