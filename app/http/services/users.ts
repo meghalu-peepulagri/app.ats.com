@@ -91,28 +91,33 @@ export const uploadFileAPI = async (
   }
 };
 
-export const createUserAPI = async (
-  userData: UserFormData
-): Promise<CreateUserResponse> => {
+// export const createUserAPI = async (
+//   userData: UserFormData
+// )=> {
+//   try {
+//     console.log(userData,"ress");
+//     const response = await $fetch.post("/applicants", userData);
+//     console.log(response,"ress001");
+//     return response;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+
+export const createUserAPI = async (userData: UserFormData) => {
   try {
     const response = await $fetch.post("/applicants", userData);
+    if (!response.success) {
+      throw {
+        status: response.status,
+        message: response.data?.message || response.message || "Request failed",
+        errors: response.data?.errors,
+      };
+    }
     return response.data;
   } catch (error) {
-    return {
-      status: 500,
-      success: false,
-      message: error.message,
-      data: {
-        id: 0,
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        role: "",
-        resume_key_path: "",
-        experience: "",
-        created_at: "",
-      },
-    };
+    throw error;
   }
 };
+

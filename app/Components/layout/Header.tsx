@@ -1,0 +1,50 @@
+import { Outlet } from "@tanstack/react-router";
+import { Header } from "../an/Header";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+
+export function Stats({adminrole, adminName}){
+    const [userData, setUserData] = useState({
+        name: adminName || '',
+        user_type: adminrole || ''
+      });
+
+      useEffect(() => {
+        const storedUserData = Cookies.get('user_data');
+        
+        if (storedUserData) {
+          try {
+            const parsedUserData = JSON.parse(storedUserData);
+            setUserData({
+              name: parsedUserData.name || adminName || '',
+              user_type: parsedUserData.user_type || adminrole || ''
+            });
+          } catch (error) {
+            const userName = Cookies.get('name');
+            const userType = Cookies.get('user_type');
+            setUserData({
+              name: userName || adminName || '',
+              user_type: userType || adminrole || ''
+            });
+          }
+        } else {
+          const userName = Cookies.get('name');
+          const userType = Cookies.get('user_type');
+          
+          if (userName || userType) {
+            setUserData({
+              name: userName || adminName || '',
+              user_type: userType || adminrole || ''
+            });
+          }
+        }
+      }, [adminName, adminrole]);
+    return(
+        <div>
+            <div>
+               <Header adminrole={userData.user_type} adminName={userData.name}/>
+            </div>
+            <Outlet />
+        </div>
+    )
+}

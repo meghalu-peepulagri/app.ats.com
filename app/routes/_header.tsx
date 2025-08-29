@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Stats } from '../Components/layout/Stats'
+import { Stats } from '../Components/layout/Header'
 
 export const Route = createFileRoute('/_header')({
   component: Stats,

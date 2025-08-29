@@ -1,6 +1,6 @@
-import { getAllApplicants, getStatsAPI } from "@/app/http/services/applicants";
+import { deleteApplicant, getAllApplicants, getStatsAPI } from "@/app/http/services/applicants";
 import { ApiApplicant } from "@/app/lib/interface/applicants";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import CandidateTable, { Candidate } from "../an/ApplicantsTable";
 import { useEffect, useRef } from "react";
 import { Outlet } from "@tanstack/react-router";
@@ -35,6 +35,14 @@ export function Home() {
       initialPageParam: 1,
     });
 
+    const deleteApplicantMutation = useMutation({
+      mutationKey: ["deleteApplicant"],
+      mutationFn: async (id: number) => {
+        const response = await deleteApplicant(id);
+        return response.data;
+      },
+    });
+
   const candidatesData: Candidate[] =
     data?.pages.flatMap((page) =>
       page.applicants.map(apiApplicantToCandidate)
@@ -62,6 +70,14 @@ export function Home() {
       }
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const handleDeleteCandidate = async (id: number) => {
+    try {
+      await deleteApplicantMutation.mutateAsync(id);
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const totalApplicants = statsData?.totalApplicants || 0;
   const recentApplicants = statsData?.recentApplicants || 0;
@@ -118,7 +134,10 @@ export function Home() {
     <div className="grid grid-cols-[auto_1fr] border-t pt-3">
       <div className="flex-1 flex flex-col">
         <div className="flex-1">
-          <CandidateTable candidatesData={candidatesData} />
+          <CandidateTable 
+            candidatesData={candidatesData}
+            onDeleteCandidate={handleDeleteCandidate} 
+          />
           <div
             ref={loadMoreRef}
             className="flex items-center justify-center"

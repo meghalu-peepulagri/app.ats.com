@@ -3,6 +3,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { useState } from 'react'
 
 export type Person = {
   firstName: string
@@ -29,7 +30,14 @@ export function TanstackTable({columns, data, height, onRowClick}: TanstackTable
     columnResizeMode: 'onChange',
   })
 
+  const [selectedRow, setSelectedRow] = useState(() => {
+    const storedId = localStorage.getItem('selectedRow')
+    return storedId ? JSON.parse(storedId) : null
+  })
+
   const handleRowClick = (row: any) => {
+    setSelectedRow(row.id);
+    localStorage.setItem('selectedRow', JSON.stringify(row.id));
     if (onRowClick) {
       onRowClick(row.original);
     }
@@ -57,7 +65,7 @@ export function TanstackTable({columns, data, height, onRowClick}: TanstackTable
         </thead>
         <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id} className='border-b border-[#F1F1F1] h-10 cursor-pointer' onClick={() => handleRowClick(row)}>
+            <tr key={row.id} className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${selectedRow === row.id ? 'bg-[#f1f0f0]' : ''}`} onClick={() => handleRowClick(row)}>
               {row.getVisibleCells().map(cell => (
                 <td key={cell.id} style={{ width: cell.column.getSize() }} className='text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%]'>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

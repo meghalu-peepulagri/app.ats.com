@@ -18,6 +18,10 @@ interface LoginResponse {
   success: boolean;
   data?: {
     access_token?: string;
+    user?: {
+      name?: string;
+      user_type?: string;
+    }
   }
 }
 
@@ -38,6 +42,16 @@ export function LoginContainer() {
       if (response?.success) {
         if (response?.data?.access_token) {
           Cookies.set('token', response?.data?.access_token);
+        }
+        if (response?.data?.user) {
+          Cookies.set('user_data', JSON.stringify(response.data.user));
+          
+          if (response.data.user.name) {
+            Cookies.set('name', response.data.user.name);
+          }
+          if (response.data.user.user_type) {
+            Cookies.set('user_type', response.data.user.user_type);
+          }
         }
         navigate({ to: '/applicants' });
         setError("");

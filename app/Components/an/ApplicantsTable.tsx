@@ -9,13 +9,15 @@ import {
 } from "@/components/ui/tooltip";
 import { useNavigate } from "@tanstack/react-router";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { EllipsisVerticalIcon, ListFilter, Search } from "lucide-react";
+import { ListFilter, Search, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { AddUploadIcon } from "../icons/AddIcon";
 import { TanstackTable } from "../core/table/TanstackTable";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { getStatusColor } from "@/app/lib/helper/getColorStatus";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { on } from "events";
 
 export interface Candidate {
   id: number;
@@ -34,34 +36,76 @@ interface CandidateTableProps {
   };
   isLoading?: boolean;
   onRowClick?: (Candidate : Candidate) => void
+  onDeleteCandidate?: (id: number) => void
 }
 
 const columnHelper = createColumnHelper<Candidate>();
 
-const ActionCell = () => {
+const ActionCell = ({ candidate, onDelete }: { candidate: Candidate, onDelete?: (id: number) => void }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent row click when clicking delete
+    setIsDeleting(true);
+    try {
+      await onDelete?.(candidate.id);
+    } catch (error) {
+      console.error('Error deleting candidate:', error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div className="flex items-center gap-2">
-      {/* <TooltipProvider>
+      <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-9 w-9 p-0 hover:bg-blue-50"
-            >
-              <EllipsisVerticalIcon />
-            </Button>
-          </TooltipTrigger>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 w-9 p-0 hover:bg-red-50 cursor-pointer"
+                  disabled={isDeleting}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Trash2 
+                    className={`text-red-500 ${isDeleting ? 'animate-spin' : ''}`} 
+                    strokeWidth={1.5}
+                  />
+                </Button>
+              </TooltipTrigger>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Candidate</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete "{candidate.name}"? This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-red-500 hover:bg-red-600"
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? 'Deleting...' : 'Delete'}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <TooltipContent>
-            <p className="text-lg-t 2xl:text-xs 3xl:!text-sm">More Options</p>
+            <p className="text-lg-t 2xl:text-xs 3xl:!text-sm">Delete</p>
           </TooltipContent>
         </Tooltip>
-      </TooltipProvider> */}
+      </TooltipProvider>
     </div>
   );
 };
 
-export const columns: ColumnDef<Candidate>[] = [
+export const columns = (onDeleteCandidate?: (id: number) => void): ColumnDef<Candidate>[] => [
   columnHelper.accessor("avatar", {
     header: () => <span>Candidate</span>,
     cell: ({ row }) => (
@@ -100,7 +144,7 @@ export const columns: ColumnDef<Candidate>[] = [
   }),
   columnHelper.display({
     id: "actions",
-    cell: () => <ActionCell />,
+    cell: ({row}) => <ActionCell candidate={row.original} onDelete={onDeleteCandidate} />,
     enableSorting: false,
     size: 20,
   }),
@@ -108,6 +152,7 @@ export const columns: ColumnDef<Candidate>[] = [
 
 export function CandidateTable({
   candidatesData,
+  onDeleteCandidate,
   }: CandidateTableProps) {
   const [searchValue, setSearchValueLocal] = useState("");
   const [selectedRole, setSelectedRoleLocal] = useState("");
@@ -165,7 +210,7 @@ export function CandidateTable({
       <div className="overflow-auto h-[calc(100vh-220px)] rounded-sm border-none">
         <TanstackTable
           data={candidatesData}
-          columns={columns}
+          columns={columns(onDeleteCandidate)}
           onRowClick={handleRowClick}
         />
       </div>

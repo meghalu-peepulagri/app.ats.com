@@ -37,7 +37,6 @@ export const AddUserContainer: React.FC = () => {
     mutationFn: uploadFileAPI,
     onSuccess: (data) => {
       const fileKey = data?.data?.file_key; 
-      console.log(fileKey);     
       setFormData((prev) => ({
         ...prev,
         resume_key_path: fileKey,
@@ -45,7 +44,6 @@ export const AddUserContainer: React.FC = () => {
       toast.success('File uploaded successfully!');
     },
     onError: (error: any) => {
-      console.log('File upload error:', error);
       toast.error(error?.message || 'File upload failed');
       setErrors((prev) => ({
         ...prev,
@@ -54,24 +52,26 @@ export const AddUserContainer: React.FC = () => {
     },
   });
 
-  const createUserMutation = useMutation<
-    CreateUserResponse,
-    UserErrorResponse,
-    UserFormData
-  >({
-    mutationFn: createUserAPI,
-    onSuccess: () => {
-      toast.success('User created successfully!');
-      navigate({ to: '/applicants' });
+  
+
+  const { mutateAsync: createUser, isPending } = useMutation({
+    mutationFn: (formData: UserFormData) => createUserAPI(formData),
+  
+    onSuccess: (data) => {
+      toast.success("User created successfully!");
+      navigate({ to: "/applicants" });
     },
+  
     onError: (error: any) => {
-      if (error?.errData) {
-        setErrors(error.errData);
+      if (error.status === 422) {
+        toast.error(error.message || "Failed to create user");
+        if (error.errors) setErrors(error.errors);
       } else {
-        toast.error(error?.message || 'Failed to create user');
+        toast.error(error.message || "Something went wrong");
       }
     },
   });
+  
 
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
@@ -132,41 +132,8 @@ export const AddUserContainer: React.FC = () => {
       }
     });
   };
-
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string[]> = {};
-
-    if (!formData.role.trim()) {
-      newErrors.role = ['Role is required'];
-    }
-    if (!formData.first_name.trim()) {
-      newErrors.first_name = ['First name is required'];
-    }
-    if (!formData.last_name.trim()) {
-      newErrors.last_name = ['Last name is required'];
-    }
-    if (!formData.email.trim()) {
-      newErrors.email = ['Email is required'];
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = ['Please enter a valid email address'];
-    }
-    if (!formData.phone.trim()) {
-      newErrors.phone = ['Phone number is required'];
-    }
-    if (!uploadedFile && !formData.resume_key_path) {
-      newErrors.resume_key_path = ['Resume upload is required'];
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSave = () => {
-    if (validateForm()) {
-      createUserMutation.mutate(formData);
-    } else {
-      console.log('Form validation failed:', errors);
-    }
+      createUser(formData);
   };
 
   const handleBackNavigate = () => {
@@ -174,14 +141,15 @@ export const AddUserContainer: React.FC = () => {
   };
 
   const isLoading =
-    fileUploadMutation.isPending || createUserMutation.isPending;
+    fileUploadMutation.isPending 
 
   return (
+    <div className='mt-4'>
     <AddUserCard
       formData={formData}
       uploadedFile={uploadedFile}
       errors={errors}
-      isSubmitting={createUserMutation.isPending}
+      isSubmitting={isPending}
       onChange={handleFormChange}
       onSave={handleSave}
       handleBackNavigate={handleBackNavigate}
@@ -189,5 +157,6 @@ export const AddUserContainer: React.FC = () => {
       handleDeleteFile={handleDeleteFile}
       loading={isLoading}
     />
+    </div>
   );
 };

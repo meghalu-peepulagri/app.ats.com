@@ -88,14 +88,13 @@ export function AddUserCard({
           Add User
         </div>
       </CardTitle>
-      <Card className="w-full bg-white !gap-0 !shadow-none rounded-lg p-0 !py-0">
-        <CardHeader></CardHeader>
+      <Card className="w-full bg-white shadow-none rounded-lg p-0 pt-3">
         <CardContent className="!px-4">
-          <div className="space-y-4 !px-0 h-110">
+          <div className="!px-0 flex flex-col gap-2">
             <div className="space-y-0.75">
               <Label
                 htmlFor="role"
-                className="text-xs 2xl:text-sm 3xl:!text-base text-[var(--an-card-adduser-color)] font-[var(--an-card-font-weight)]"
+                className="text-sm 3xl:!text-base text-[#333] font-medium"
               >
                 Role
               </Label>
@@ -105,7 +104,7 @@ export function AddUserCard({
               >
                 <SelectTrigger
                   id="role"
-                  className="w-77 !h-7.75 bg-[var(--an-card-adduser-bg-color)] border-none rounded-[5px] text-sm placeholder:text-[var(--an-card-adduser-placeholder-color)] text-[var(--an-card-adduser-color)] font-[var(--an-card-adduser-placeholder-weight)]"
+                  className="w-78 !h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                 >
                   <SelectValue placeholder="Please select role" />
                 </SelectTrigger>
@@ -117,20 +116,20 @@ export function AddUserCard({
                 </SelectContent>
               </Select>
               {errors.role && (
-                <p className="text-red-500 text-xs">{errors.role[0]}</p>
+                <p className="text-red-500 text-xs">{errors.role}</p>
               )}
             </div>
 
-            <div className="space-y-0">
-              <h3 className="text-[var(--an-card-adduser-personal-color)] font-[var(--an-card-font-weight)] text-sm 2xl:text-base 3xl:!text-lg">
+            <div className="flex flex-col gap-2">
+              <h3 className="text-[#A05148] font-medium text-base 3xl:!text-lg">
                 Personal & Contact Details
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="firstName"
-                    className="text-xs 2xl:text-sm 3xl:!text-base text-[var(--an-card-adduser-color)] font-[var(--an-card-font-weight)] after:content-['_*'] after:text-red-500"
-                  >
+                    className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    >
                     First Name
                   </Label>
                   <Input
@@ -138,18 +137,18 @@ export function AddUserCard({
                     placeholder="First name of candidate"
                     value={formData.first_name}
                     onChange={(e) => handleInputChange('first_name', e.target.value)}
-                    className="w-full !h-7.75 bg-[var(--an-card-adduser-bg-color)] border-none rounded-[5px] text-xs 2xl:text-sm 3xl:!text-base placeholder:text-[var(--an-card-adduser-placeholder-color)] text-[var(--an-card-adduser-color)] font-[var(--an-card-adduser-placeholder-weight)]"
+                    className="!h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                    
                     disabled={loading}
                   />
                   {errors.first_name && (
-                    <p className="text-red-500 text-xs">{errors.first_name[0]}</p>
+                    <p className="text-red-500 text-xs">{errors.first_name}</p>
                   )}
                 </div>
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="lastName"
-                    className="text-xs 2xl:text-sm 3xl:!text-base text-[var(--an-card-adduser-color)] font-[var(--an-card-font-weight)] after:content-['_*'] after:text-red-500"
-                  >
+                    className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    >
                     Last Name
                   </Label>
                   <Input
@@ -157,18 +156,18 @@ export function AddUserCard({
                     placeholder="Last name of candidate"
                     value={formData.last_name}
                     onChange={(e) => handleInputChange('last_name', e.target.value)}
-                    className="w-full !h-7.75 bg-[var(--an-card-adduser-bg-color)] border-none rounded-[5px] text-xs 2xl:text-sm 3xl:!text-base placeholder:text-[var(--an-card-adduser-placeholder-color)] text-[var(--an-card-adduser-color)] font-[var(--an-card-adduser-placeholder-weight)]"
+                    className="!h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                    
                     disabled={loading}
                   />
                   {errors.last_name && (
-                    <p className="text-red-500 text-xs">{errors.last_name[0]}</p>
+                    <p className="text-red-500 text-xs">{errors.last_name}</p>
                   )}
                 </div>
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="email"
-                    className="text-xs 2xl:text-sm 3xl:!text-base text-[var(--an-card-adduser-color)] font-[var(--an-card-font-weight)] after:content-['_*'] after:text-red-500"
-                  >
+                    className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    >
                     Email ID
                   </Label>
                   <Input
@@ -177,7 +176,7 @@ export function AddUserCard({
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="w-full !h-7.75 bg-[var(--an-card-adduser-bg-color)] border-none rounded-[5px] text-xs 2xl:text-sm 3xl:!text-base placeholder:text-[var(--an-card-adduser-placeholder-color)] text-[var(--an-card-adduser-color)] font-[var(--an-card-adduser-placeholder-weight)]"
+                    className="!h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                    
                     disabled={loading}
                   />
                   {errors.email && (
@@ -187,8 +186,8 @@ export function AddUserCard({
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="mobile"
-                    className="text-xs 2xl:text-sm 3xl:!text-base text-[var(--an-card-adduser-color)] font-[var(--an-card-font-weight)] after:content-['_*'] after:text-red-500"
-                  >
+                    className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    >
                     Mobile Number
                   </Label>
                   <Input
@@ -196,8 +195,8 @@ export function AddUserCard({
                     placeholder="Enter mobile number"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full !h-7.75 bg-[var(--an-card-adduser-bg-color)] border-none rounded-[5px] text-xs 2xl:text-sm 3xl:!text-base placeholder:text-[var(--an-card-adduser-placeholder-color)] text-[var(--an-card-adduser-color)] font-[var(--an-card-adduser-placeholder-weight)]"
-                    disabled={loading}
+                    className="!h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                   
+                   disabled={loading}
                   />
                   {errors.phone && (
                     <p className="text-red-500 text-xs">{errors.phone}</p>
@@ -209,7 +208,7 @@ export function AddUserCard({
             <div className="space-y-0.75">
               <Label
                 htmlFor="experience"
-                className="text-xs 2xl:text-sm 3xl:!text-base text-[var(--an-card-adduser-color)] font-[var(--an-card-font-weight)]"
+                className="text-sm 3xl:!text-base text-[#333] font-medium"
               >
                 Experience
               </Label>
@@ -218,7 +217,7 @@ export function AddUserCard({
                 placeholder="Enter candidate experience"
                 value={formData.experience}
                 onChange={(e) => handleInputChange('experience', e.target.value)}
-                className="w-77 !h-7.75 bg-[var(--an-card-adduser-bg-color)] border-none rounded-[5px] text-xs 2xl:text-sm 3xl:!text-base placeholder:text-[var(--an-card-adduser-placeholder-color)] text-[var(--an-card-adduser-color)] font-[var(--an-card-adduser-placeholder-weight)]"
+                className="w-78 !h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"              
                 disabled={loading}
               />
               {errors.experience && (
@@ -227,19 +226,21 @@ export function AddUserCard({
             </div>
 
             <div className="space-y-0.75">
-              <h3 className="text-sm 2xl:text-base 3xl:!text-lg text-[var(--an-card-adduser-personal-color)] font-[var(--an-card-font-weight)]">
+              <h3 className="text-[#A05148] font-medium text-base 3xl:!text-lg">
                 Attachments
               </h3>
               <div className="space-y-0.75">
                 <Label
                   htmlFor="upload"
-                  className="text-xs 2xl:text-sm 3xl:!text-base text-[var(--an-card-adduser-color)] font-[var(--an-card-font-weight)] after:content-['_*'] after:text-red-500"
+                className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
                 >
                   Upload Document
                 </Label>
                 
                 {!uploadedFile ? (
-                  <div className="flex h-15 items-center justify-center w-full bg-[var(--an-card-adduser-bg-color)] border-none rounded-[5px] p-2 text-sm text-gray-500 relative">
+                  <div 
+                  className="relative flex items-center justify-center h-18 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"              
+                  >
                     <input
                       type="file"
                       accept=".pdf,.doc,.docx"
@@ -248,12 +249,12 @@ export function AddUserCard({
                       id="file-upload"
                       disabled={loading}
                     />
-                    <span className="mr-3 text-xs 2xl:text-sm 3xl:!text-base text-[var(--an-card-adduser-drop-color)] font-[var(--an-card-font-weight)]">
+                    <span className="mr-3 text-sm 3xl:!text-base text-[#828282] font-normal flex items-center justify-center gap-2">
                       <UploadIcon className="!w-3.5 !h-3.5" />
-                    </span>
-                    Drop files to attach or
-                    <span className="text-[var(--an-card-adduser-browser-color)] font-[var(--an-card-font-weight)] ml-3 cursor-pointer text-xs 2xl:text-sm 3xl:!text-base border border-gray-200 px-2 rounded py-0.5">
+                      <span className="text-sm 3xl:!text-base text-[#828282] font-medium">Drop files to attach or</span>
+                    <span className="text-[#4F4F4F] font-normal ml-2 cursor-pointer text-sm 3xl:!text-base border border-[#E0E0E0] px-2 rounded py-0.5">
                       Browse
+                    </span>
                     </span>
                   </div>
                 ) : (
@@ -294,7 +295,6 @@ export function AddUserCard({
                     </div>
                   </Card>
                 )}
-                
                 {errors.resume_key_path && (
                   <p className="text-red-500 text-xs">{errors.resume_key_path}</p>
                 )}
@@ -310,14 +310,14 @@ export function AddUserCard({
       <div className="flex justify-end gap-2 mt-4 w-full max-w-2xl">
         <Button
           variant="outline"
-          className="text-xs 2xl:text-sm 3xl:!text-base !px-3 !h-8 text-[var(--an-card-adduser-browser-color)] rounded-[5px] font-[var(--an-card-font-weight)]"
+          className="text-sm 3xl:!text-base px-3 h-8 text-[#4F4F4F] rounded-sm font-normal border border-[rgba(0,0,0,0.21)] shadow-none cursor-pointer"
           onClick={handleBackNavigate}
           disabled={loading}
         >
           Cancel
         </Button>
         <Button
-          className="text-xs 2xl:text-sm 3xl:!text-base bg-[var(--an-card-adduser-bg-color1)] !px-3 !h-8 text-[var(--an-card-adduser-adduser-color)] rounded-[5px] hover:bg-green-600"
+          className="text-sm 3xl:!text-base bg-[#05A155] px-3 h-8 text-white rounded-sm hover:bg-[#05A155] shadow-none font-light cursor-pointer"
           onClick={onSave}
           disabled={loading || isSubmitting}
         >
