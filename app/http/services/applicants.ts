@@ -1,10 +1,21 @@
 import { $fetch } from "../fetch";
-import { ApplicantPayload, ApplicantResponse, ApplicantErrorResponse, CommentPayload, ApiApplicant, ApplicantsResponse } from "../../lib/interface/applicants";
+import { ApplicantPayload, ApplicantResponse, ApplicantErrorResponse, CommentPayload, ApplicantsResponse } from "../../lib/interface/applicants";
 
-export const getAllApplicants = async ({ pageParam = 1 }): Promise<ApplicantsResponse> => {
-  const response = await $fetch.get(`/applicants?page=${pageParam}&limit=10`);
+export const getAllApplicants = async ({ pageParam = 1, search_string, role }): Promise<ApplicantsResponse> => {
+  const params = new URLSearchParams({
+    page: pageParam.toString(),
+    limit: "10",
+  });
+  if (search_string && search_string.trim() !== "") {
+    params.append("search_string", search_string);
+  }
+  if (role && role !== "All" && role.trim() !== "") {
+    params.append("role", role);
+  }
+  const response = await $fetch.get(`/applicants?${params.toString()}`);
   return response.data;
 };
+
 export const createApplicant = async (payload: ApplicantPayload): Promise<ApplicantResponse | ApplicantErrorResponse> => {
   try {
     const response = await $fetch.post("/applicants", payload);

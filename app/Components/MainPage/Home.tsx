@@ -3,7 +3,7 @@ import { ApiApplicant } from "@/app/lib/interface/applicants";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import CandidateTable, { Candidate } from "../an/ApplicantsTable";
 import { useEffect, useRef } from "react";
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useSearch } from "@tanstack/react-router";
 import { CandidateCountCard } from "../an/SingleCard";
 
 const apiApplicantToCandidate = (applicant: ApiApplicant): Candidate => ({
@@ -15,6 +15,8 @@ const apiApplicantToCandidate = (applicant: ApiApplicant): Candidate => ({
 });
 
 export function Home() {
+  const search: { search_string?: string; role?: string } = useSearch({ from: "/_header/_applicants" });
+
   const { data: statsData, isLoading } = useQuery({
     queryKey: ["stats"],
     queryFn: async () => {
@@ -25,9 +27,13 @@ export function Home() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["applicants"],
+      queryKey: ["applicants", search.search_string, search.role],
       queryFn: async ({ pageParam = 1 }) => {
-        const response = await getAllApplicants({ pageParam });
+        const response = await getAllApplicants({ 
+          pageParam ,
+          search_string: search.search_string || "",
+          role: search.role || "",
+        }); 
         return response.data;
       },
       getNextPageParam: (lastPage) =>

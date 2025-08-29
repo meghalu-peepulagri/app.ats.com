@@ -7,17 +7,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { ListFilter, Search, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, ListFilter, Search, Trash2, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { AddUploadIcon } from "../icons/AddIcon";
 import { TanstackTable } from "../core/table/TanstackTable";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { getStatusColor } from "@/app/lib/helper/getColorStatus";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { on } from "events";
 
 export interface Candidate {
   id: number;
@@ -154,21 +153,34 @@ export function CandidateTable({
   candidatesData,
   onDeleteCandidate,
   }: CandidateTableProps) {
-  const [searchValue, setSearchValueLocal] = useState("");
-  const [selectedRole, setSelectedRoleLocal] = useState("");
+  const search: { search_string?: string; role?: string } = useSearch({ from: "/_header/_applicants" });
   const navigate = useNavigate();
 
-  const handleSearchChange = (value: string) => {
-    setSearchValueLocal(value);
-  };
+  const [searchValue, setSearchValue] = useState(search.search_string ?? "");
+  const [selectedRole, setSelectedRole] = useState(search.role ?? "");
+  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      navigate({
+        to: "/applicants",
+        search: {
+          ...(searchValue ? { search_string: searchValue } : {}),
+          ...(selectedRole ? { role: selectedRole } : {}),
+        },
+      });
+    }, 500);
+  
+    return () => clearTimeout(handler);
+  }, [searchValue, selectedRole, navigate]);
 
-  const handleRoleChange = (value: string) => {
-    setSelectedRoleLocal(value);
+  const handleSearchChange = (value: string) => {
+    setSearchValue(value);
   };
 
   const handleRowClick = (candidate: Candidate) => {
     navigate({ 
       to: `/applicants/${candidate.id}`,
+      search,
     });
   };
 
@@ -176,7 +188,7 @@ export function CandidateTable({
     <div className="bg-white rounded-lg border-none">
       <div className="flex items-center justify-between px-4 py-2.75">
         <div className="flex items-center gap-2 text-sm font-medium">
-          <Select value={selectedRole} onValueChange={handleRoleChange}>
+          <Select value={selectedRole} onValueChange={(value) => value === "All" ? setSelectedRole("") : setSelectedRole(value)}>
             <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0">
               <div className="flex items-center gap-2">
                 <ListFilter />
