@@ -1,6 +1,6 @@
 import { deleteApplicant, getAllApplicants, getStatsAPI } from "@/app/http/services/applicants";
 import { ApiApplicant } from "@/app/lib/interface/applicants";
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import CandidateTable, { Candidate } from "../an/ApplicantsTable";
 import { useEffect, useRef } from "react";
 import { Outlet, useSearch } from "@tanstack/react-router";
@@ -16,6 +16,7 @@ const apiApplicantToCandidate = (applicant: ApiApplicant): Candidate => ({
 
 export function Home() {
   const search: { search_string?: string; role?: string } = useSearch({ from: "/_header/_applicants" });
+  const queryClient = useQueryClient();
 
   const { data: statsData, isLoading } = useQuery({
     queryKey: ["stats"],
@@ -46,6 +47,12 @@ export function Home() {
       mutationFn: async (id: number) => {
         const response = await deleteApplicant(id);
         return response.data;
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["applicants"],
+          exact: false,
+        });
       },
     });
 

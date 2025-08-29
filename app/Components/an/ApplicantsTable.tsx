@@ -66,7 +66,7 @@ const ActionCell = ({ candidate, onDelete }: { candidate: Candidate, onDelete?: 
                   variant="ghost"
                   size="sm"
                   className="h-9 w-9 p-0 hover:bg-red-50 cursor-pointer"
-                  disabled={isDeleting}
+                  disabled={candidate.status !== 'REJECTED' || isDeleting}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Trash2 

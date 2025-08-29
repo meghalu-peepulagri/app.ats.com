@@ -33,10 +33,10 @@ export function Header({
             <ProfileIcon/> 
             <div className="flex items-center space-x-2 leading-tight">
               <div>
-                <p className="text-xs 2xl:text-sm 3xl:!text-base text-(--text-admin-color)">
+                <p className="text-[13px] 3xl:!text-sm text-[#333]">
                   {adminName}
                 </p>
-                <p className="text-lg-t 2xl:text-xs 3xl:!text-xs text-(--an-card-email-color)">
+                <p className="text-[11px] 3xl:!text-xs text-[#444C5E]">
                   {adminrole}
                 </p>
               </div>

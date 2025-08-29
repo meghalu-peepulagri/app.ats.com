@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getApplicantById, updateCommentById } from "@/app/http/services/applicants";
+import { getApplicantById, updateApplicant, updateCommentById } from "@/app/http/services/applicants";
 import CommentsSection from "../an/CommentSection";
 import { useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
 import Profile from "../an/Profile";
+import { ApplicantPayload } from "@/app/lib/interface/applicants";
 
 export function Resume() {
   const { applicant_id:id } = useParams({ from: "/_header/_applicants/applicants/$applicant_id/" });
@@ -16,6 +17,16 @@ export function Resume() {
       return response.data;
     },
   })
+
+  const updateStatusMutation = useMutation({
+    mutationFn: async (newStatus: string) => {
+      return updateApplicant(id, { status: newStatus });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["applicant", id] });
+      queryClient.invalidateQueries({ queryKey: ["applicants"] });
+    },
+  });
 
   const addCommentMutation = useMutation({
     mutationFn: async (newComment: string) => {
@@ -77,6 +88,7 @@ export function Resume() {
           value={capitalize(resume.status)}
           resume_key_path={resume.resume_key_path || ''}
           downloadUrl={resume.presignedUrl.download_url || ''}
+          onStatusChange={(newStatus) => updateStatusMutation.mutate(newStatus)}
         />
         <CommentsSection 
           key={`comments-${id}`}

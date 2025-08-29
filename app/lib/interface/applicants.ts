@@ -34,7 +34,7 @@ export interface ApplicantPayload {
   email: string;
   phone: string;
   role: string;
-  status?: string | null;
+  status: string;
 }
 
 export interface CommentPayload {

@@ -21,13 +21,21 @@ export default function Profile({
   resumeOptions,
   value,
   downloadUrl,
-  resume_key_path
+  resume_key_path,
+  onStatusChange,
 }) {
   const [status, setStatus] = useState(value);
 
   useEffect(() => {
     setStatus(value);
   }, [value]);
+
+  const handleStatusChange = (newStatus: string) => {
+    setStatus(newStatus);
+    if (onStatusChange) {
+      onStatusChange(newStatus);
+    }
+  };
 
   const pdfSrc = useMemo(() => {
     if (downloadUrl) {
@@ -76,7 +84,7 @@ export default function Profile({
           <p className="text-base 3xl:!text-lg text-[#454545] font-(--an-card-profile-font-weight)">
             {jobTitle}
           </p>
-          <Select value={status} onValueChange={setStatus}>
+          <Select value={status} onValueChange={handleStatusChange}>
             <SelectTrigger className={`px-3 rounded border-none !h-8 w-45 text-sm 3xl:!text-base  font-(--an-card-profile-font-weight) focus:ring-0 focus-visible:ring-0 ${getStatusColor(status.toUpperCase()).bg} ${getStatusColor(status.toUpperCase()).text}`}>
               <SelectValue />
             </SelectTrigger>
