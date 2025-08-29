@@ -1,0 +1,16 @@
+export function ChrevronLeftzIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="6"
+      height="10"
+      viewBox="0 0 6 10"
+      fill="none"
+    >
+      <path
+        d="M6 8.825L2.2915 5L6 1.175L4.8583 0L0 5L4.8583 10L6 8.825Z"
+        fill="#101010"
+      />
+    </svg>
+  );
+}

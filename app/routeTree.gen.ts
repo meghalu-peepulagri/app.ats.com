@@ -11,15 +11,50 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as HeaderImport } from './routes/_header'
 import { Route as IndexImport } from './routes/index'
+import { Route as HeaderApplicantsImport } from './routes/_header/_applicants'
+import { Route as HeaderAdduserIndexImport } from './routes/_header/add_user/index'
+import { Route as HeaderApplicantsApplicantsIndexImport } from './routes/_header/_applicants/applicants/index'
+import { Route as HeaderApplicantsApplicantsApplicantidIndexImport } from './routes/_header/_applicants/applicants/$applicant_id/index'
 
 // Create/Update Routes
+
+const HeaderRoute = HeaderImport.update({
+  id: '/_header',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const HeaderApplicantsRoute = HeaderApplicantsImport.update({
+  id: '/_applicants',
+  getParentRoute: () => HeaderRoute,
+} as any)
+
+const HeaderAdduserIndexRoute = HeaderAdduserIndexImport.update({
+  id: '/add_user/',
+  path: '/add_user/',
+  getParentRoute: () => HeaderRoute,
+} as any)
+
+const HeaderApplicantsApplicantsIndexRoute =
+  HeaderApplicantsApplicantsIndexImport.update({
+    id: '/applicants/',
+    path: '/applicants/',
+    getParentRoute: () => HeaderApplicantsRoute,
+  } as any)
+
+const HeaderApplicantsApplicantsApplicantidIndexRoute =
+  HeaderApplicantsApplicantsApplicantidIndexImport.update({
+    id: '/applicants/$applicant_id/',
+    path: '/applicants/$applicant_id/',
+    getParentRoute: () => HeaderApplicantsRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -32,39 +67,128 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/_header': {
+      id: '/_header'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof HeaderImport
+      parentRoute: typeof rootRoute
+    }
+    '/_header/_applicants': {
+      id: '/_header/_applicants'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof HeaderApplicantsImport
+      parentRoute: typeof HeaderImport
+    }
+    '/_header/add_user/': {
+      id: '/_header/add_user/'
+      path: '/add_user'
+      fullPath: '/add_user'
+      preLoaderRoute: typeof HeaderAdduserIndexImport
+      parentRoute: typeof HeaderImport
+    }
+    '/_header/_applicants/applicants/': {
+      id: '/_header/_applicants/applicants/'
+      path: '/applicants'
+      fullPath: '/applicants'
+      preLoaderRoute: typeof HeaderApplicantsApplicantsIndexImport
+      parentRoute: typeof HeaderApplicantsImport
+    }
+    '/_header/_applicants/applicants/$applicant_id/': {
+      id: '/_header/_applicants/applicants/$applicant_id/'
+      path: '/applicants/$applicant_id'
+      fullPath: '/applicants/$applicant_id'
+      preLoaderRoute: typeof HeaderApplicantsApplicantsApplicantidIndexImport
+      parentRoute: typeof HeaderApplicantsImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface HeaderApplicantsRouteChildren {
+  HeaderApplicantsApplicantsIndexRoute: typeof HeaderApplicantsApplicantsIndexRoute
+  HeaderApplicantsApplicantsApplicantidIndexRoute: typeof HeaderApplicantsApplicantsApplicantidIndexRoute
+}
+
+const HeaderApplicantsRouteChildren: HeaderApplicantsRouteChildren = {
+  HeaderApplicantsApplicantsIndexRoute: HeaderApplicantsApplicantsIndexRoute,
+  HeaderApplicantsApplicantsApplicantidIndexRoute:
+    HeaderApplicantsApplicantsApplicantidIndexRoute,
+}
+
+const HeaderApplicantsRouteWithChildren =
+  HeaderApplicantsRoute._addFileChildren(HeaderApplicantsRouteChildren)
+
+interface HeaderRouteChildren {
+  HeaderApplicantsRoute: typeof HeaderApplicantsRouteWithChildren
+  HeaderAdduserIndexRoute: typeof HeaderAdduserIndexRoute
+}
+
+const HeaderRouteChildren: HeaderRouteChildren = {
+  HeaderApplicantsRoute: HeaderApplicantsRouteWithChildren,
+  HeaderAdduserIndexRoute: HeaderAdduserIndexRoute,
+}
+
+const HeaderRouteWithChildren =
+  HeaderRoute._addFileChildren(HeaderRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof HeaderApplicantsRouteWithChildren
+  '/add_user': typeof HeaderAdduserIndexRoute
+  '/applicants': typeof HeaderApplicantsApplicantsIndexRoute
+  '/applicants/$applicant_id': typeof HeaderApplicantsApplicantsApplicantidIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof HeaderApplicantsRouteWithChildren
+  '/add_user': typeof HeaderAdduserIndexRoute
+  '/applicants': typeof HeaderApplicantsApplicantsIndexRoute
+  '/applicants/$applicant_id': typeof HeaderApplicantsApplicantsApplicantidIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_header': typeof HeaderRouteWithChildren
+  '/_header/_applicants': typeof HeaderApplicantsRouteWithChildren
+  '/_header/add_user/': typeof HeaderAdduserIndexRoute
+  '/_header/_applicants/applicants/': typeof HeaderApplicantsApplicantsIndexRoute
+  '/_header/_applicants/applicants/$applicant_id/': typeof HeaderApplicantsApplicantsApplicantidIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | ''
+    | '/add_user'
+    | '/applicants'
+    | '/applicants/$applicant_id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '' | '/add_user' | '/applicants' | '/applicants/$applicant_id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_header'
+    | '/_header/_applicants'
+    | '/_header/add_user/'
+    | '/_header/_applicants/applicants/'
+    | '/_header/_applicants/applicants/$applicant_id/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HeaderRoute: typeof HeaderRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HeaderRoute: HeaderRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +201,39 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/_header"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/_header": {
+      "filePath": "_header.tsx",
+      "children": [
+        "/_header/_applicants",
+        "/_header/add_user/"
+      ]
+    },
+    "/_header/_applicants": {
+      "filePath": "_header/_applicants.tsx",
+      "parent": "/_header",
+      "children": [
+        "/_header/_applicants/applicants/",
+        "/_header/_applicants/applicants/$applicant_id/"
+      ]
+    },
+    "/_header/add_user/": {
+      "filePath": "_header/add_user/index.tsx",
+      "parent": "/_header"
+    },
+    "/_header/_applicants/applicants/": {
+      "filePath": "_header/_applicants/applicants/index.tsx",
+      "parent": "/_header/_applicants"
+    },
+    "/_header/_applicants/applicants/$applicant_id/": {
+      "filePath": "_header/_applicants/applicants/$applicant_id/index.tsx",
+      "parent": "/_header/_applicants"
     }
   }
 }

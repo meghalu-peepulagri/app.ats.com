@@ -7,6 +7,8 @@ import {
   Scripts,
 } from '@tanstack/react-router'
 import '../src/styles/global.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+const queryclient = new QueryClient()
 
 export const Route = createRootRoute({
   head: () => ({
@@ -19,7 +21,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'ATS',
       },
     ],
   }),
@@ -28,8 +30,10 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <RootDocument>
-      <Outlet />
+       <RootDocument>
+     <QueryClientProvider client={queryclient}>
+        <Outlet />
+      </QueryClientProvider>
     </RootDocument>
   )
 }
