@@ -1,11 +1,13 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import ApplicantCard from "../an/Profile";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getApplicantById, updateCommentById } from "@/app/http/services/applicants";
 import CommentsSection from "../an/CommentSection";
 import { useParams } from "@tanstack/react-router";
+import { useEffect } from "react";
+import Profile from "../an/Profile";
 
 export function Resume() {
   const { applicant_id:id } = useParams({ from: "/_header/_applicants/applicants/$applicant_id/" });
+  const queryClient = useQueryClient();
 
   const {data: resume, isLoading} = useQuery({
     queryKey: ['resume', id],
@@ -20,7 +22,14 @@ export function Resume() {
       const response = await updateCommentById(id, { comment_description: newComment });
     return response.data;
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['resume', id] });
+    },
   })
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['resume', id] });
+  }, [id, queryClient]);
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-full">Loading...</div>;
@@ -49,7 +58,8 @@ export function Resume() {
 
     return(
         <div className="flex gap-2 w-[100%]">
-        <ApplicantCard
+        <Profile
+          key={id}
           avatarImg={avatarImg || "A"}
           name={name || ''}
           email={resume.email || ''}
@@ -63,12 +73,13 @@ export function Resume() {
             minute: '2-digit',
             hour12: true,
           }).replace(/\//g, '-').replace(/, /g, ' ')}
-          resumeOptions={['Screening', 'Interviewed', 'Rejected', 'Pending', 'Joined']}
+          resumeOptions={['Screening', 'Interviewed', 'Rejected', 'Pending', 'Joined', 'Hired','Applied','Approved','Shortlisted']}
           value={capitalize(resume.status)}
           resume_key_path={resume.resume_key_path || ''}
           downloadUrl={resume.presignedUrl.download_url || ''}
         />
         <CommentsSection 
+          key={`comments-${id}`}
           comments={commentsData}
           onSubmitComment={(newComment) => addCommentMutation.mutate(newComment)}
         />

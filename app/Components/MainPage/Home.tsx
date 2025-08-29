@@ -1,9 +1,10 @@
-import { getAllApplicants } from "@/app/http/services/applicants";
+import { getAllApplicants, getStatsAPI } from "@/app/http/services/applicants";
 import { ApiApplicant } from "@/app/lib/interface/applicants";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import CandidateTable, { Candidate } from "../an/ApplicantsTable";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Outlet } from "@tanstack/react-router";
+import { CandidateCountCard } from "../an/SingleCard";
 
 const apiApplicantToCandidate = (applicant: ApiApplicant): Candidate => ({
   id: applicant.id,
@@ -14,14 +15,14 @@ const apiApplicantToCandidate = (applicant: ApiApplicant): Candidate => ({
 });
 
 export function Home() {
-  // const {data: statsData, isLoading,} = useQuery({
-  //   queryKey: ['stats'],
-  //   queryFn: async () => {
-  //     const response = await getStatsAPI();
-  //     console.log(response.data);
-  //     return response.data;
-  //   },
-  // })
+  const { data: statsData, isLoading } = useQuery({
+    queryKey: ["stats"],
+    queryFn: async () => {
+      const response = await getStatsAPI();
+      return response.data;
+    },
+  });
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["applicants"],
@@ -62,21 +63,72 @@ export function Home() {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  const totalApplicants = statsData?.totalApplicants || 0;
+  const recentApplicants = statsData?.recentApplicants || 0;
+  const rejected = statsData?.stats?.find(
+    (stat) => stat.status === "REJECTED"
+  ).count;
+  const hired = statsData?.stats?.find((stat) => stat.status === "HIRED").count;
+  const inProgress = statsData?.stats?.reduce((acc, stat) => {
+    if (
+      stat.status === "SCREENING" ||
+      stat.status === "INTERVIEWED" ||
+      stat.status === "PENDING" ||
+      stat.status === "SHORTLISTED"
+    ) {
+      return acc + parseInt(stat.count);
+    }
+    return acc;
+  }, 0);
+
   return (
-    <div className="grid grid-cols-[auto_1fr]">
+    <div>
+    <div className="flex items-center justify-center gap-4 m-2">
+          <CandidateCountCard
+            name="Total Candidates"
+            number={totalApplicants}
+            lineColor="border-[#9C1C24]"
+            iconBgColor="bg-[#9C1C24]"
+          />
+          <CandidateCountCard
+            name="New Applicants"
+            number={recentApplicants}
+            lineColor="border-[#2F80ED]"
+            iconBgColor="bg-[#2F80ED]"
+          />
+          <CandidateCountCard
+            name="In Progress"
+            number={inProgress}
+            lineColor="border-[#F2994A]"
+            iconBgColor="bg-[#F2994A]"
+          />
+          <CandidateCountCard
+            name="Hired"
+            number={hired}
+            lineColor="border-[#556B2F]"
+            iconBgColor="bg-[#556B2F]"
+          />
+          <CandidateCountCard
+            name="Rejected"
+            number={rejected}
+            lineColor="border-[#556B2F]"
+            iconBgColor="bg-[#556B2F]"
+          />
+    </div>
+    <div className="grid grid-cols-[auto_1fr] border-t pt-3">
       <div className="flex-1 flex flex-col">
-        {/* <CandidateCountCard /> */}
         <div className="flex-1">
           <CandidateTable candidatesData={candidatesData} />
           <div
             ref={loadMoreRef}
-            className="h-10 flex items-center justify-center"
+            className="flex items-center justify-center"
           >
             {isFetchingNextPage && <span>Loading more...</span>}
           </div>
         </div>
       </div>
       <Outlet />
+    </div>
     </div>
   );
 }

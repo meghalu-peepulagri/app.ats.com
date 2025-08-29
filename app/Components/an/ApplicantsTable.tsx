@@ -1,4 +1,4 @@
-import { ApiApplicant, PaginationInfo } from "@/app/lib/interface/applicants";
+import { ApiApplicant } from "@/app/lib/interface/applicants";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,12 +9,13 @@ import {
 } from "@/components/ui/tooltip";
 import { useNavigate } from "@tanstack/react-router";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { Badge, EllipsisVerticalIcon, ListFilter, Search } from "lucide-react";
+import { EllipsisVerticalIcon, ListFilter, Search } from "lucide-react";
 import { useState } from "react";
 import { AddUploadIcon } from "../icons/AddIcon";
 import { TanstackTable } from "../core/table/TanstackTable";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { getStatusColor } from "@/app/lib/helper/getColorStatus";
 
 export interface Candidate {
   id: number;
@@ -36,47 +37,6 @@ interface CandidateTableProps {
 }
 
 const columnHelper = createColumnHelper<Candidate>();
-
-const getStatusColor = (status: string | null) => {
-  switch (status?.toUpperCase()) {
-    case "SCREENING":
-      return {
-        bg: "bg-purple-100",
-        text: "text-purple-800",
-        border: "border-purple-300",
-      };
-    case "INTERVIEWED":
-      return {
-        bg: "bg-green-100",
-        text: "text-green-800",
-        border: "border-green-300",
-      };
-    case "REJECTED":
-      return {
-        bg: "bg-red-100",
-        text: "text-red-800",
-        border: "border-red-300",
-      };
-    case "PENDING":
-      return {
-        bg: "bg-blue-100",
-        text: "text-blue-800",
-        border: "border-blue-300",
-      };
-    case "JOINED":
-      return {
-      bg: "bg-yellow-100",
-      text: "text-yellow-800",
-      border: "border-yellow-300",
-    }
-    default:
-      return {
-        bg: "bg-gray-100",
-        text: "text-gray-800",
-        border: "border-gray-300",
-      };
-  }
-};
 
 const ActionCell = () => {
   return (
@@ -128,11 +88,11 @@ export const columns: ColumnDef<Candidate>[] = [
       const status = row.original.status;
       const statusColor = getStatusColor(status);
       return (
-        <Badge
-          className={`px-3 py-1 rounded-full text-sm ${statusColor.bg} ${statusColor.text}`}
+        <span
+          className={`px-3 py-0.5 rounded-full text-[13px] 3xl:!text-base w-35 ${statusColor.bg} ${statusColor.text}`}
         >
-          {status}
-        </Badge>
+       {status && status.charAt(0).toUpperCase() + status.slice(1).toLowerCase() || "--"}
+        </span>
       );
     },
     enableSorting: false,
@@ -202,7 +162,7 @@ export function CandidateTable({
           Add
         </Button>
       </div>
-      <div className="overflow-auto h-[calc(100vh-200px)] rounded-sm border-none">
+      <div className="overflow-auto h-[calc(100vh-220px)] rounded-sm border-none">
         <TanstackTable
           data={candidatesData}
           columns={columns}

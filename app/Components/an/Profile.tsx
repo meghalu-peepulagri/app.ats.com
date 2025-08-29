@@ -6,11 +6,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { EmailIcon } from "../icons/Email";
 import { PhoneIcon } from "../icons/Phone";
+import { getStatusColor } from "@/app/lib/helper/getColorStatus";
 
-export default function ApplicantCard({
+export default function Profile({
   avatarImg,
   name,
   email,
@@ -23,6 +24,11 @@ export default function ApplicantCard({
   resume_key_path
 }) {
   const [status, setStatus] = useState(value);
+
+  useEffect(() => {
+    setStatus(value);
+  }, [value]);
+
   const pdfSrc = useMemo(() => {
     if (downloadUrl) {
       return downloadUrl; 
@@ -71,7 +77,7 @@ export default function ApplicantCard({
             {jobTitle}
           </p>
           <Select value={status} onValueChange={setStatus}>
-            <SelectTrigger className="bg-purple-200 px-3 rounded hover:bg-purple-200 !h-8 w-45 text-sm 3xl:!text-base  text-purple-800 font-(--an-card-profile-font-weight)">
+            <SelectTrigger className={`px-3 rounded border-none !h-8 w-45 text-sm 3xl:!text-base  font-(--an-card-profile-font-weight) focus:ring-0 focus-visible:ring-0 ${getStatusColor(status.toUpperCase()).bg} ${getStatusColor(status.toUpperCase()).text}`}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

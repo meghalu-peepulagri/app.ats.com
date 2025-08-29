@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { ProfileIcon } from "../icons/Profile";
 import { MessageIcon } from "../icons/MessageIcon";
@@ -28,6 +28,10 @@ const CommentsSection = ({ comments, onSubmitComment }) => {
   const [newComment, setNewComment] = useState("");
   const [commentList, setCommentList] = useState(comments);
 
+  useEffect(() => {
+    setCommentList(comments || []);
+  }, [comments]);
+
   const handleCommentChange = (e) => {
     setNewComment(e.target.value);
   };
@@ -35,7 +39,19 @@ const CommentsSection = ({ comments, onSubmitComment }) => {
   const handleCommentSubmit = () => {
     if (newComment.trim()) {
       onSubmitComment(newComment); 
-      setCommentList([...commentList, { name: "Hr", msg: newComment, time: new Date().toLocaleString() }]);
+      const newCommentObj = { 
+        name: "Hr", 
+        msg: newComment, 
+        time: new Date().toLocaleString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+        }).replace(/\//g, '.').replace(/, /g, ' ')
+      };
+      setCommentList(prev => [...prev, newCommentObj]);
       setNewComment("");
     }
   };
@@ -55,7 +71,7 @@ const CommentsSection = ({ comments, onSubmitComment }) => {
           <span className="text-xs 2xl:text-sm 3xl:!text-base font-(--an-card-comments-weight) text-(--an-card-comments-color)">Comments <span className="bg-black text-white rounded-full !px-2 ml-3 !py-0 ">{commentList.length}</span></span>
         </div>
       </div>
-      <div className="h-[450px] overflow-y-auto ">
+      <div className="h-[calc(100vh-300px)] overflow-y-auto ">
         {commentList.map((comment, index) => (
           <CardComponent
             key={index}
