@@ -41,7 +41,7 @@ const columnHelper = createColumnHelper<Candidate>();
 const ActionCell = () => {
   return (
     <div className="flex items-center gap-2">
-      <TooltipProvider>
+      {/* <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -56,7 +56,7 @@ const ActionCell = () => {
             <p className="text-lg-t 2xl:text-xs 3xl:!text-sm">More Options</p>
           </TooltipContent>
         </Tooltip>
-      </TooltipProvider>
+      </TooltipProvider> */}
     </div>
   );
 };
