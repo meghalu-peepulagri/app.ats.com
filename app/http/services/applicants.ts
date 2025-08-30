@@ -43,7 +43,7 @@ export const getApplicantById = async (id: string | number) => {
   }
 };
 
-export const updateApplicant = async (id: string | number, payload: ApplicantPayload): Promise<ApplicantResponse | ApplicantErrorResponse> => {
+export const updateApplicant = async (id: string | number, payload) => {
   try {
     const response = await $fetch.patch(`/applicants/${id}`, payload);
     return response.data;

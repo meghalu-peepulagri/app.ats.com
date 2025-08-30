@@ -4,7 +4,6 @@ import CommentsSection from "../an/CommentSection";
 import { useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
 import Profile from "../an/Profile";
-import { ApplicantPayload } from "@/app/lib/interface/applicants";
 
 export function Resume() {
   const { applicant_id:id } = useParams({ from: "/_header/_applicants/applicants/$applicant_id/" });
