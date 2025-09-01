@@ -83,7 +83,7 @@ export function Resume() {
             minute: '2-digit',
             hour12: true,
           }).replace(/\//g, '-').replace(/, /g, ' ')}
-          resumeOptions={['Screening', 'Interviewed', 'Rejected', 'Pending', 'Joined', 'Hired','Applied','Approved','Shortlisted']}
+          resumeOptions={['Screened', 'Rejected', 'Joined', 'Hired','Applied']}
           value={capitalize(resume?.status)}
           resume_key_path={resume?.resume_key_path || ''}
           downloadUrl={resume?.presignedUrl.download_url || ''}

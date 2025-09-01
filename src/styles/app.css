@@ -1,5 +1,6 @@
-@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
+@import 'tailwindcss';
 @plugin 'tailwindcss-animate';
 
 @custom-variant dark (&:is(.dark *));
@@ -68,12 +69,12 @@
   }
 
   * {
-    @apply border-gray-200 dark:border-gray-800;
+    @apply border-gray-200 dark:border-gray-800 font-sans;
   }
 
   html,
   body {
-    @apply text-gray-900 bg-gray-50 dark:bg-gray-950 dark:text-gray-200;
+    @apply text-gray-900 bg-gray-50 dark:bg-gray-950 dark:text-gray-200 font-sans;
   }
 
   .using-mouse * {
@@ -134,15 +135,8 @@
   }
 }
 
-
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+@theme{
+  --breakpoint-3xl: 1920px;
 }
 
 ::-webkit-scrollbar {

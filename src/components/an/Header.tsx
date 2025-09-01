@@ -51,7 +51,7 @@ export function Header({
               >
                   <DropdownMenuItem onClick={onLogout}>
                     <div className="flex items-center gap-2">
-                      <LogOut className="text-red-600" strokeWidth={1.5}/>
+                      <LogOut className="text-red-600 w-4 h-4" strokeWidth={1.5}/>
                       <p className="text-sm 3xl:!text-base font-normal text-gray-600">
                         logout
                       </p>

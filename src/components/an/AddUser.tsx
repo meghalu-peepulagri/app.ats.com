@@ -109,14 +109,11 @@ export function AddUserCard({
                   <SelectValue placeholder="Please select role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Product Design">Product Design</SelectItem>
-                  <SelectItem value="Developer">Developer</SelectItem>
-                  <SelectItem value="Application Developer">Application Developer</SelectItem>
-                  <SelectItem value="Testing">Testing</SelectItem>
-                  <SelectItem value="Frontend Developer">Frontend Developer</SelectItem>
-                  <SelectItem value="Flutter Developer">Flutter Developer</SelectItem>
-                  <SelectItem value="UI Developer">UI Developer</SelectItem>
-                  <SelectItem value="Backend Developer">Backend Developer</SelectItem>
+                  <SelectItem value="Manufacturing Engineer">Manufacturing Engineer</SelectItem>
+                  <SelectItem value="IOT  & Robotics">IOT  & Robotics</SelectItem>
+                  <SelectItem value="EV">EV</SelectItem>
+                  <SelectItem value="Product design">Product design</SelectItem>
+                  <SelectItem value="Hardware">Hardware</SelectItem>
                 </SelectContent>
               </Select>
               {errors.role && (

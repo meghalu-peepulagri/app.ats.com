@@ -64,16 +64,24 @@ export function TanstackTable({columns, data, height, onRowClick}: TanstackTable
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map(row => (
-            <tr key={row.id} className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${selectedRow === row.id ? 'bg-[#f4f3f3]' : ''}`} onClick={() => handleRowClick(row)}>
-              {row.getVisibleCells().map(cell => (
-                <td key={cell.id} style={{ width: cell.column.getSize() }} className='text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%]'>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            {table.getRowModel().rows.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="text-center p-4">
+                  <h2>No data found</h2>
                 </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
+              </tr>
+            ) : (
+              table.getRowModel().rows.map(row => (
+                <tr key={row.id} className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${selectedRow === row.id ? 'bg-[#f4f3f3]' : ''}`} onClick={() => handleRowClick(row)}>
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id} style={{ width: cell.column.getSize() }} className='text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%]' >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
+          </tbody>
       </table> 
       </div> 
     </div>

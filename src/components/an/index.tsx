@@ -50,19 +50,18 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
-      <LoginBackGroundIcon />
-      <div className="absolute inset-0 grid grid-cols-1 lg:grid-cols-2 items-center justify-items-center lg:justify-items-start">
-        <div className="w-full max-w-sm px-6 lg:pl-12 xl:pl-16 2xl:pl-24">
-          <div className="space-y-4 max-h-[80vh] flex flex-col justify-center">
-            <div className="flex justify-center lg:justify-start mb-2">
-              <PeepulAgriIcon className="w-16 h-16 lg:w-20 lg:h-20" />
+    <div className="relative overflow-hidden h-screen w-full bg-[url('/Login.webp')] bg-cover bg-fixed bg-no-repeat">
+       <div className="absolute inset-0 grid grid-cols-2 items-center justify-items-center">
+        <div className="w-full max-w-sm px-6">
+          <div className="space-y-4 flex flex-col justify-center">
+            <div className="flex justify-start mb-2">
+              <PeepulAgriIcon className="w-30 h-30 3xl:!w-24 3xl:!h-24" />
             </div>
-            <div className="text-center lg:text-left mb-4">
-              <CardTitle className="text-xl lg:text-2xl 2xl:text-3xl text-(--an-card-login-color) font-(--an-card-login-color)">
+            <div className="text-center lg:text-left mb-6">
+              <CardTitle className="text-2xl 3xl:text-3xl text-[#000]">
                 Login
               </CardTitle>
-              <CardDescription className="mt-1 text-(--an-card-login-below-color) font-(--an-card-login-color) text-xs lg:text-sm">
+              <CardDescription className="mt-1 text-xs 3xl:text-sm text-[#333]">
                 Please Enter Login Details Below
               </CardDescription>
             </div>
@@ -71,7 +70,7 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
                 {error}
               </div>
             )}
-            <form onSubmit={handleLoginClick} className="space-y-3 flex-1 max-w-sm">
+            <form onSubmit={handleLoginClick} className="space-y-5 flex-1 max-w-sm">
               <div className="space-y-1">
                 <Input
                   id="email"
@@ -79,7 +78,7 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white rounded-md py-2.5 px-3 w-full text-sm"
+                  className="bg-white rounded-md py-2.5 px-3 w-full text-sm h-12"
                   disabled={isLoading}
                 />
                 {validationErrors.email && (
@@ -94,7 +93,7 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-white rounded-md py-2.5 px-3 pr-10 w-full text-sm"
+                    className="bg-white rounded-md py-2.5 px-3 pr-10 w-full text-sm !h-12"
                     disabled={isLoading}
                   />
                   <button
@@ -103,27 +102,27 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
                     className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
                     disabled={isLoading}
                   >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
                 {validationErrors.password && (
                   <p className="text-red-500 text-xs">{validationErrors.password}</p>
                 )}
-                <div className="flex justify-end pt-1">
+                {/* <div className="flex justify-end pt-1">
                   <a
                     href="#"
                     className="text-xs text-gray-500 hover:text-[#45A845] transition-colors"
                   >
                     Forgot Password?
                   </a>
-                </div>
+                </div> */}
               </div>
 
               <div className="pt-2">
                 <Button 
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-2.5 bg-[#45A845] hover:bg-[#3c903c] text-white text-sm rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-full py-2.5 bg-[#45A845] hover:bg-[#3c903c] h-12 text-white text-base 3xl:!text-lg rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
                   {isLoading ? (
                     <>
