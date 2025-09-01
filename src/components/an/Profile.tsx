@@ -52,12 +52,13 @@ export default function Profile({
   };
 
   const pdfSrc = useMemo(() => {
+    let src = null;
     if (downloadUrl) {
-      return downloadUrl; 
+      src = downloadUrl; 
     } else if (resume_key_path) {
-      return `${process.env.NEXT_PUBLIC_FILE_BASE_URL}/${resume_key_path}`;
+      src = `${process.env.NEXT_PUBLIC_FILE_BASE_URL}/${resume_key_path}`;
     }
-    return null;
+    return src;
   }, [downloadUrl, resume_key_path]);
 
   return (
@@ -122,7 +123,7 @@ export default function Profile({
                 className="w-150 h-100 border-none"
                 title="Resume PDF"
                 onLoad={() => {
-                  console.log("PDF loaded");
+                  console.log("PDF loaded successfully");
                 }}
               />
             </div>

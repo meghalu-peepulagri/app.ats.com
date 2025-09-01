@@ -20,10 +20,12 @@ export interface FileUploadResponse {
   success: boolean;
   message: string;
   data: {
-    file_path: string;
-    file_name: string;
-    upload_url?: string;
-    file_key: string;
+    data: {
+      file_path: string;
+      file_name: string;
+      upload_url?: string;
+      file_key: string;
+    };
   };
 }
 
@@ -66,28 +68,57 @@ export const uploadFileAPI = async (
     const fileExtension = file.name.split(".").pop()?.toLowerCase();
     const fileName = file.name.split(".")[0];
 
-    const uploadConfig = await $fetch.post("/files/upload", {
+    const data = await $fetch.post("/files/upload", {
       file_type: fileExtension,
       file_name: fileName,
     });
 
-    if (uploadConfig.data.upload_url) {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const uploadResponse = await fetch(uploadConfig.data.upload_url, {
-        method: "PUT",
-        body: formData,
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload file to storage");
-      }
+    const { target_url } = data.data.data;
+    if (!target_url) {
+      throw new Error("Presigned URL is missing");
     }
+    await uploadTos3({ url: target_url, file });
 
-    return uploadConfig.data;
+    return {
+      ...data,
+      message: data.message || "File uploaded successfully",
+    };
   } catch (error) {
     throw error;
+  }
+};
+
+const uploadTos3 = async ({ url, file }: { url: string; file: File }) => {
+  try {
+    const response = await uploadToS3API(url, file);
+    if (!response.ok) {
+      throw new Error("Failed to upload file to storage");
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const uploadToS3API = async (url: string, file: File) => {
+  try {
+    const options = {
+      method: "PUT",
+      body: file,
+    };
+    return await fetch(url, options);
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getDownloadUrlAPI = async ({ file_key }: { file_key: string }) => {
+  try {
+    const response = await $fetch.post(`/files/download`, {
+      file_key,
+    });
+    return response;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -104,7 +135,6 @@ export const uploadFileAPI = async (
 //   }
 // };
 
-
 export const createUserAPI = async (userData: UserFormData) => {
   try {
     const response = await $fetch.post("/applicants", userData);
@@ -120,4 +150,3 @@ export const createUserAPI = async (userData: UserFormData) => {
     throw error;
   }
 };
-

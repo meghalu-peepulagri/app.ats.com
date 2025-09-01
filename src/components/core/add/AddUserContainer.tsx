@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import React, { useState } from 'react';
 import { AddUserCard } from '../../an/AddUser';
-import { createUserAPI, uploadFileAPI, UserFormData, } from '~/http/services/users';
+import { createUserAPI, uploadFileAPI, uploadToS3API, UserFormData, } from '~/http/services/users';
 
 export const AddUserContainer: React.FC = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ export const AddUserContainer: React.FC = () => {
   const fileUploadMutation = useMutation({
     mutationFn: uploadFileAPI,
     onSuccess: (data) => {
-      const fileKey = data?.data?.file_key; 
+      const fileKey = data?.data?.data?.file_key; 
       setFormData((prev) => ({
         ...prev,
         resume_key_path: fileKey,
@@ -43,15 +43,24 @@ export const AddUserContainer: React.FC = () => {
     },
   });
 
-  
+  const uploadToS3 = async ({ url, file } : { url: string; file: File }) => {
+    try { 
+      const response = await uploadToS3API(url, file);
+      if(!response.ok) {
+        throw new Error("Failed to upload file to storage");
+      }
+    }
+    catch (error) {
+      throw error;
+    }
+  };
 
   const { mutateAsync: createUser, isPending } = useMutation({
     mutationFn: (formData: UserFormData) => createUserAPI(formData),
   
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate({ to: "/applicants" });
     },
-  
     onError: (error: any) => {
       if (error.status === 422) {
         if (error.errors) setErrors(error.errors);
