@@ -1,1 +1,0 @@
-import s from"tiny-invariant";function i(r){return r.replace(/^\/|\/$/g,"")}const o=(r,t,e)=>{s(e,"🚨splitImportFn required for the server functions server runtime, but was not provided.");const n=`/${i(t)}/${r}`;return Object.assign(e,{url:n,functionId:r})};export{o as c};
