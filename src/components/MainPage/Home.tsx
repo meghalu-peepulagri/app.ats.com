@@ -38,7 +38,7 @@ export function Home() {
         return response.data;
       },
       getNextPageParam: (lastPage) =>
-        lastPage.pagination?.next_page || undefined,
+        lastPage && lastPage?.pagination?.next_page || undefined,
       initialPageParam: 1,
     });
 
@@ -58,7 +58,7 @@ export function Home() {
 
   const candidatesData: Candidate[] =
     data?.pages.flatMap((page) =>
-      page.applicants.map(apiApplicantToCandidate)
+      page?.applicants?.map(apiApplicantToCandidate)
     ) || [];
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);

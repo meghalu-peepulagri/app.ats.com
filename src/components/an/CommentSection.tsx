@@ -68,11 +68,11 @@ const CommentsSection = ({ comments, onSubmitComment }: { comments: any[], onSub
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <MessageIcon />
-          <span className="text-xs 2xl:text-sm 3xl:!text-base font-(--an-card-comments-weight) text-(--an-card-comments-color)">Comments <span className="bg-black text-white rounded-full !px-2 ml-3 !py-0 ">{commentList.length}</span></span>
+          <span className="text-xs 2xl:text-sm 3xl:!text-base font-(--an-card-comments-weight) text-(--an-card-comments-color)">Comments <span className="bg-black text-white rounded-full !px-2 ml-3 !py-0 ">{commentList?.length}</span></span>
         </div>
       </div>
       <div className="h-[calc(100vh-300px)] overflow-y-auto ">
-        {commentList.map((comment, index) => (
+        {commentList?.map((comment, index) => (
           <CardComponent
             key={index}
             name={comment.name}

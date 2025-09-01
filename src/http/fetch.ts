@@ -8,18 +8,15 @@ interface IAPIResponse {
   message?: any;
 }
 
+interface ImportMeta {
+  env: {
+    VITE_PUBLIC_API_URL: string;
+  };
+}
 class FetchService {
   authStatusCodes: number[] = [401, 403, 404,422];
   authErrorURLs: string[] = [
-    "/signin",
-    "/signup",
-    "/verify",
-    "/companySignup",
-    "/auth/verify",
-    "/auth/signup",
-    "/auth/reset-password",
-    "/auth/forgot-password",
-    "/checkUser/",
+    "/auth/login",
   ];
 
   private _fetchType: string;
@@ -60,10 +57,9 @@ class FetchService {
       window.location.href = "/";
       return null;
     }
-
     try {
       const response = await fetch(
-        process.env.VITE_PUBLIC_API_URL + "/auth/refresh",
+        import.meta.env.VITE_PUBLIC_API_URL + "/auth/refresh",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -98,7 +94,7 @@ class FetchService {
       this.configureAuthorization(config);
     }
 
-    let url = process.env.VITE_PUBLIC_API_URL + path;
+    let url = import.meta.env.VITE_PUBLIC_API_URL + path;
     let response: any = await fetch(url, config);
 
     if (!response.ok) {

@@ -66,7 +66,7 @@ const ActionCell = ({ candidate, onDelete }: { candidate: Candidate, onDelete?: 
                   variant="ghost"
                   size="sm"
                   className="h-9 w-9 p-0 hover:bg-red-50 cursor-pointer"
-                  disabled={candidate.status !== 'REJECTED' || isDeleting}
+                  disabled={isDeleting}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Trash2 
@@ -80,7 +80,7 @@ const ActionCell = ({ candidate, onDelete }: { candidate: Candidate, onDelete?: 
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete Candidate</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Are you sure you want to delete "{candidate.name}"? This action cannot be undone.
+                  Are you sure you want to delete "{candidate?.name}"? This action cannot be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -110,10 +110,10 @@ export const columns = (onDeleteCandidate?: (id: number) => void): ColumnDef<Can
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <Avatar className="w-8 h-8">
-          <AvatarImage src={row.original.avatar} alt={`${row.original.name}'s avatar`} />
-          <AvatarFallback>{row.original.name.charAt(0)}</AvatarFallback>
+          <AvatarImage src={row.original?.avatar} alt={`${row.original?.name}'s avatar`} />
+          <AvatarFallback>{row.original?.name.charAt(0)}</AvatarFallback>
         </Avatar>
-        <span className="text-sm">{row.original.name}</span>
+        <span className="text-sm">{row.original?.name}</span>
       </div>
     ),
     enableSorting: false,
@@ -121,14 +121,14 @@ export const columns = (onDeleteCandidate?: (id: number) => void): ColumnDef<Can
   }),
   columnHelper.accessor("position", {
     header: () => <span>Position</span>,
-    cell: ({ row }) => <span className="text-sm">{row.original.position}</span>,
+    cell: ({ row }) => <span className="text-sm">{row.original?.position}</span>,
     enableSorting: true,
     size: 200,
   }),
   columnHelper.accessor("status", {
     header: () => <span>Status</span>,
     cell: ({ row }) => {
-      const status = row.original.status;
+      const status = row.original?.status;
       const statusColor = getStatusColor(status);
       return (
         <span

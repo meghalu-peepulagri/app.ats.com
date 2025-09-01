@@ -45,14 +45,14 @@ export function Resume() {
     return <div className="flex justify-center items-center h-full">Loading...</div>;
   }
 
-  const name = resume.first_name.charAt(0).toUpperCase() + resume.first_name.slice(1).toLowerCase() + " " + resume.last_name;
-  const avatarImg = resume.first_name.charAt(0).toUpperCase() + resume.last_name.charAt(0);
+  const name = resume?.first_name + " " + resume?.last_name;
+  const avatarImg = resume?.first_name?.charAt(0).toUpperCase() + resume?.last_name?.charAt(0);
 
-  const commentsData = resume.comments.map((comment: any) => ({
-    id: comment.applicant_id,
+  const commentsData = resume?.comments.map((comment: any) => ({
+    id: comment?.applicant_id,
     name: 'Admin',
-    msg: comment.comment_description,
-    time: new Date(comment.updated_at).toLocaleString('en-US', {
+    msg: comment?.comment_description,
+    time: new Date(comment?.updated_at).toLocaleString('en-US', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -72,10 +72,10 @@ export function Resume() {
           key={id}
           avatarImg={avatarImg || "A"}
           name={name || ''}
-          email={resume.email || ''}
-          phone={resume.phone || ''}
-          jobTitle={resume.role || ''}
-          applyTime={new Date(resume.created_at).toLocaleString('en-US', {
+          email={resume?.email || ''}
+          phone={resume?.phone || ''}
+          jobTitle={resume?.role || ''}
+          applyTime={new Date(resume?.created_at).toLocaleString('en-US', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
@@ -84,9 +84,9 @@ export function Resume() {
             hour12: true,
           }).replace(/\//g, '-').replace(/, /g, ' ')}
           resumeOptions={['Screening', 'Interviewed', 'Rejected', 'Pending', 'Joined', 'Hired','Applied','Approved','Shortlisted']}
-          value={capitalize(resume.status)}
-          resume_key_path={resume.resume_key_path || ''}
-          downloadUrl={resume.presignedUrl.download_url || ''}
+          value={capitalize(resume?.status)}
+          resume_key_path={resume?.resume_key_path || ''}
+          downloadUrl={resume?.presignedUrl.download_url || ''}
           onStatusChange={(newStatus) => updateStatusMutation.mutate(newStatus)}
         />
         <CommentsSection 
