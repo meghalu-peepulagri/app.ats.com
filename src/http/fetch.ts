@@ -1,5 +1,5 @@
-import Cookies from "js-cookie";
 import prepareURLEncodedParams from "./prepareURLEncodedParams";
+import Cookies from "js-cookie";
 
 interface IAPIResponse {
   success: boolean;
@@ -63,7 +63,7 @@ class FetchService {
 
     try {
       const response = await fetch(
-        import.meta.env.VITE_PUBLIC_API_URL + "/auth/refresh",
+        process.env.VITE_PUBLIC_API_URL + "/auth/refresh",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -98,7 +98,7 @@ class FetchService {
       this.configureAuthorization(config);
     }
 
-    let url = import.meta.env.VITE_PUBLIC_API_URL + path;
+    let url = process.env.VITE_PUBLIC_API_URL + path;
     let response: any = await fetch(url, config);
 
     if (!response.ok) {

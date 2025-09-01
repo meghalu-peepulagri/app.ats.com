@@ -1,7 +1,7 @@
 import { $fetch } from "../fetch";
-import { ApplicantPayload, ApplicantResponse, ApplicantErrorResponse, CommentPayload, ApplicantsResponse } from "../../lib/interface/applicants";
+import { ApplicantPayload, ApplicantResponse, ApplicantErrorResponse, CommentPayload, ApplicantsResponse, getAllApplicantsParams } from "../../lib/interface/applicants";
 
-export const getAllApplicants = async ({ pageParam = 1, search_string, role }): Promise<ApplicantsResponse> => {
+export const getAllApplicants = async ({ pageParam = 1, search_string, role }: getAllApplicantsParams): Promise<ApplicantsResponse> => {
   const params = new URLSearchParams({
     page: pageParam.toString(),
     limit: "10",
@@ -43,7 +43,7 @@ export const getApplicantById = async (id: string | number) => {
   }
 };
 
-export const updateApplicant = async (id: string | number, payload) => {
+export const updateApplicant = async (id: string | number, payload : any) => {
   try {
     const response = await $fetch.patch(`/applicants/${id}`, payload);
     return response.data;

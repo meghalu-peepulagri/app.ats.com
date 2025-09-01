@@ -68,3 +68,9 @@ export interface PaginationInfo {
   next_page: number | null;
   prev_page: number | null;
 }
+
+export interface getAllApplicantsParams {
+  pageParam: number;
+  search_string: string;
+  role: string;
+}

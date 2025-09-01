@@ -14,4 +14,5 @@ export default defineConfig({
     tanstackStart({ customViteReactPlugin: true }),
     viteReact(),
   ],
+  envPrefix: 'VITE_',
 })
