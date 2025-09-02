@@ -4,6 +4,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useState } from 'react'
+import { NoTableDataIcon } from '~/components/icons/NoTableDataIcon'
 
 export type Person = {
   firstName: string
@@ -69,6 +70,15 @@ export function TanstackTable({columns, data, height, onRowClick, isLoading}: Ta
               <tr>
                 <td colSpan={columns.length} className="text-center p-4">
                   <h2>Loading...</h2>
+                </td>
+              </tr>
+            ) : table.getRowModel().rows.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="text-center p-4">
+                  <div className='flex flex-col gap-2 items-center justify-center'>
+                  <NoTableDataIcon />
+                  <h2 className="text-xs 3xl:!text-sm text-[#828282] font-normal">No data found</h2>
+                  </div>
                 </td>
               </tr>
             ) : (
