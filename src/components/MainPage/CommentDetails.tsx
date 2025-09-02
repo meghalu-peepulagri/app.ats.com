@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 export function CommentDetails({ applicant_id }: { applicant_id: number }) {
   const queryClient = useQueryClient();
 
-  const { data: comments, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data: comments, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
     useInfiniteQuery({
       queryKey: ["comments", applicant_id],
       queryFn: async ({ pageParam = 1 }) => {
@@ -81,6 +81,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
           key={`comments-${applicant_id}`}
           comments={commentsData}
           onSubmitComment={(newComment) => addCommentMutation.mutate(newComment)}
+          isLoading={isFetching || addCommentMutation.isPending}
         />
       )}
       

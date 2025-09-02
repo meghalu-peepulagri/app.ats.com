@@ -4,6 +4,7 @@ import { MessageIcon } from "../icons/MessageIcon";
 import { NoCommentIcon } from "../icons/NoCommentIcon";
 import { Avatar } from "../ui/avatar";
 import { Card, CardContent } from "../ui/card";
+import { LoaderCircle } from "lucide-react";
 
 const CardComponent = ({ name, msg, time } : {name: string, msg: string, time: string}) => {
   return (
@@ -24,7 +25,7 @@ const CardComponent = ({ name, msg, time } : {name: string, msg: string, time: s
   );
 };
 
-const CommentsSection = ({ comments, onSubmitComment }: { comments: any[], onSubmitComment: (comment: string) => void}) => {
+const CommentsSection = ({ comments, onSubmitComment, isLoading }: { comments: any[], onSubmitComment: (comment: string) => void, isLoading: boolean}) => {
   const [newComment, setNewComment] = useState("");
   const [commentList, setCommentList] = useState(comments);
 
@@ -97,7 +98,13 @@ const CommentsSection = ({ comments, onSubmitComment }: { comments: any[], onSub
             className="absolute top-2 right-2 bg-[#4F4F4F] w-10.5 h-6.5 rounded flex items-center justify-center cursor-pointer"
             onClick={handleCommentSubmit}
           >
-            <CommentIcon className="!w-3.5 !h-3.5" />
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+              <LoaderCircle className="text-white animate-spin w-5 h-5"/>
+              </div>
+            ): (
+              <CommentIcon className="!w-3.5 !h-3.5" />
+            )}
           </div>
         </div>
       </div>
