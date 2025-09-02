@@ -186,7 +186,9 @@ export function NoResumeIcon() {
         />
         <mask
           id="mask0_630_3192"
-          style="mask-type:alpha"
+          style={{
+            maskType: "alpha",
+          }}
           maskUnits="userSpaceOnUse"
           x="118"
           y="19"
