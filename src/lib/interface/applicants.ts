@@ -1,6 +1,7 @@
 export interface ApiApplicant {
   id: number;
   firstname: string;
+  lastName: string;
   email: string;
   phone: string;
   role: string;

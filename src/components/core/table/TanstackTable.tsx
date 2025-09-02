@@ -20,9 +20,10 @@ interface TanstackTableProps {
   data: any;
   height?: string | number;
   onRowClick?: (row: any) => void;
+  isLoading?: boolean
 }
 
-export function TanstackTable({columns, data, height, onRowClick}: TanstackTableProps) {
+export function TanstackTable({columns, data, height, onRowClick, isLoading}: TanstackTableProps) {
     const table = useReactTable({
     data,
     columns,
@@ -64,10 +65,10 @@ export function TanstackTable({columns, data, height, onRowClick}: TanstackTable
           ))}
         </thead>
         <tbody>
-            {table.getRowModel().rows.length === 0 ? (
+            {isLoading ? (
               <tr>
                 <td colSpan={columns.length} className="text-center p-4">
-                  <h2>No data found</h2>
+                  <h2>Loading...</h2>
                 </td>
               </tr>
             ) : (

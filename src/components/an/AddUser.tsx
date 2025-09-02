@@ -84,17 +84,17 @@ export function AddUserCard({
         >
           <BackIcon className="!w-7 !h-7" />
         </button>
-        <div className="text-[var(--an-card-adduser-color)] font-[var(--an-card-font-weight)]">
+        <div className="text-[#000] fon-normal">
           Add User
         </div>
       </CardTitle>
       <Card className="w-full bg-white shadow-none rounded-lg p-0 pt-3">
         <CardContent className="!px-4">
-          <div className="!px-0 flex flex-col gap-2">
-            <div className="space-y-0.75">
+          <div className="!px-0 flex flex-col gap-3">
+            <div>
               <Label
                 htmlFor="role"
-                className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
               >
                 Role
               </Label>
@@ -104,7 +104,7 @@ export function AddUserCard({
               >
                 <SelectTrigger
                   id="role"
-                  className="w-78 !h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
+                  className="w-78 !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                 >
                   <SelectValue placeholder="Please select role" />
                 </SelectTrigger>
@@ -122,14 +122,14 @@ export function AddUserCard({
             </div>
 
             <div className="flex flex-col gap-2">
-              <h3 className="text-[#A05148] font-medium text-base 3xl:!text-lg">
+              <h3 className="text-[#A05148] font-medium text-lg 3xl:!text-xl">
                 Personal & Contact Details
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="firstName"
-                    className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
                     >
                     First Name
                   </Label>
@@ -138,7 +138,7 @@ export function AddUserCard({
                     placeholder="First name of candidate"
                     value={formData.first_name}
                     onChange={(e) => handleInputChange('first_name', e.target.value)}
-                    className="!h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                    
+                    className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                    
                     disabled={loading}
                   />
                   {errors.first_name && (
@@ -148,7 +148,7 @@ export function AddUserCard({
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="lastName"
-                    className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
                     >
                     Last Name
                   </Label>
@@ -157,7 +157,7 @@ export function AddUserCard({
                     placeholder="Last name of candidate"
                     value={formData.last_name}
                     onChange={(e) => handleInputChange('last_name', e.target.value)}
-                    className="!h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                    
+                    className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                    
                     disabled={loading}
                   />
                   {errors.last_name && (
@@ -167,7 +167,7 @@ export function AddUserCard({
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="email"
-                    className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
                     >
                     Email ID
                   </Label>
@@ -177,7 +177,7 @@ export function AddUserCard({
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="!h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                    
+                    className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                    
                     disabled={loading}
                   />
                   {errors.email && (
@@ -187,7 +187,7 @@ export function AddUserCard({
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="mobile"
-                    className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
                     >
                     Mobile Number
                   </Label>
@@ -196,7 +196,7 @@ export function AddUserCard({
                     placeholder="Enter mobile number"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="!h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                   
+                    className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                   
                    disabled={loading}
                   />
                   {errors.phone && (
@@ -206,10 +206,10 @@ export function AddUserCard({
               </div>
             </div>
             
-            <div className="space-y-0.75">
+            <div>
               <Label
                 htmlFor="experience"
-                className="text-sm 3xl:!text-base text-[#333] font-medium"
+                className="text-base 3xl:!text-lg text-[#333] font-medium"
               >
                 Experience
               </Label>
@@ -218,7 +218,7 @@ export function AddUserCard({
                 placeholder="Enter candidate experience"
                 value={formData.experience}
                 onChange={(e) => handleInputChange('experience', e.target.value)}
-                className="w-78 !h-7.75 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"              
+                className="w-78 !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"              
                 disabled={loading}
               />
               {errors.experience && (
@@ -226,14 +226,14 @@ export function AddUserCard({
               )}
             </div>
 
-            <div className="space-y-0.75">
-              <h3 className="text-[#A05148] font-medium text-base 3xl:!text-lg">
+            <div>
+              <h3 className="text-[#A05148] font-medium text-lg 3xl:!text-xl">
                 Attachments
               </h3>
               <div className="space-y-0.75">
                 <Label
                   htmlFor="upload"
-                className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
                 >
                   Upload Document
                 </Label>
@@ -311,14 +311,14 @@ export function AddUserCard({
       <div className="flex justify-end gap-2 mt-4 w-full max-w-2xl">
         <Button
           variant="outline"
-          className="text-sm 3xl:!text-base px-3 h-8 text-[#4F4F4F] rounded-sm font-normal border border-[rgba(0,0,0,0.21)] shadow-none cursor-pointer"
+          className="text-base 3xl:!text-lg px-3 h-8 text-[#4F4F4F] rounded-sm font-normal border border-[rgba(0,0,0,0.21)] shadow-none cursor-pointer"
           onClick={handleBackNavigate}
           disabled={loading}
         >
           Cancel
         </Button>
         <Button
-          className="text-sm 3xl:!text-base bg-[#05A155] px-3 h-8 text-white rounded-sm hover:bg-[#05A155] shadow-none font-light cursor-pointer"
+          className="text-base 3xl:!text-lg bg-[#05A155] px-3 h-8 text-white rounded-sm hover:bg-[#05A155] shadow-none font-light cursor-pointer"
           onClick={onSave}
           disabled={loading || isSubmitting}
         >

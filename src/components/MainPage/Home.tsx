@@ -9,7 +9,7 @@ import { deleteApplicant, getAllApplicants, getStatsAPI } from "~/http/services/
 const apiApplicantToCandidate = (records: ApiApplicant): Candidate => ({
   id: records.id,
   avatar: records.avatar,
-  name: records.firstname,
+  name: records.firstname + " " + records.lastName,
   position: records.role,
   status: records.status?.toUpperCase() || null,
 });
@@ -26,7 +26,7 @@ export function Home() {
     },
   });
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
     useInfiniteQuery({
       queryKey: ["applicants", search.search_string, search.role],
       queryFn: async ({ pageParam = 1 }) => {
@@ -131,7 +131,8 @@ export function Home() {
         <div className="flex-1">
           <CandidateTable 
             candidatesData={candidatesData}
-            onDeleteCandidate={handleDeleteCandidate} 
+            onDeleteCandidate={handleDeleteCandidate}
+            isLoading={isFetching} 
           />
           <div
             ref={loadMoreRef}

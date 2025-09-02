@@ -194,6 +194,7 @@ export const columns = (
 export function CandidateTable({
   candidatesData,
   onDeleteCandidate,
+  isLoading,
 }: CandidateTableProps) {
   const search: { search_string?: string; role?: string } = useSearch({
     from: "/_header/_applicants",
@@ -227,12 +228,6 @@ export function CandidateTable({
       search,
     });
   };
-
-  const filteredCandidates = candidatesData?.filter((candidate) => {
-    if (selectedRole && candidate.position !== selectedRole) return false;
-    if (searchValue && !candidate.name.includes(searchValue)) return false;
-    return true;
-  })
 
   return (
     <div className="bg-white rounded-lg border-none">
@@ -285,6 +280,7 @@ export function CandidateTable({
           data={candidatesData}
           columns={columns(onDeleteCandidate)}
           onRowClick={handleRowClick}
+          isLoading={isLoading}
         />
       </div>
     </div>
