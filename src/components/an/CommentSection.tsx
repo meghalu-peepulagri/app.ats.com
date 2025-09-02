@@ -79,7 +79,7 @@ const CommentsSection = ({ comments, onSubmitComment }: { comments: any[], onSub
         ) : (
           <div className="flex flex-col items-center justify-center mt-[30%]">
           <NoCommentIcon />
-          <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">No comments to display</p>
+          <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">No comments</p>
           </div>
         )}
       </div>

@@ -68,17 +68,14 @@ export function TanstackTable({columns, data, height, onRowClick, isLoading}: Ta
         <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan={columns.length} className="text-center p-4">
+                <td colSpan={columns.length} className="text-center p-0">
                   <h2>Loading...</h2>
                 </td>
               </tr>
             ) : table.getRowModel().rows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="text-center p-4">
-                  <div className='flex flex-col gap-2 items-center justify-center'>
-                  <NoTableDataIcon />
-                  <h2 className="text-xs 3xl:!text-sm text-[#828282] font-normal">No data found</h2>
-                  </div>
+                <td colSpan={columns.length} className="text-center p-0">
+                  <NoTableDataIcon className='w-100 h-100'/>
                 </td>
               </tr>
             ) : (

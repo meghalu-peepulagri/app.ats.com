@@ -131,7 +131,7 @@ export default function Profile({
           ) : (
               <div className="flex flex-col items-center justify-center">
                 <NoResumeIcon />
-                <p className="text-sm 3xl:!text-base text-[#828282] font-normal">Please select a applicant to continue</p>
+                <p className="text-sm 3xl:!text-base text-[#828282] font-normal">No Resume</p>
               </div>
           )}
         </div>

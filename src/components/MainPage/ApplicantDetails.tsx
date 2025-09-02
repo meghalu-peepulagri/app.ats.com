@@ -24,6 +24,7 @@ export function Resume() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["applicant", id] });
       queryClient.invalidateQueries({ queryKey: ["applicants"] });
+      queryClient.invalidateQueries({ queryKey: ["stats"] });
     },
   });
 

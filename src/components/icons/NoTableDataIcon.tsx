@@ -1,9 +1,8 @@
-export function NoTableDataIcon() {
+export function NoTableDataIcon({className}: {className?: string}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="600"
-      height="769"
+      className={className}
       viewBox="0 0 600 769"
       fill="none"
     >

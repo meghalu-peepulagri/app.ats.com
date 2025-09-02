@@ -138,7 +138,7 @@ export function Home() {
             ref={loadMoreRef}
             className="flex items-center justify-center"
           >
-            {isFetchingNextPage}
+            {isFetchingNextPage ? isFetchingNextPage :  isFetching && <span>Loading...</span>}
           </div>
         </div>
       </div>
