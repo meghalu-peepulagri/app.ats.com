@@ -32,6 +32,7 @@ import {
 } from "../ui/alert-dialog";
 import { getStatusColor } from "~/lib/helper/getColorStatus";
 import { ApiApplicant } from "~/lib/interface/applicants";
+import { useQueryClient } from "@tanstack/react-query";
 
 export interface Candidate {
   id: number;

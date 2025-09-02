@@ -1,25 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { getApplicantById, updateApplicant } from "~/http/services/applicants";
 import Profile from "../an/Profile";
 import { CommentDetails } from "./CommentDetails";
 
 export function Resume() {
-  const { applicant_id:id } = useParams({ from: "/_header/_applicants/applicants/$applicant_id/" });
+  // const { applicant_id:id } = useParams({ from: "/_header/_applicants/applicants/$applicant_id/" });
+  const {applicant_id: id} = useParams({strict:false})
   const queryClient = useQueryClient();
 
-  const {data: resume, isLoading} = useQuery({
-    queryKey: ['resume', id],
+  const {data: resume, isFetching} = useQuery({
+    queryKey: [`resume-${id}`, id],
     queryFn: async () => {
-      const response = await getApplicantById(id);
+      const response = await getApplicantById(id as string);
       return response.data;
     },
   })
 
   const updateStatusMutation = useMutation({
     mutationFn: async (newStatus: string) => {
-      return updateApplicant(id, { status: newStatus });
+      return updateApplicant(id as string, { status: newStatus });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["applicant", id] });
@@ -29,10 +30,10 @@ export function Resume() {
   });
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ['resume', id] });
+    queryClient.invalidateQueries({  queryKey: [`resume-${id}`, id]});
   }, [id, queryClient]);
 
-  if (isLoading) {
+  if (isFetching) {
     return <div className="flex justify-center items-center h-full">Loading...</div>;
   }
 
