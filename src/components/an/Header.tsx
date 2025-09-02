@@ -29,7 +29,7 @@ export function Header({
               <DropdownMenuTrigger asChild>
               <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
-            <ProfileIcon className="w-8 h-8"/> 
+            <div className="w-8 h-8 border border-black/30 rounded-full flex items-center justify-center bg-black/30"><ProfileIcon /></div>
             <div className="flex items-center space-x-2 leading-tight">
               <div>
                 <p className="text-[13px] 3xl:!text-sm text-[#333]">

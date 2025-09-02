@@ -134,12 +134,12 @@ export function Home() {
             onDeleteCandidate={handleDeleteCandidate}
             isLoading={isFetching} 
           />
-          <div
+          {/* <div
             ref={loadMoreRef}
             className="flex items-center justify-center"
           >
             {isFetchingNextPage && <span>Loading more...</span>}
-          </div>
+          </div> */}
         </div>
       </div>
       <Outlet />

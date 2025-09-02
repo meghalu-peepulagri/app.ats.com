@@ -9,7 +9,7 @@ import {
 import { Label } from "../ui/label";
 import { BackIcon } from "../icons/BackIcon";
 import { UploadIcon } from "../icons/uploadicon";
-import { TrashIcon } from "lucide-react";
+import { LoaderCircle, TrashIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -46,6 +46,7 @@ interface AddUserCardProps {
   handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDeleteFile: () => void;
   loading?: boolean;
+  message?: string;
 }
 
 export function AddUserCard({
@@ -60,6 +61,7 @@ export function AddUserCard({
   },
   uploadedFile,
   errors,
+  message,
   isSubmitting,
   onChange,
   onSave,
@@ -74,27 +76,26 @@ export function AddUserCard({
   const handleInputChange = (field: keyof UserFormData, value: string) => {
     onChange({ [field]: value });
   };
-
   return (
-    <div className="w-full max-w-2xl h-full mx-auto">
-      <CardTitle className="!px-0 text-gray-700 flex items-center mb-2">
+    <div className="w-full max-w-3xl 3xl:!max-w-4xl h-full mx-auto">
+      <CardTitle className="text-gray-700 flex items-center mb-2">
         <button
-          className="mr-3 text-sm 2xl:text-base 3xl:!text-lg cursor-pointer"
+          className="mr-3 text-sm 2xl:text-base 3xl:!text-base cursor-pointer"
           onClick={handleBackNavigate}
         >
           <BackIcon className="!w-7 !h-7" />
         </button>
-        <div className="text-[#000] fon-normal">
-          Add User
+        <div className="text-[#000] font-normal">
+          Add Applicant
         </div>
       </CardTitle>
-      <Card className="w-full bg-white shadow-none rounded-lg p-0 pt-3">
+      <Card className="w-full bg-white shadow-none rounded-base p-0 pt-3 border border-[#D9D9D9]">
         <CardContent className="!px-4">
-          <div className="!px-0 flex flex-col gap-3">
+          <div className="!px-0 flex flex-col gap-6">
             <div>
               <Label
                 htmlFor="role"
-                className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                className="text-[15px] 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
               >
                 Role
               </Label>
@@ -104,7 +105,7 @@ export function AddUserCard({
               >
                 <SelectTrigger
                   id="role"
-                  className="w-78 !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
+                  className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                 >
                   <SelectValue placeholder="Please select role" />
                 </SelectTrigger>
@@ -121,15 +122,15 @@ export function AddUserCard({
               )}
             </div>
 
-            <div className="flex flex-col gap-2">
-              <h3 className="text-[#A05148] font-medium text-lg 3xl:!text-xl">
+            <div className="flex flex-col">
+              <h3 className="text-[#A05148] font-medium text-base 3xl:!text-lg">
                 Personal & Contact Details
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="firstName"
-                    className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    className="text-[15px] 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
                     >
                     First Name
                   </Label>
@@ -148,7 +149,7 @@ export function AddUserCard({
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="lastName"
-                    className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    className="text-[15px] 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
                     >
                     Last Name
                   </Label>
@@ -167,7 +168,7 @@ export function AddUserCard({
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="email"
-                    className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    className="text-[15px] 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
                     >
                     Email ID
                   </Label>
@@ -187,7 +188,7 @@ export function AddUserCard({
                 <div className="space-y-0.75">
                   <Label
                     htmlFor="mobile"
-                    className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                    className="text-[15px] 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
                     >
                     Mobile Number
                   </Label>
@@ -204,12 +205,11 @@ export function AddUserCard({
                   )}
                 </div>
               </div>
-            </div>
             
-            <div>
+            <div className="mt-3">
               <Label
                 htmlFor="experience"
-                className="text-base 3xl:!text-lg text-[#333] font-medium"
+                className="text-[15px] 3xl:!text-base text-[#333] font-medium"
               >
                 Experience
               </Label>
@@ -218,29 +218,30 @@ export function AddUserCard({
                 placeholder="Enter candidate experience"
                 value={formData.experience}
                 onChange={(e) => handleInputChange('experience', e.target.value)}
-                className="w-78 !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"              
+                className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"              
                 disabled={loading}
               />
               {errors.experience && (
                 <p className="text-red-500 text-xs">{errors.experience}</p>
               )}
             </div>
+            </div>
 
             <div>
-              <h3 className="text-[#A05148] font-medium text-lg 3xl:!text-xl">
+              <h3 className="text-[#A05148] font-medium text-base 3xl:!text-lg">
                 Attachments
               </h3>
               <div className="space-y-0.75">
                 <Label
                   htmlFor="upload"
-                className="text-base 3xl:!text-lg text-[#333] font-medium after:content-['_*'] after:text-red-500"
+                className="text-[15px] 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
                 >
                   Upload Document
                 </Label>
                 
                 {!uploadedFile ? (
                   <div 
-                  className="relative flex items-center justify-center h-18 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"              
+                  className="relative flex items-center justify-center h-20 bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"              
                   >
                     <input
                       type="file"
@@ -268,7 +269,7 @@ export function AddUserCard({
                               <Tooltip>
                                 <TooltipTrigger asChild>
                                   <p className="text-sm font-medium text-gray-900 cursor-help">
-                                    {fileName.slice(0, 20)}...
+                                    {fileName.slice(0, 40)}...
                                   </p>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -286,13 +287,19 @@ export function AddUserCard({
                           </p>
                         </div>
                       </div>
-                      <button
+                      {loading ? (
+                        <div className="flex items-center justify-center">
+                        <LoaderCircle className="text-black animate-spin"/>
+                        </div>
+                      ) : (
+                        <button
                         onClick={handleDeleteFile}
-                        className="p-2 bg-red-100 rounded border border-red-200 transition-colors hover:bg-red-200"
+                        className="p-2 bg-red-100 rounded border border-red-200 transition-colors hover:bg-red-200 cursor-pointer"
                         disabled={loading}
                       >
                         <TrashIcon className="w-4 h-4" />
                       </button>
+                      )}
                     </div>
                   </Card>
                 )}
@@ -303,26 +310,26 @@ export function AddUserCard({
             </div>
           </div>
         </CardContent>
-        {errors && (
-          <p className="text-red-500 text-xs">{errors.message}</p>
+        {message && (
+          <p className="text-red-500 text-xs pl-5 p-1">{message}</p>
         )}
       </Card>
       
-      <div className="flex justify-end gap-2 mt-4 w-full max-w-2xl">
+      <div className="flex justify-end gap-2 w-full p-3 pr-0">
         <Button
           variant="outline"
-          className="text-base 3xl:!text-lg px-3 h-8 text-[#4F4F4F] rounded-sm font-normal border border-[rgba(0,0,0,0.21)] shadow-none cursor-pointer"
+          className="text-base 3xl:!text-base px-3 h-8 text-[#4F4F4F] rounded-sm font-normal border border-[rgba(0,0,0,0.21)] shadow-none cursor-pointer"
           onClick={handleBackNavigate}
           disabled={loading}
         >
           Cancel
         </Button>
         <Button
-          className="text-base 3xl:!text-lg bg-[#05A155] px-3 h-8 text-white rounded-sm hover:bg-[#05A155] shadow-none font-light cursor-pointer"
+          className="text-base 3xl:!text-base bg-[#05A155] px-6 h-8 text-white rounded-sm hover:bg-[#05A155] shadow-none font-light cursor-pointer"
           onClick={onSave}
-          disabled={loading || isSubmitting}
+          disabled={isSubmitting}
         >
-          {loading || isSubmitting ? 'Adding User...' : 'Add User'}
+          {isSubmitting ? 'Saving...' : 'Save'}
         </Button>
       </div>
     </div>

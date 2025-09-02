@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import React, { useState } from 'react';
 import { AddUserCard } from '../../an/AddUser';
-import { createUserAPI, uploadFileAPI, uploadToS3API, UserFormData, } from '~/http/services/users';
+import { createUserAPI, uploadFileAPI, UserFormData, } from '~/http/services/users';
 
 export const AddUserContainer: React.FC = () => {
   const navigate = useNavigate();
@@ -24,7 +24,9 @@ export const AddUserContainer: React.FC = () => {
   } | null>(null);
 
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [message, setMessage] = useState('');
   const [fileInput, setFileInput] = useState<File | null>(null);
+  const queryClient = useQueryClient();
 
   const fileUploadMutation = useMutation({
     mutationFn: uploadFileAPI,
@@ -36,6 +38,7 @@ export const AddUserContainer: React.FC = () => {
       }));
     },
     onError: (error: any) => {
+      setMessage(error?.message);
       setErrors((prev) => ({
         ...prev,
         resume_key_path: [error?.message || 'File upload failed'],
@@ -43,32 +46,22 @@ export const AddUserContainer: React.FC = () => {
     },
   });
 
-  const uploadToS3 = async ({ url, file } : { url: string; file: File }) => {
-    try { 
-      const response = await uploadToS3API(url, file);
-      if(!response.ok) {
-        throw new Error("Failed to upload file to storage");
-      }
-    }
-    catch (error) {
-      throw error;
-    }
-  };
-
   const { mutateAsync: createUser, isPending } = useMutation({
     mutationFn: (formData: UserFormData) => createUserAPI(formData),
-  
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["applicants"], exact: false });
       navigate({ to: "/applicants" });
     },
     onError: (error: any) => {
       if (error.status === 422) {
-        if (error.errors) setErrors(error.errors);
+        if (error.errors) 
+          setErrors(error.errors);
+      } else {
+        setMessage(error?.message);
       }
     },
   });
   
-
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -150,6 +143,7 @@ export const AddUserContainer: React.FC = () => {
       handleFileUpload={handleFileUpload}
       handleDeleteFile={handleDeleteFile}
       loading={isLoading}
+      message={message}
     />
     </div>
   );
