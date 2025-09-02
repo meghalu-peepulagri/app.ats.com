@@ -6,7 +6,6 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { LoginBackGroundIcon } from "src/components/icons/loginbackground";
 import { PeepulAgriIcon } from "src/components/icons/Peepulagri";
 
 interface ValidationErrors {
@@ -58,7 +57,7 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
               <PeepulAgriIcon className="w-30 h-30 3xl:!w-24 3xl:!h-24" />
             </div>
             <div className="text-center lg:text-left mb-6">
-              <CardTitle className="text-2xl 3xl:text-3xl text-[#000]">
+              <CardTitle className="text-3xl 3xl:text-4xl text-[#000] font-normal">
                 Login
               </CardTitle>
               <CardDescription className="mt-1 text-xs 3xl:text-sm text-[#333]">

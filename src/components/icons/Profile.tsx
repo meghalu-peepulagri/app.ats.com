@@ -1,6 +1,6 @@
-export function ProfileIcon(){
+export function ProfileIcon({ className }: { className?: string }) {
 return(
-<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+<svg className={className} viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <circle cx="16.4124" cy="16.2787" r="16" fill="url(#pattern0_92_2495)"/>
 <defs>
 <pattern id="pattern0_92_2495" patternContentUnits="objectBoundingBox" width="1" height="1">

@@ -44,7 +44,7 @@ export function TanstackTable({columns, data, height, onRowClick}: TanstackTable
   }
 
   return (
-    <div className="px-4 w-full">
+    <div className="pl-2 w-full">
       <div className='overflow-auto' style={{height: height}}>
       <table className='w-full h-full border-none'>
         <thead className='sticky top-0 z-30 text-left h-9 bg-[#DBFCD9] font-normal !rounded-sm'>

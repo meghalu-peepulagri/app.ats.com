@@ -8,7 +8,20 @@ import {
 import '../styles/app.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { authMiddleware } from '../lib/helper/middleware'
-const queryclient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,   
+      refetchOnMount: false,   
+      refetchOnReconnect: false, 
+      retry: 2,
+      staleTime: 1000 * 60 * 5,
+    },
+    mutations: {
+      retry: 2
+    }
+  },
+});
 
 export const Route = createRootRoute({
   head: () => ({
@@ -32,7 +45,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
        <RootDocument>
-     <QueryClientProvider client={queryclient}>
+     <QueryClientProvider client={queryClient}>
         <Outlet />
       </QueryClientProvider>
     </RootDocument>

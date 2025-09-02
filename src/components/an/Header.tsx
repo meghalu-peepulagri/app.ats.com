@@ -21,7 +21,7 @@ export function Header({
       className="!gap-0 w-full !py-0 border-none bg-gray-100 shadow-none rounded-none ">
       <CardContent className="flex items-center justify-between !px-5 p-0">
         <div className="flex items-center text-sm 2xl:text-base 3xl:!text-lg font-(--an-card-font-weight) text-(--an-card-email-color) leading-(--an-card-line-height) space-x-2">
-          <PeepulAgriIcon className="w-17 h-17" />
+          <PeepulAgriIcon className="w-12 h-12" />
         </div>
          <div className="flex items-center gap-2 m-2 rounded-sm">
         <div className="relative group">
@@ -30,7 +30,7 @@ export function Header({
               <div className="flex items-center space-x-3">
           <BellIcon className="!w-5 !h-5" />
           <div className="flex items-center space-x-2">
-            <ProfileIcon/> 
+            <ProfileIcon className="w-8 h-8"/> 
             <div className="flex items-center space-x-2 leading-tight">
               <div>
                 <p className="text-[13px] 3xl:!text-sm text-[#333]">

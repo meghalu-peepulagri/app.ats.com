@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import CommentsSection from "../an/CommentSection";
 import { useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { getApplicantById, updateApplicant } from "~/http/services/applicants";
 import Profile from "../an/Profile";
-import { getApplicantById, updateApplicant, updateCommentById } from "~/http/services/applicants";
+import { CommentDetails } from "./CommentDetails";
 
 export function Resume() {
   const { applicant_id:id } = useParams({ from: "/_header/_applicants/applicants/$applicant_id/" });
@@ -27,16 +27,6 @@ export function Resume() {
     },
   });
 
-  const addCommentMutation = useMutation({
-    mutationFn: async (newComment: string) => {
-      const response = await updateCommentById(id, { comment_description: newComment });
-    return response.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['resume', id] });
-    },
-  })
-
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['resume', id] });
   }, [id, queryClient]);
@@ -45,22 +35,8 @@ export function Resume() {
     return <div className="flex justify-center items-center h-full">Loading...</div>;
   }
 
-  const name = resume?.first_name + " " + resume?.last_name;
-  const avatarImg = resume?.first_name?.charAt(0).toUpperCase() + resume?.last_name?.charAt(0);
-
-  const commentsData = resume?.comments.map((comment: any) => ({
-    id: comment?.applicant_id,
-    name: 'Admin',
-    msg: comment?.comment_description,
-    time: new Date(comment?.updated_at).toLocaleString('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    }).replace(/\//g, '.').replace(/, /g, ' '),
-  }))
+  const name = resume?.first_name.charAt(0).toUpperCase()+resume?.first_name.slice(1).toLowerCase() + " " + resume?.last_name.charAt(0).toUpperCase()+resume?.last_name.slice(1).toLowerCase();
+  const avatarImg = resume?.first_name?.charAt(0).toUpperCase() + resume?.last_name?.charAt(0).toUpperCase();
 
   function capitalize(word: string) {
     return word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : "";
@@ -89,11 +65,7 @@ export function Resume() {
           downloadUrl={resume?.presignedUrl.download_url || ''}
           onStatusChange={(newStatus) => updateStatusMutation.mutate(newStatus)}
         />
-        <CommentsSection 
-          key={`comments-${id}`}
-          comments={commentsData}
-          onSubmitComment={(newComment) => addCommentMutation.mutate(newComment)}
-        />
+        <CommentDetails applicant_id={resume?.id}/>
       </div>
     )
 }

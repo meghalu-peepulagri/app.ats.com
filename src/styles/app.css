@@ -5,6 +5,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@config "../../tailwind.config.ts";
+
 @theme {
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -78,7 +80,7 @@
   }
 
   .using-mouse * {
-    outline: none !important;
+    outline: none;
   }
   :root {
     --background: 0 0% 100%;

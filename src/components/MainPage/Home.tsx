@@ -92,59 +92,41 @@ export function Home() {
     }
   };
 
-  const totalApplicants = statsData?.totalApplicants || 0;
-  const recentApplicants = statsData?.recentApplicants || 0;
-  const rejected = statsData?.stats?.find(
-    (stat : any) => stat.status === "REJECTED"
-  ).count;
-  const hired = statsData?.stats?.find((stat : any) => stat.status === "HIRED").count;
-  const inProgress = statsData?.stats?.reduce((acc: number, stat: any) => {
-    if (
-      stat.status === "SCREENING" ||
-      stat.status === "INTERVIEWED" ||
-      stat.status === "PENDING" ||
-      stat.status === "SHORTLISTED"
-    ) {
-      return acc + parseInt(stat.count);
-    }
-    return acc;
-  }, 0);
-
   return (
     <div>
     <div className="flex items-center justify-center gap-4 m-2">
           <CandidateCountCard
             name="Total Candidates"
-            number={totalApplicants}
+            number={statsData?.totalApplicants || 0}
             lineColor="border-[#9C1C24]"
             iconBgColor="bg-[#9C1C24]"
           />
           <CandidateCountCard
-            name="New Applicants"
-            number={recentApplicants}
+            name="Screened"
+            number={statsData?.Screened || 0}
             lineColor="border-[#2F80ED]"
             iconBgColor="bg-[#2F80ED]"
           />
           <CandidateCountCard
-            name="In Progress"
-            number={inProgress}
+            name="Joined"
+            number={statsData?.Joined || 0}
             lineColor="border-[#F2994A]"
             iconBgColor="bg-[#F2994A]"
           />
           <CandidateCountCard
             name="Hired"
-            number={hired}
+            number={statsData?.Hired || 0}
             lineColor="border-[#556B2F]"
             iconBgColor="bg-[#556B2F]"
           />
           <CandidateCountCard
             name="Rejected"
-            number={rejected}
+            number={statsData?.Rejected || 0}
             lineColor="border-[#556B2F]"
             iconBgColor="bg-[#556B2F]"
           />
     </div>
-    <div className="grid grid-cols-[auto_1fr] border-t pt-3">
+    <div className="grid grid-cols-[auto_1fr] border-t pt-2">
       <div className="flex-1 flex flex-col">
         <div className="flex-1">
           <CandidateTable 

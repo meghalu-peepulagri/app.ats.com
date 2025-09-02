@@ -7,18 +7,18 @@ import { ProfileIcon } from "../icons/Profile";
 
 const CardComponent = ({ name, msg, time } : {name: string, msg: string, time: string}) => {
   return (
-    <Card className="w-full !gap-0.5 !pt-2 pb-2 rounded-lg !px-0 max-w-md shadow-none border-none bg-[#F4F7FC] mb-4">
-      <CardContent className="flex flex-col gap-0 px-1 py-0 ">
-      <div className="flex items-center gap-3">
-      <Avatar>
-          <ProfileIcon/>
+    <Card className="w-full rounded-lg max-w-md shadow-none border-none bg-[#F4F7FC] p-0">
+      <CardContent className="flex flex-col p-1">
+      <div className="flex items-center gap-2 px-2">
+      <Avatar className="w-8 h-8">
+          <ProfileIcon className="w-full h-full"/>
         </Avatar>
           <h3 className="text-[15px] 3xl:!text-lg text-normal text-[#181616]">{name}</h3>
-          <p className="text-xs 3xl:!text-sm text-[#828282] font-(--an-card-comments-weight)">
+          <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">
             {time}
           </p>
         </div>
-        <p className="text-xs 3xl:!text-sm text-[#4F4F4F] font-(--an-card-comments-weight) pl-10">{msg}</p>
+        <p className="text-xs 3xl:!text-sm text-[#4F4F4F] font-normal pl-10">{msg}</p>
       </CardContent>
     </Card>
   );
@@ -64,14 +64,14 @@ const CommentsSection = ({ comments, onSubmitComment }: { comments: any[], onSub
   };
 
   return (
-    <div className="w-[50%]">
-      <div className="flex items-center justify-between mb-4">
+    <div>
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <MessageIcon />
-          <span className="text-xs 2xl:text-sm 3xl:!text-base font-(--an-card-comments-weight) text-(--an-card-comments-color)">Comments <span className="bg-black text-white rounded-full !px-2 ml-3 !py-0 ">{commentList?.length}</span></span>
+          <span className="text-xs 2xl:text-sm 3xl:!text-base font-normal text-[#000]">Comments <span className="bg-black text-white rounded-full px-3 ml-3 py-0 text-xs 3xl:!text-sm">{commentList?.length}</span></span>
         </div>
       </div>
-      <div className="h-[calc(100vh-300px)] overflow-y-auto ">
+      <div className="h-[calc(100vh-260px)] overflow-y-auto gap-1 flex flex-col">
         {commentList?.map((comment, index) => (
           <CardComponent
             key={index}

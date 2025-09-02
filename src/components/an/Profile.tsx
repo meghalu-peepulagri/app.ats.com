@@ -62,8 +62,8 @@ export default function Profile({
   }, [downloadUrl, resume_key_path]);
 
   return (
-    <div className="border rounded-lg p-2 w-[80%]">
-    <Card className="w-full !pt-1 pb-2 bg-[#F8F8F8] shadow-none rounded-lg gap-0 border-none">
+    <div className="border rounded-lg p-2 w-[90%]">
+    <Card className="w-full bg-[#F8F8F8] shadow-none rounded-lg gap-0 border-none">
       <CardHeader className="p-1 shadow-[0px_0px_11px_rgba(0,0,0,0.12)] bg-white rounded-md mx-1">
         <div className="flex justify-between bg-white  rounded-[5px] items-center px-1">
           <div className="flex items-center space-x-2">
@@ -86,21 +86,21 @@ export default function Profile({
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="p-2">
+      <CardContent className="px-2 py-1">
         <div className="flex justify-between items-center">
-          <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-(--an-card-profile-font-weight)">
+          <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
             Applied Job
           </p>
-          <p className="text-[13px] 3xl:!text-base  text-[#454545] font-(--an-card-profile-font-weight)">
+          <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
             {applyTime}
           </p>
         </div>
-        <div className="flex  justify-between items-center mt-2">
-          <p className="text-base 3xl:!text-lg text-[#454545] font-(--an-card-profile-font-weight)">
+        <div className="flex  justify-between items-center mt-1">
+          <p className="text-base 3xl:!text-lg text-[#454545] font-normal">
             {jobTitle}
           </p>
           <Select value={status} onValueChange={handleStatusChange}>
-            <SelectTrigger className={`px-3 rounded border-none !h-8 w-45 text-sm 3xl:!text-base  font-(--an-card-profile-font-weight) focus:ring-0 focus-visible:ring-0 ${getStatusColor(status.toUpperCase()).bg} ${getStatusColor(status.toUpperCase()).text}`}>
+            <SelectTrigger className={`px-3 rounded border-none !h-8 w-45 text-sm 3xl:!text-base  font-normal focus:ring-0 focus-visible:ring-0 ${getStatusColor(status.toUpperCase()).bg} ${getStatusColor(status.toUpperCase()).text}`}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -114,13 +114,13 @@ export default function Profile({
         </div>
       </CardContent>
     </Card>
-    <div className="border rounded-t-md bg-[#F9F9F9] mt-2">
+    <div className="border rounded-t-md bg-[#F9F9F9] mt-1">
         <div className="bg-white border-t">
           {pdfSrc ? (
-            <div className="relative">
+            <div className="relative h-[calc(100vh-263px)]">
               <iframe
                 src={`${pdfSrc}`}
-                className="w-150 h-100 border-none"
+                className="w-full h-full border-none"
                 title="Resume PDF"
                 onLoad={() => {
                   console.log("PDF loaded successfully");

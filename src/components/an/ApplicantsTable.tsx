@@ -131,7 +131,7 @@ export const columns = (
   onDeleteCandidate?: (id: number) => void
 ): ColumnDef<Candidate, any>[] => [
   columnHelper.accessor("avatar", {
-    header: () => <span>Candidate</span>,
+    header: () => <span>Name</span>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <Avatar className="w-8 h-8">
@@ -141,19 +141,19 @@ export const columns = (
           />
           <AvatarFallback>{row.original?.name.charAt(0)}</AvatarFallback>
         </Avatar>
-        <span className="text-sm">{row.original?.name}</span>
+        <span className="text-sm text-ellipsis overflow-hidden">{row.original?.name}</span>
       </div>
     ),
     enableSorting: false,
-    size: 150,
+    size: 120,
   }),
   columnHelper.accessor("position", {
     header: () => <span>Position</span>,
     cell: ({ row }) => (
-      <span className="text-sm">{row.original?.position}</span>
+      <span className="text-sm text-ellipsis overflow-hidden">{row.original?.position}</span>
     ),
     enableSorting: true,
-    size: 200,
+    size: 160,
   }),
   columnHelper.accessor("status", {
     header: () => <span>Status</span>,
@@ -162,7 +162,7 @@ export const columns = (
       const statusColor = getStatusColor(status);
       return (
         <span
-          className={`px-3 py-0.5 rounded-full text-[13px] 3xl:!text-base w-35 ${statusColor.bg} ${statusColor.text}`}
+          className={`px-3 py-0.5 rounded-full text-[13px] 3xl:!text-base w-35 text-ellipsis overflow-hidden ${statusColor.bg} ${statusColor.text}`}
         >
           {(status &&
             status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()) ||
@@ -171,10 +171,11 @@ export const columns = (
       );
     },
     enableSorting: false,
-    size: 150,
+    size: 120,
   }),
   columnHelper.display({
     id: "actions",
+    header: () => <span>Actions</span>,
     cell: ({ row }) => (
       <ActionCell candidate={row.original} onDelete={onDeleteCandidate} />
     ),
@@ -228,7 +229,7 @@ export function CandidateTable({
 
   return (
     <div className="bg-white rounded-lg border-none">
-      <div className="flex items-center justify-between px-4 py-2.75">
+      <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Select
             value={selectedRole}
@@ -236,8 +237,8 @@ export function CandidateTable({
               value === "All" ? setSelectedRole("") : setSelectedRole(value)
             }
           >
-            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0">
-              <div className="flex items-center gap-2">
+            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0 p-1">
+              <div className="flex items-center gap-1">
                 <ListFilter className="w-4 h-4"/>
                 <SelectValue placeholder="Select Role" />
               </div>
@@ -272,7 +273,7 @@ export function CandidateTable({
           Add
         </Button>
       </div>
-      <div className="overflow-auto h-[calc(100vh-220px)] rounded-sm border-none">
+      <div className="overflow-auto h-[calc(100vh-180px)] rounded-sm">
         <TanstackTable
           data={candidatesData}
           columns={columns(onDeleteCandidate)}
