@@ -78,7 +78,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
     }));
 
   return (
-    <div className="w-[41%]">
+    <div className="w-[42%]">
       {commentsData && (
         <CommentsSection
           key={`comments-${applicant_id}`}

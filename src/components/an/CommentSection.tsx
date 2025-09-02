@@ -5,14 +5,16 @@ import { CommentIcon } from "../icons/Commenticon";
 import { MessageIcon } from "../icons/MessageIcon";
 import { ProfileIcon } from "../icons/Profile";
 import { NoCommentIcon } from "../icons/NoCommentIcon";
+import { User } from "lucide-react";
 
 const CardComponent = ({ name, msg, time } : {name: string, msg: string, time: string}) => {
   return (
     <Card className="w-full rounded-lg max-w-md shadow-none border-none bg-[#F4F7FC] p-0">
       <CardContent className="flex flex-col p-1">
       <div className="flex items-center gap-2 px-2">
-      <Avatar className="w-8 h-8">
-          <ProfileIcon className="w-full h-full"/>
+      <Avatar className="w-8 h-8 rounded-full bg-[#c7c9cd] border flex items-center justify-center text-white">
+          {/* <User className="w-4 h-4"/> */}
+          <p className="text-black">{name.charAt(0).toUpperCase()}</p>
         </Avatar>
           <h3 className="text-[15px] 3xl:!text-lg text-normal text-[#181616]">{name}</h3>
           <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">
@@ -65,7 +67,7 @@ const CommentsSection = ({ comments, onSubmitComment }: { comments: any[], onSub
   };
 
   return (
-    <div>
+    <div className="w-full">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <MessageIcon />

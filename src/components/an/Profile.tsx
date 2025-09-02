@@ -129,12 +129,10 @@ export default function Profile({
               />
             </div>
           ) : (
-            <div className="h-96 flex items-center justify-center text-gray-500">
               <div className="flex flex-col items-center justify-center">
                 <NoResumeIcon />
                 <p className="text-sm 3xl:!text-base text-[#828282] font-normal">Please select a applicant to continue</p>
               </div>
-            </div>
           )}
         </div>
     </div>
