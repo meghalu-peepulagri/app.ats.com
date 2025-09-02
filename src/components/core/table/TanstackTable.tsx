@@ -24,7 +24,7 @@ interface TanstackTableProps {
   isLoading?: boolean
 }
 
-export function TanstackTable({columns, data, height, onRowClick, isLoading}: TanstackTableProps) {
+export function TanstackTable({columns, data, height, onRowClick}: TanstackTableProps) {
     const table = useReactTable({
     data,
     columns,
@@ -66,13 +66,7 @@ export function TanstackTable({columns, data, height, onRowClick, isLoading}: Ta
           ))}
         </thead>
         <tbody>
-            {isLoading ? (
-              <tr>
-                <td colSpan={columns.length} className="text-center p-0">
-                  <h2>Loading...</h2>
-                </td>
-              </tr>
-            ) : table.getRowModel().rows.length === 0 ? (
+            {table.getRowModel().rows.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} className="text-center p-0">
                   <NoTableDataIcon className='w-100 h-100'/>

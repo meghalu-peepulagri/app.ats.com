@@ -36,7 +36,6 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -45,12 +44,10 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
       },
       { threshold: 0.1 }
     );
-
     const currentRef = loadMoreRef.current;
     if (currentRef) {
       observer.observe(currentRef);
     }
-
     return () => {
       if (currentRef) {
         observer.unobserve(currentRef);

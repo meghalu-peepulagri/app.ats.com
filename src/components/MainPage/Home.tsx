@@ -18,7 +18,7 @@ export function Home() {
   const search: { search_string?: string; role?: string } = useSearch({ from: "/_header/_applicants" });
   const queryClient = useQueryClient();
 
-  const { data: statsData, isLoading } = useQuery({
+  const { data: statsData } = useQuery({
     queryKey: ["stats"],
     queryFn: async () => {
       const response = await getStatsAPI();
@@ -26,7 +26,7 @@ export function Home() {
     },
   });
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
       queryKey: ["applicants", search.search_string, search.role],
       queryFn: async ({ pageParam = 1 }) => {
@@ -50,7 +50,7 @@ export function Home() {
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["applicants"],
+          queryKey: ["applicants", search.search_string, search.role],
           exact: false,
         });
       },
@@ -128,19 +128,17 @@ export function Home() {
     </div>
     <div className="grid grid-cols-[auto_1fr] border-t pt-2">
       <div className="flex-1 flex flex-col">
-        <div className="flex-1">
           <CandidateTable 
             candidatesData={candidatesData}
             onDeleteCandidate={handleDeleteCandidate}
-            isLoading={isFetching} 
+            isLoading={isLoading}
           />
           <div
             ref={loadMoreRef}
             className="flex items-center justify-center"
           >
-            {isFetchingNextPage ? isFetchingNextPage :  isFetching && <span>Loading...</span>}
-          </div>
-        </div>
+            {isFetchingNextPage}
+         </div>
       </div>
       <Outlet />
     </div>

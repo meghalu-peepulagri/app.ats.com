@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import {
   Tooltip,
@@ -110,7 +109,7 @@ const ActionCell = ({
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDelete}
-                  className="bg-red-500 hover:bg-red-600"
+                  className="bg-red-500 hover:bg-red-600 cursor-pointer"
                   disabled={isDeleting}
                 >
                   {isDeleting ? "Deleting..." : "Delete"}
@@ -231,7 +230,7 @@ export function CandidateTable({
 
   return (
     <div className="bg-white rounded-lg border-none">
-      <div className="flex items-center justify-between p-2">
+      <div className="flex items-center justify-between py-2 px-1">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Select
             value={selectedRole}
@@ -275,13 +274,18 @@ export function CandidateTable({
           Add
         </Button>
       </div>
-      <div className="overflow-auto h-[calc(100vh-180px)] rounded-sm">
-        <TanstackTable
-          data={candidatesData}
-          columns={columns(onDeleteCandidate)}
-          onRowClick={handleRowClick}
-          isLoading={isLoading}
-        />
+      <div className="overflow-auto h-[calc(100vh-180px)] rounded-sm w-full">
+      {isLoading ? (
+          <div className="flex items-center justify-center h-full text-gray-500 text-sm w-full px-[165px]">
+            Loading Applicants...
+          </div>
+        ) : (
+          <TanstackTable
+            data={candidatesData}
+            columns={columns(onDeleteCandidate)}
+            onRowClick={handleRowClick}
+          />
+        )}
       </div>
     </div>
   );
