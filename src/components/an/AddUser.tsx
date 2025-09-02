@@ -94,7 +94,7 @@ export function AddUserCard({
             <div className="space-y-0.75">
               <Label
                 htmlFor="role"
-                className="text-sm 3xl:!text-base text-[#333] font-medium"
+                className="text-sm 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
               >
                 Role
               </Label>

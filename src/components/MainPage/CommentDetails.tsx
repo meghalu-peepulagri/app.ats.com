@@ -14,7 +14,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
         return response.data;
       },
       getNextPageParam: (lastPage) => {
-        const nextPage = lastPage?.paginationData?.next_page;
+        const nextPage = lastPage?.paginationInfo?.next_page;
         return nextPage || undefined;
       },
       initialPageParam: 1,
@@ -59,7 +59,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const commentsData = comments?.pages
-    ?.flatMap((page: any) => page.applicantsData ?? [])
+    ?.flatMap((page: any) => page.records ?? [])
     .map((comment: any) => ({
       id: comment?.id,
       name: comment?.user?.name,

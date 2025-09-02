@@ -45,8 +45,8 @@ export interface Candidate {
 interface CandidateTableProps {
   candidatesData?: Candidate[];
   rawResponse?: {
-    applicants: ApiApplicant[];
-    pagination?: any;
+    records: ApiApplicant[];
+    paginationInfo?: any;
     total?: number;
   };
   isLoading?: boolean;
@@ -66,7 +66,7 @@ const ActionCell = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent row click when clicking delete
+    e.stopPropagation();
     setIsDeleting(true);
     try {
       await onDelete?.(candidate.id);

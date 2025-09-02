@@ -17,7 +17,7 @@ export interface ApplicantsResponse {
   success: boolean;
   message: string;
   data: {
-    pagination: {
+    paginationInfo: {
       total_records: number;
       total_pages: number;
       page_size: number;
@@ -25,7 +25,7 @@ export interface ApplicantsResponse {
       next_page: number | null;
       prev_page: number | null;
     };
-    applicants: ApiApplicant[];
+    records: ApiApplicant[];
   };
 }
 

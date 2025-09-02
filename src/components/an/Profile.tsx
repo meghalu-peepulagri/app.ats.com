@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import { EmailIcon } from "../icons/Email";
 import { PhoneIcon } from "../icons/Phone";
 import { getStatusColor } from "~/lib/helper/getColorStatus";
+import { NoResumeIcon } from "../icons/NoResumeIcon";
 
 interface ProfileProps {
   avatarImg: string;
@@ -119,7 +120,7 @@ export default function Profile({
           {pdfSrc ? (
             <div className="relative h-[calc(100vh-263px)]">
               <iframe
-                src={`${pdfSrc}` + "#Zoom=50" }
+                src={`${pdfSrc}`}
                 className="w-full h-full border-none"
                 title="Resume PDF"
                 onLoad={() => {
@@ -129,9 +130,9 @@ export default function Profile({
             </div>
           ) : (
             <div className="h-96 flex items-center justify-center text-gray-500">
-              <div className="text-center">
-                <p className="mb-2">No resume available</p>
-                <p className="text-sm">PDF will be displayed here when available</p>
+              <div className="flex flex-col items-center justify-center">
+                <NoResumeIcon />
+                <p className="text-sm 3xl:!text-base text-[#828282] font-normal">Please select a applicant to continue</p>
               </div>
             </div>
           )}

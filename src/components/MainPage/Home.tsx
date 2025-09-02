@@ -6,12 +6,12 @@ import { CandidateCountCard } from "../an/SingleCard";
 import { ApiApplicant } from "~/lib/interface/applicants";
 import { deleteApplicant, getAllApplicants, getStatsAPI } from "~/http/services/applicants";
 
-const apiApplicantToCandidate = (applicant: ApiApplicant): Candidate => ({
-  id: applicant.id,
-  avatar: applicant.avatar,
-  name: applicant.firstname,
-  position: applicant.role,
-  status: applicant.status?.toUpperCase() || null,
+const apiApplicantToCandidate = (records: ApiApplicant): Candidate => ({
+  id: records.id,
+  avatar: records.avatar,
+  name: records.firstname,
+  position: records.role,
+  status: records.status?.toUpperCase() || null,
 });
 
 export function Home() {
@@ -38,7 +38,7 @@ export function Home() {
         return response.data;
       },
       getNextPageParam: (lastPage) =>
-        lastPage && lastPage?.pagination?.next_page || undefined,
+        lastPage && lastPage?.paginationInfo?.next_page || undefined,
       initialPageParam: 1,
     });
 
@@ -58,7 +58,7 @@ export function Home() {
 
   const candidatesData: Candidate[] =
     data?.pages.flatMap((page) =>
-      page?.applicants?.map(apiApplicantToCandidate)
+      page?.records?.map(apiApplicantToCandidate)
     ) || [];
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);

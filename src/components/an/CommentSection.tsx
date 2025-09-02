@@ -4,6 +4,7 @@ import { Card, CardContent } from "../ui/card";
 import { CommentIcon } from "../icons/Commenticon";
 import { MessageIcon } from "../icons/MessageIcon";
 import { ProfileIcon } from "../icons/Profile";
+import { NoCommentIcon } from "../icons/NoCommentIcon";
 
 const CardComponent = ({ name, msg, time } : {name: string, msg: string, time: string}) => {
   return (
@@ -72,14 +73,16 @@ const CommentsSection = ({ comments, onSubmitComment }: { comments: any[], onSub
         </div>
       </div>
       <div className="h-[calc(100vh-260px)] overflow-y-auto gap-1 flex flex-col">
-        {commentList?.map((comment, index) => (
-          <CardComponent
-            key={index}
-            name={comment.name}
-            time={comment.time}
-            msg={comment.msg} 
-          />
-        ))}
+        {commentList?.length > 0 ? (
+          commentList?.map((comment: any, index: number) => (
+            <CardComponent key={index} name={comment?.name} msg={comment?.msg} time={comment?.time} />
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center mt-[30%]">
+          <NoCommentIcon />
+          <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">No comments to display</p>
+          </div>
+        )}
       </div>
       <div className="mt-4 flex items-center gap-4">
         <div className="relative w-full">
