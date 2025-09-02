@@ -108,20 +108,20 @@ export function Home() {
             iconBgColor="bg-[#2F80ED]"
           />
           <CandidateCountCard
-            name="Joined"
-            number={statsData?.Joined || 0}
-            lineColor="border-[#F2994A]"
-            iconBgColor="bg-[#F2994A]"
-          />
-          <CandidateCountCard
-            name="Hired"
-            number={statsData?.Hired || 0}
+            name="Rejected"
+            number={statsData?.Rejected || 0}
             lineColor="border-[#556B2F]"
             iconBgColor="bg-[#556B2F]"
           />
           <CandidateCountCard
-            name="Rejected"
-            number={statsData?.Rejected || 0}
+            name="Hired"
+            number={statsData?.Hired || 0}
+            lineColor="border-[#F2994A]"
+            iconBgColor="bg-[#F2994A]"
+          />
+          <CandidateCountCard
+            name="Joined"
+            number={statsData?.Joined || 0}
             lineColor="border-[#556B2F]"
             iconBgColor="bg-[#556B2F]"
           />

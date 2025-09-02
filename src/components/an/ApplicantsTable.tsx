@@ -131,19 +131,26 @@ export const columns = (
   onDeleteCandidate?: (id: number) => void
 ): ColumnDef<Candidate, any>[] => [
   columnHelper.accessor("avatar", {
-    header: () => <span>Name</span>,
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <Avatar className="w-8 h-8">
-          <AvatarImage
-            src={row.original?.avatar}
-            alt={`${row.original?.name}'s avatar`}
-          />
-          <AvatarFallback>{row.original?.name.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <span className="text-sm text-ellipsis overflow-hidden">{row.original?.name}</span>
+    header: () => <span className="pl-1">Name</span>,
+    cell: ({ row }) => {
+      const name = row.original?.name ?? "";
+    return (
+      <div className="flex items-center gap-2 pl-2">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="text-sm truncate max-w-[100px] cursor-default">
+                {name}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{name}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
-    ),
+    );
+    },
     enableSorting: false,
     size: 120,
   }),

@@ -119,7 +119,7 @@ export default function Profile({
           {pdfSrc ? (
             <div className="relative h-[calc(100vh-263px)]">
               <iframe
-                src={`${pdfSrc}`}
+                src={`${pdfSrc}` + "#Zoom=50" }
                 className="w-full h-full border-none"
                 title="Resume PDF"
                 onLoad={() => {

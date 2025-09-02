@@ -28,7 +28,6 @@ export function Header({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
               <div className="flex items-center space-x-3">
-          <BellIcon className="!w-5 !h-5" />
           <div className="flex items-center space-x-2">
             <ProfileIcon className="w-8 h-8"/> 
             <div className="flex items-center space-x-2 leading-tight">
