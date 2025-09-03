@@ -1,12 +1,11 @@
-import { useMutation, useQueryClient, } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import React, { useState } from 'react';
-import { createUserAPI, uploadFileAPI, UserFormData, } from '~/http/services/users';
+import { createUserAPI, getListRolesAPI, uploadFileAPI, UserFormData, } from '~/http/services/users';
 import { AddUserCard } from '../../an/AddUser';
 
 export const AddUserContainer: React.FC = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState<UserFormData>({
     role: '',
     first_name: '',
@@ -16,17 +15,26 @@ export const AddUserContainer: React.FC = () => {
     experience: '',
     resume_key_path: '',
   });
-
   const [uploadedFile, setUploadedFile] = useState<{
     name: string;
     size: string;
     type: string;
   } | null>(null);
-
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [message, setMessage] = useState('');
   const [fileInput, setFileInput] = useState<File | null>(null);
   const queryClient = useQueryClient();
+
+  const {data: roles} = useQuery({
+    queryKey: ['roles'],
+    queryFn: async () => {
+      const response = await getListRolesAPI();
+      return response;
+    }
+  });
+
+  const rolesList = roles?.data?.map((role: any) => role.role);
+
   const fileUploadMutation = useMutation({
     mutationFn: uploadFileAPI,
     onSuccess: (data) => {
@@ -142,6 +150,7 @@ export const AddUserContainer: React.FC = () => {
       handleDeleteFile={handleDeleteFile}
       loading={isLoading}
       message={message}
+      roleList={rolesList}
     />
     </div>
   );

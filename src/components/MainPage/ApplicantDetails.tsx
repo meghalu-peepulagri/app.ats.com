@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams} from "@tanstack/react-router";
 import { useEffect } from "react";
-import { getApplicantById, updateApplicantStatus } from "~/http/services/applicants";
+import { getApplicantById, updateApplicantRole, updateApplicantStatus } from "~/http/services/applicants";
 import Profile from "../an/Profile";
 import { CommentDetails } from "./CommentDetails";
+import { getListRolesAPI } from "~/http/services/users";
 
 export function Resume() {
   const {applicant_id: id} = useParams({strict:false})
@@ -28,6 +29,26 @@ export function Resume() {
     },
   });
 
+  const updateRoleMutation = useMutation({
+    mutationFn: async (newRole: string) => {
+      return updateApplicantRole(id as string, { role: newRole });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`resume-${id}`, id] });
+      queryClient.invalidateQueries({ queryKey: ["applicants"] });
+      queryClient.invalidateQueries({ queryKey: ["stats"] });
+    },
+  })
+
+  const {data: roles} = useQuery({
+    queryKey: ['roles'],
+    queryFn: async () => {
+      const response = await getListRolesAPI();
+      return response;
+    }
+  })
+  const roleOptions = roles?.data?.map((role: any) => (role.role));
+
   useEffect(() => {
     queryClient.invalidateQueries({  queryKey: [`resume-${id}`, id]});
   }, [id, queryClient]);
@@ -42,7 +63,6 @@ export function Resume() {
   function capitalize(word: string) {
     return word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : "";
   }
-
     return(
         <div className="flex gap-2 w-[100%]">
         <Profile
@@ -60,11 +80,15 @@ export function Resume() {
             minute: '2-digit',
             hour12: true,
           }).replace(/\//g, '-').replace(/, /g, ' ')}
-          resumeOptions={['Applied','Screened','Schedule Interview','Interviewed','Rejected', 'Hired', 'Joined',]}
-          value={capitalize(resume?.status)}
+          resumeOptions={['Applied','Screened','Schedule_interview','Interviewed','Rejected', 'Hired', 'Joined',]}
+          statusValue={capitalize(resume?.status)}
+          roleValue={resume?.role || ''}
           resume_key_path={resume?.resume_key_path || ''}
           downloadUrl={resume?.presignedUrl.download_url || ''}
           onStatusChange={(newStatus) => updateStatusMutation.mutate(newStatus)}
+          onRoleChange={(newRole) => updateRoleMutation.mutate(newRole)}
+          roleOptions={roleOptions || []}
+
         />
         <CommentDetails applicant_id={resume?.id}/>
       </div>

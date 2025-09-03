@@ -20,10 +20,13 @@ interface ProfileProps {
   jobTitle: string;
   applyTime: string;
   resumeOptions: string[];
-  value: string;
+  roleOptions: string[];
+  statusValue: string;
+  roleValue: string;
   downloadUrl?: string;
   resume_key_path?: string;
   onStatusChange?: (newStatus: string) => void;
+  onRoleChange?: (newRoles: string) => void;
 }
 
 export default function Profile({
@@ -31,24 +34,38 @@ export default function Profile({
   name,
   email,
   phone,
-  jobTitle,
   applyTime,
   resumeOptions,
-  value,
+  statusValue,
+  roleValue,
   downloadUrl,
   resume_key_path,
   onStatusChange,
+  onRoleChange,
+  roleOptions,
 } : ProfileProps) {
-  const [status, setStatus] = useState(value);
+  const [status, setStatus] = useState(statusValue);
+  const [roles, setRoles] = useState(roleValue);
+  
+  useEffect(() => {
+    setStatus(statusValue);
+  }, [statusValue]);
 
   useEffect(() => {
-    setStatus(value);
-  }, [value]);
+    setRoles(roleValue);
+  }, [roleValue]);
 
   const handleStatusChange = (newStatus: string) => {
     setStatus(newStatus);
     if (onStatusChange) {
       onStatusChange(newStatus);
+    }
+  };
+
+  const handleRolesChange = (newRole: string) => {
+    setRoles(newRole);
+    if (onRoleChange) {
+      onRoleChange(newRole);
     }
   };
 
@@ -71,16 +88,16 @@ export default function Profile({
             <div className="w-8 h-8 bg-[#2F6846] rounded-full flex items-center justify-center text-white font-normal text-sm 3xl:text-base">
               {avatarImg}
             </div>
-            <CardTitle className="text-sm 3xl:!text-base text-(--an-card-profile-color) font-(--an-card-profile-font-weight)">
+            <CardTitle className="text-sm 3xl:!text-base text-(--an-card-profile-color) font-normal">
               {name}
             </CardTitle>
           </div>
           <CardDescription className="text-sm !pb-0 text-gray-500">
-            <span className="flex items-center text-lg 2xl:text-xs 3xl:!text-sm text-(--an-card-profile-email-color) font-(--an-card-profile-font-weight)">
+            <span className="flex items-center text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
               <EmailIcon />
               {email}
             </span>
-            <span className="flex items-center mt-1 text-lg 2xl:text-xs 3xl:!text-sm text-(--an-card-profile-email-color) font-(--an-card-profile-font-weight)">
+            <span className="flex items-center mt-1 text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
               <PhoneIcon />
               {phone}
             </span>
@@ -97,9 +114,18 @@ export default function Profile({
           </p>
         </div>
         <div className="flex  justify-between items-center mt-1">
-          <p className="text-base 3xl:!text-lg text-[#454545] font-normal">
-            {jobTitle}
-          </p>
+          <Select value={roles} onValueChange={handleRolesChange}>
+            <SelectTrigger className="px-3 rounded border border-black/30 shadow-none !h-8 w-45 text-sm 3xl:!text-base font-normal focus:ring-0 focus-visible:ring-0">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+            {roleOptions.map((role, index) => (
+              <SelectItem key={index} value={role}>
+                {role}
+              </SelectItem>
+            ))}
+            </SelectContent>
+          </Select>
           <Select value={status} onValueChange={handleStatusChange}>
             <SelectTrigger className={`px-3 rounded border-none !h-8 w-45 text-sm 3xl:!text-base  font-normal focus:ring-0 focus-visible:ring-0 ${getStatusColor(status.toUpperCase()).bg} ${getStatusColor(status.toUpperCase()).text}`}>
               <SelectValue />

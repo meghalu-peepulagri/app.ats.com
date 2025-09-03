@@ -52,6 +52,15 @@ export const updateApplicantStatus = async (id: string | number, payload : any) 
   }
 };
 
+export const updateApplicantRole = async (id: string | number, payload : any) => {
+  try {
+    const response = await $fetch.patch(`/applicants/${id}/role`, payload);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const getStatsAPI = async () => {
   try {
     const response = await $fetch.get('/applicants/dashboard/stats');

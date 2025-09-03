@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { LoaderCircle, TrashIcon } from "lucide-react";
+import { BackIcon } from "../icons/BackIcon";
+import { UploadIcon } from "../icons/uploadicon";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import {
   Select,
   SelectContent,
@@ -6,18 +12,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Label } from "../ui/label";
-import { BackIcon } from "../icons/BackIcon";
-import { UploadIcon } from "../icons/uploadicon";
-import { LoaderCircle, TrashIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 
 interface UploadedFile {
   name: string;
@@ -47,6 +47,7 @@ interface AddUserCardProps {
   handleDeleteFile: () => void;
   loading?: boolean;
   message?: string;
+  roleList?: string[];
 }
 
 export function AddUserCard({
@@ -69,6 +70,7 @@ export function AddUserCard({
   handleFileUpload,
   handleDeleteFile,
   loading = false,
+  roleList = [],
 }: AddUserCardProps) {
   const fileName = uploadedFile?.name ?? '';
   const isLong = fileName?.length > 20;
@@ -110,11 +112,11 @@ export function AddUserCard({
                   <SelectValue placeholder="Please select role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Manufacturing Engineer">Manufacturing Engineer</SelectItem>
-                  <SelectItem value="IOT  & Robotics">IOT  & Robotics</SelectItem>
-                  <SelectItem value="EV">EV</SelectItem>
-                  <SelectItem value="Product design">Product design</SelectItem>
-                  <SelectItem value="Hardware">Hardware</SelectItem>
+                  {roleList.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {role}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               {errors.role && (

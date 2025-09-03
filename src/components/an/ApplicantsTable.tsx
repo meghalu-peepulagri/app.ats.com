@@ -15,12 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import { TruncatedText } from "~/lib/helper/TruncatedText";
+import { useQuery } from "@tanstack/react-query";
+import { getListRolesAPI } from "~/http/services/users";
 
 export interface Candidate {
   id: number;
@@ -54,14 +51,13 @@ const ActionCell = ({
   onDelete?: (id: number) => void;
   onDeleteId: (field: any) => void;
 }) => {
-
   const handleDelete = (e: any) => {
     e.stopPropagation();
     onDeleteId(candidate);
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center justify-center gap-2">
       <Trash2
         className={`text-red-500 w-4 h-4 hover:bg-red-50 cursor-pointer`}
         strokeWidth={1.5}
@@ -76,37 +72,15 @@ export const columns = (
 ): ColumnDef<Candidate, any>[] => [
   columnHelper.accessor("avatar", {
     header: () => <span className="pl-1">Name</span>,
-    cell: ({ row }) => {
-      const name = row.original?.name ?? "";
-      return (
-        <div className="flex items-center gap-2 pl-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="text-sm truncate max-w-[100px] cursor-default">
-                  {name}
-                </span>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      );
-    },
+    cell: ({ row }) => <TruncatedText text={row.original?.name ?? ""} />,
     enableSorting: false,
-    size: 120,
+    size: 90,
   }),
   columnHelper.accessor("position", {
     header: () => <span>Position</span>,
-    cell: ({ row }) => (
-      <span className="text-sm text-ellipsis overflow-hidden">
-        {row.original?.position}
-      </span>
-    ),
+    cell: ({ row }) => <TruncatedText text={row.original?.position ?? ""} />,
     enableSorting: true,
-    size: 160,
+    size: 140,
   }),
   columnHelper.accessor("status", {
     header: () => <span>Status</span>,
@@ -115,28 +89,29 @@ export const columns = (
       const statusColor = getStatusColor(status);
       return (
         <span
-          className={`px-3 py-0.5 rounded-full text-[13px] 3xl:!text-base w-35 text-ellipsis overflow-hidden ${statusColor.bg} ${statusColor.text}`}
+          className={`px-2 py-0.5 rounded-full text-[13px] 3xl:!text-base text-ellipsis overflow-hidden ${statusColor.bg} ${statusColor.text}`}
         >
-          {(status &&
-            status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()) ||
-            "--"}
+          {status
+            ? status
+                .toLowerCase()
+                .split("_")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")
+            : "--"}
         </span>
       );
     },
     enableSorting: false,
-    size: 120,
+    size: 135,
   }),
   columnHelper.display({
     id: "actions",
     header: () => <span>Actions</span>,
     cell: ({ row }) => (
-      <ActionCell
-        candidate={row.original}
-        onDeleteId={onDeleteId}
-      />
+      <ActionCell candidate={row.original} onDeleteId={onDeleteId} />
     ),
     enableSorting: false,
-    size: 20,
+    size: 10,
   }),
 ];
 
@@ -152,6 +127,16 @@ export function CandidateTable({
   const { applicant_id: id } = useParams({ strict: false });
   const [searchValue, setSearchValue] = useState(search.search_string ?? "");
   const [selectedRole, setSelectedRole] = useState(search.role ?? "");
+
+  const {data: roles} = useQuery({
+    queryKey: ["roles"],
+    queryFn: async () => {
+      const response = await getListRolesAPI();
+      return response;
+    }
+  })
+
+  const roleList = roles?.data?.map((role: any) => role.role); 
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -198,13 +183,11 @@ export function CandidateTable({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="All">All</SelectItem>
-              <SelectItem value="Manufacturing Engineer">
-                Manufacturing Engineer
-              </SelectItem>
-              <SelectItem value="IOT  & Robotics">IOT & Robotics</SelectItem>
-              <SelectItem value="EV">EV</SelectItem>
-              <SelectItem value="Product design">Product design</SelectItem>
-              <SelectItem value="Hardware">Hardware</SelectItem>
+              {roleList?.map((role: string) => (
+                <SelectItem key={role} value={role}>
+                  {role}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <div className="relative flex items-center">

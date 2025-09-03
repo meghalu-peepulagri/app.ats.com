@@ -122,19 +122,6 @@ export const getDownloadUrlAPI = async ({ file_key }: { file_key: string }) => {
   }
 };
 
-// export const createUserAPI = async (
-//   userData: UserFormData
-// )=> {
-//   try {
-//     console.log(userData,"ress");
-//     const response = await $fetch.post("/applicants", userData);
-//     console.log(response,"ress001");
-//     return response;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
 export const createUserAPI = async (userData: UserFormData) => {
   try {
     const response = await $fetch.post("/applicants", userData);
@@ -145,6 +132,15 @@ export const createUserAPI = async (userData: UserFormData) => {
         errors: response.data?.errors,
       };
     }
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getListRolesAPI = async () => {
+  try {
+    const response = await $fetch.get("/roles");
     return response.data;
   } catch (error) {
     throw error;
