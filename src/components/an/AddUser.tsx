@@ -197,6 +197,7 @@ export function AddUserCard({
                     placeholder="Enter mobile number"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
+                    maxLength={10}
                     className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"                   
                    disabled={loading}
                   />

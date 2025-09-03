@@ -62,27 +62,20 @@ const ActionCell = ({
 }: {
   candidate: Candidate;
   onDelete?: (id: number) => void;
-  isPending?: boolean;
 }) => {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleDelete = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleDelete = () => {
     setIsDeleting(true);
-    try {
-      await onDelete?.(candidate.id);
-    } catch (error) {
-      console.error("Error deleting candidate:", error);
-    } finally {
-      setIsDeleting(false);
-    }
+    onDelete?.(candidate.id);
   };
 
   return (
     <div className="flex items-center gap-2">
       <TooltipProvider>
         <Tooltip>
-          <AlertDialog>
+          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <AlertDialogTrigger asChild>
               <TooltipTrigger asChild>
                 <Button
@@ -92,7 +85,7 @@ const ActionCell = ({
                   disabled={isDeleting}
                   onClick={(e) => e.stopPropagation()}
                 >
-                    <Trash2
+                  <Trash2
                     className={`text-red-500 ${isDeleting ? "animate-spin" : ""}`}
                     strokeWidth={1.5}
                   />
@@ -109,13 +102,20 @@ const ActionCell = ({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
+                {/* <AlertDialogAction
                   onClick={handleDelete}
                   className="bg-red-500 hover:bg-red-600 cursor-pointer"
                   disabled={isDeleting}
                 >
                   {isDeleting ? "Deleting..." : "Delete"}
-                </AlertDialogAction>
+                </AlertDialogAction> */}
+                <Button
+                  className="bg-red-500 hover:bg-red-600 cursor-pointer"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </Button>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -135,22 +135,22 @@ export const columns = (
     header: () => <span className="pl-1">Name</span>,
     cell: ({ row }) => {
       const name = row.original?.name ?? "";
-    return (
-      <div className="flex items-center gap-2 pl-2">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="text-sm truncate max-w-[100px] cursor-default">
-                {name}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{name}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-    );
+      return (
+        <div className="flex items-center gap-2 pl-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="text-sm truncate max-w-[100px] cursor-default">
+                  {name}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{name}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      );
     },
     enableSorting: false,
     size: 120,
@@ -158,7 +158,9 @@ export const columns = (
   columnHelper.accessor("position", {
     header: () => <span>Position</span>,
     cell: ({ row }) => (
-      <span className="text-sm text-ellipsis overflow-hidden">{row.original?.position}</span>
+      <span className="text-sm text-ellipsis overflow-hidden">
+        {row.original?.position}
+      </span>
     ),
     enableSorting: true,
     size: 160,
@@ -185,7 +187,7 @@ export const columns = (
     id: "actions",
     header: () => <span>Actions</span>,
     cell: ({ row }) => (
-      <ActionCell candidate={row.original} onDelete={onDeleteCandidate}/>
+      <ActionCell candidate={row.original} onDelete={onDeleteCandidate} />
     ),
     enableSorting: false,
     size: 20,
@@ -213,6 +215,7 @@ export function CandidateTable({
           ...(searchValue ? { search_string: searchValue } : {}),
           ...(selectedRole ? { role: selectedRole } : {}),
         },
+        replace: true,
       });
     }, 500);
 
@@ -227,6 +230,7 @@ export function CandidateTable({
     navigate({
       to: `/applicants/${candidate.id}`,
       search,
+      replace: true,
     });
   };
 
@@ -242,7 +246,7 @@ export function CandidateTable({
           >
             <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0 p-1">
               <div className="flex items-center gap-1">
-                <ListFilter className="w-4 h-4"/>
+                <ListFilter className="w-4 h-4" />
                 <SelectValue placeholder="Select Role" />
               </div>
             </SelectTrigger>
@@ -277,7 +281,7 @@ export function CandidateTable({
         </Button>
       </div>
       <div className="overflow-auto h-[calc(100vh-180px)] rounded-sm w-full">
-      {isLoading ? (
+        {isLoading ? (
           <div className="flex items-center justify-center h-full text-gray-500 text-sm w-full px-[165px]">
             Loading Applicants...
           </div>

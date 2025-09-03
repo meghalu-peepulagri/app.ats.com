@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import React, { useState } from 'react';
-import { AddUserCard } from '../../an/AddUser';
 import { createUserAPI, uploadFileAPI, UserFormData, } from '~/http/services/users';
+import { AddUserCard } from '../../an/AddUser';
 
 export const AddUserContainer: React.FC = () => {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export const AddUserContainer: React.FC = () => {
     mutationFn: (formData: UserFormData) => createUserAPI(formData),
     onSuccess: () => {
       navigate({ to: "/applicants" });
-      queryClient.invalidateQueries({ queryKey: ["applicants"], exact: false });
+      queryClient.invalidateQueries({ queryKey: ["applicants"] });
     },
     onError: (error: any) => {
       if (error.status === 422) {

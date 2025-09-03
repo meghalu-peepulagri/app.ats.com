@@ -1,9 +1,10 @@
+import { useParams } from '@tanstack/react-router'
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NoTableDataIcon } from '~/components/icons/NoTableDataIcon'
 
 export type Person = {
@@ -25,6 +26,7 @@ interface TanstackTableProps {
 }
 
 export function TanstackTable({columns, data, height, onRowClick}: TanstackTableProps) {
+  const {applicant_id} = useParams({strict:false})
     const table = useReactTable({
     data,
     columns,
@@ -32,10 +34,20 @@ export function TanstackTable({columns, data, height, onRowClick}: TanstackTable
     columnResizeMode: 'onChange',
   })
 
-  const [selectedRow, setSelectedRow] = useState(() => {
+  const [selectedRow, setSelectedRow] = useState<string | number | null>(() => {
+    if (applicant_id) {
+      return parseInt(applicant_id);
+    }
     const storedId = localStorage.getItem('selectedRow')
     return storedId ? JSON.parse(storedId) : null
   })
+
+  useEffect(() => {
+    if (!applicant_id) {
+      localStorage.removeItem('selectedRow');
+      setSelectedRow(null);
+    }
+  }, [applicant_id]);
 
   const handleRowClick = (row: any) => {
     setSelectedRow(row.id);
