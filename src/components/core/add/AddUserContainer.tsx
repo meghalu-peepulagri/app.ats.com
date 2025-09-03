@@ -46,7 +46,7 @@ export const AddUserContainer: React.FC = () => {
     },
   });
 
-  const { mutateAsync: createUser, isPending } = useMutation({
+  const { mutateAsync: createUser, isPending: isCreating } = useMutation({
     mutationFn: (formData: UserFormData) => createUserAPI(formData),
     onSuccess: () => {
       navigate({ to: "/applicants" });
@@ -99,7 +99,6 @@ export const AddUserContainer: React.FC = () => {
 
   const handleDeleteFile = () => {
     setUploadedFile(null);
-    setFileInput(null);
     setFormData((prev) => ({ ...prev, resume_key_path: '' }));
     setErrors((prev) => ({ ...prev, resume_key_path: [] }));
 
@@ -127,8 +126,7 @@ export const AddUserContainer: React.FC = () => {
     navigate({ to: '/applicants' });
   };
 
-  const isLoading =
-    fileUploadMutation.isPending 
+  const isLoading =  fileUploadMutation.isPending  || isCreating;
 
   return (
     <div className='mt-4'>
@@ -136,7 +134,7 @@ export const AddUserContainer: React.FC = () => {
       formData={formData}
       uploadedFile={uploadedFile}
       errors={errors}
-      isSubmitting={isPending}
+      isSubmitting={isCreating}
       onChange={handleFormChange}
       onSave={handleSave}
       handleBackNavigate={handleBackNavigate}

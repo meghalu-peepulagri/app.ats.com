@@ -8,7 +8,6 @@ import { CommentDetails } from "./CommentDetails";
 export function Resume() {
   const {applicant_id: id} = useParams({strict:false})
   const queryClient = useQueryClient();
-  const router = useRouter();
 
   const {data: resume, isFetching} = useQuery({
     queryKey: [`resume-${id}`, id],
