@@ -1,13 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams} from "@tanstack/react-router";
 import { useEffect } from "react";
-import { getApplicantById, updateApplicant } from "~/http/services/applicants";
+import { getApplicantById, updateApplicantStatus } from "~/http/services/applicants";
 import Profile from "../an/Profile";
 import { CommentDetails } from "./CommentDetails";
 
 export function Resume() {
   const {applicant_id: id} = useParams({strict:false})
   const queryClient = useQueryClient();
+  
   const {data: resume, isFetching} = useQuery({
     queryKey: [`resume-${id}`, id],
     queryFn: async () => {
@@ -18,7 +19,7 @@ export function Resume() {
 
   const updateStatusMutation = useMutation({
     mutationFn: async (newStatus: string) => {
-      return updateApplicant(id as string, { status: newStatus });
+      return updateApplicantStatus(id as string, { status: newStatus });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`resume-${id}`, id] });
@@ -59,7 +60,7 @@ export function Resume() {
             minute: '2-digit',
             hour12: true,
           }).replace(/\//g, '-').replace(/, /g, ' ')}
-          resumeOptions={['Applied','Screened', 'Rejected', 'Hired', 'Joined',]}
+          resumeOptions={['Applied','Screened','Schedule Interview','Interviewed','Rejected', 'Hired', 'Joined',]}
           value={capitalize(resume?.status)}
           resume_key_path={resume?.resume_key_path || ''}
           downloadUrl={resume?.presignedUrl.download_url || ''}

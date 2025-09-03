@@ -43,9 +43,9 @@ export const getApplicantById = async (id: string | number) => {
   }
 };
 
-export const updateApplicant = async (id: string | number, payload : any) => {
+export const updateApplicantStatus = async (id: string | number, payload : any) => {
   try {
-    const response = await $fetch.patch(`/applicants/${id}`, payload);
+    const response = await $fetch.patch(`/applicants/${id}/status`, payload);
     return response.data;
   } catch (error) {
     throw error;

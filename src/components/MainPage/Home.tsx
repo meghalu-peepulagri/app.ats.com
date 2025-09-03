@@ -180,20 +180,20 @@ export function Home() {
           iconBgColor="bg-[#2F80ED]"
         />
         <CandidateCountCard
-          name="Rejected"
-          number={statsData?.rejected || 0}
+          name="Interview Scheduled"
+          number={statsData?.interview_scheduled || 0}
           lineColor="border-[#556B2F]"
           iconBgColor="bg-[#556B2F]"
         />
         <CandidateCountCard
-          name="Hired"
-          number={statsData?.hired || 0}
+          name="Interviewed"
+          number={statsData?.interviewed || 0}
           lineColor="border-[#F2994A]"
           iconBgColor="bg-[#F2994A]"
         />
         <CandidateCountCard
-          name="Joined"
-          number={statsData?.joined || 0}
+          name="Hired"
+          number={statsData?.hired || 0}
           lineColor="border-[#556B2F]"
           iconBgColor="bg-[#556B2F]"
         />
