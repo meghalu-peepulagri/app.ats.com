@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import CandidateTable, { Candidate } from "../an/ApplicantsTable";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate, useSearch } from "@tanstack/react-router";
 import { CandidateCountCard } from "../an/SingleCard";
 import { ApiApplicant } from "~/lib/interface/applicants";
@@ -15,6 +15,7 @@ import {
   getStatsAPI,
 } from "~/http/services/applicants";
 import { useParams } from "@tanstack/react-router";
+import DeleteDialog from "~/lib/helper/DeleteDialog";
 
 const apiApplicantToCandidate = (records: ApiApplicant): Candidate => ({
   id: records.id,
@@ -35,7 +36,9 @@ export function Home() {
   });
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const params = useParams({ strict: false });
+  const { applicant_id: id } = useParams({ strict: false });
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<any | null>(null);
 
   const { data: statsData } = useQuery({
     queryKey: ["stats"],
@@ -56,7 +59,6 @@ export function Home() {
         });
         return response.data;
       },
-     
       getNextPageParam: (lastPage) =>
         (lastPage && lastPage?.paginationInfo?.next_page) || undefined,
       initialPageParam: 1,
@@ -68,11 +70,51 @@ export function Home() {
       const response = await deleteApplicant(id);
       return response.data;
     },
+    onMutate: async (deletedId) => {
+      await queryClient.cancelQueries({ queryKey: ["applicants"] });
+      const previousData = queryClient.getQueryData([
+        "applicants",
+        search.search_string,
+        search.role,
+      ]);
+
+      queryClient.setQueryData(
+        ["applicants", search.search_string, search.role],
+        (oldData: any) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              records: page.records.filter(
+                (record: ApiApplicant) => record.id !== deletedId
+              ),
+            })),
+          };
+        }
+      );
+
+      return { previousData };
+    },
+    onError: (error, deletedId, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(
+          ["applicants", search.search_string, search.role],
+          context.previousData
+        );
+      }
+    },
     onSuccess: (_, deletedId) => {
-      queryClient.invalidateQueries({ queryKey: ["applicants"] });
+      queryClient.invalidateQueries({
+        queryKey: ["applicants", search.search_string, search.role],
+        exact: false,
+      });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
-      if (String(params.applicant_id) === String(deletedId)) {
+      setIsDeleteDialogOpen(false);
+      if (id && String(id) === String(deletedId)) {
         navigate({ to: "/applicants", replace: true });
+      } else if (id) {
+        queryClient.invalidateQueries({ queryKey: ["applicant", id] });
       }
     },
   });
@@ -106,12 +148,20 @@ export function Home() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const handleDeleteCandidate = (id: number) => {
-    deleteApplicantMutation.mutate(id, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["applicants"] });
-        queryClient.invalidateQueries({ queryKey: ["stats"] });
-      },
-    });
+    deleteApplicantMutation.mutate(id);
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteDialogOpen(false);
+  };
+  const onDeleteId = (field: any) => {
+    setDeleteId(field);
+    setIsDeleteDialogOpen(true);
+  };
+  const handleDeleteConfirm = () => {
+    if (deleteId) {
+      deleteApplicantMutation.mutate(deleteId.id);
+    }
   };
 
   return (
@@ -154,11 +204,20 @@ export function Home() {
             candidatesData={candidatesData}
             onDeleteCandidate={handleDeleteCandidate}
             isLoading={isFetching}
+            onDeleteId={onDeleteId}
           />
           <div ref={loadMoreRef} className="flex items-center justify-center">
             {isFetchingNextPage}
           </div>
         </div>
+        <DeleteDialog
+          openOrNot={isDeleteDialogOpen}
+          label="Are you sure you want to delete this field?"
+          onCancelClick={handleDeleteCancel}
+          onOKClick={handleDeleteConfirm}
+          deleteLoading={deleteApplicantMutation.isPending}
+          buttonLable="Yes! Delete"
+        />
         <Outlet />
       </div>
     </div>

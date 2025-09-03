@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams, useRouter } from "@tanstack/react-router";
+import { useParams} from "@tanstack/react-router";
 import { useEffect } from "react";
 import { getApplicantById, updateApplicantStatus } from "~/http/services/applicants";
 import Profile from "../an/Profile";

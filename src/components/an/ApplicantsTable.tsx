@@ -6,17 +6,6 @@ import { getStatusColor } from "~/lib/helper/getColorStatus";
 import { ApiApplicant } from "~/lib/interface/applicants";
 import { TanstackTable } from "../core/table/TanstackTable";
 import { AddUploadIcon } from "../icons/AddIcon";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import {
@@ -51,85 +40,39 @@ interface CandidateTableProps {
   isLoading?: boolean;
   isPending?: boolean;
   onRowClick?: (Candidate: Candidate) => void;
-  onDeleteCandidate?: (id: number) => void;
+  onDeleteCandidate: (id: number) => void;
+  onDeleteId: (field: any) => void;
 }
 
 const columnHelper = createColumnHelper<Candidate>();
 
 const ActionCell = ({
   candidate,
-  onDelete,
+  onDeleteId,
 }: {
   candidate: Candidate;
   onDelete?: (id: number) => void;
+  onDeleteId: (field: any) => void;
 }) => {
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleDelete = () => {
-    setIsDeleting(true);
-    onDelete?.(candidate.id);
+  const handleDelete = (e: any) => {
+    e.stopPropagation();
+    onDeleteId(candidate);
   };
 
   return (
     <div className="flex items-center gap-2">
-      <TooltipProvider>
-        <Tooltip>
-          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <AlertDialogTrigger asChild>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-9 w-9 p-0 hover:bg-red-50 cursor-pointer"
-                  disabled={isDeleting}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Trash2
-                    className={`text-red-500 ${isDeleting ? "animate-spin" : ""}`}
-                    strokeWidth={1.5}
-                  />
-                </Button>
-              </TooltipTrigger>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Delete Candidate</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure you want to delete "{candidate?.name}"? This
-                  action cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                {/* <AlertDialogAction
-                  onClick={handleDelete}
-                  className="bg-red-500 hover:bg-red-600 cursor-pointer"
-                  disabled={isDeleting}
-                >
-                  {isDeleting ? "Deleting..." : "Delete"}
-                </AlertDialogAction> */}
-                <Button
-                  className="bg-red-500 hover:bg-red-600 cursor-pointer"
-                  onClick={handleDelete}
-                  disabled={isDeleting}
-                >
-                  {isDeleting ? "Deleting..." : "Delete"}
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-          <TooltipContent>
-            <p className="text-lg-t 2xl:text-xs 3xl:!text-sm">Delete</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Trash2
+        className={`text-red-500 w-4 h-4 hover:bg-red-50 cursor-pointer`}
+        strokeWidth={1.5}
+        onClick={(e) => handleDelete(e)}
+      />
     </div>
   );
 };
 
 export const columns = (
-  onDeleteCandidate?: (id: number) => void
+  onDeleteId: (field: any) => void
 ): ColumnDef<Candidate, any>[] => [
   columnHelper.accessor("avatar", {
     header: () => <span className="pl-1">Name</span>,
@@ -187,7 +130,10 @@ export const columns = (
     id: "actions",
     header: () => <span>Actions</span>,
     cell: ({ row }) => (
-      <ActionCell candidate={row.original} onDelete={onDeleteCandidate} />
+      <ActionCell
+        candidate={row.original}
+        onDeleteId={onDeleteId}
+      />
     ),
     enableSorting: false,
     size: 20,
@@ -196,14 +142,14 @@ export const columns = (
 
 export function CandidateTable({
   candidatesData,
-  onDeleteCandidate,
   isLoading,
+  onDeleteId,
 }: CandidateTableProps) {
   const search: { search_string?: string; role?: string } = useSearch({
     from: "/_header/_applicants",
   });
   const navigate = useNavigate();
-  const {applicant_id: id} = useParams({strict:false})
+  const { applicant_id: id } = useParams({ strict: false });
   const [searchValue, setSearchValue] = useState(search.search_string ?? "");
   const [selectedRole, setSelectedRole] = useState(search.role ?? "");
 
@@ -217,7 +163,7 @@ export function CandidateTable({
         },
         replace: true,
       });
-          }, 500);
+    }, 500);
 
     return () => clearTimeout(handler);
   }, [searchValue, selectedRole, navigate]);
@@ -288,7 +234,7 @@ export function CandidateTable({
         ) : (
           <TanstackTable
             data={candidatesData}
-            columns={columns(onDeleteCandidate)}
+            columns={columns(onDeleteId)}
             onRowClick={handleRowClick}
           />
         )}

@@ -34,28 +34,14 @@ export function TanstackTable({columns, data, height, onRowClick}: TanstackTable
     columnResizeMode: 'onChange',
   })
 
-  const [selectedRow, setSelectedRow] = useState<string | number | null>(() => {
-    if (applicant_id) {
-      return parseInt(applicant_id);
-    }
-    const storedId = localStorage.getItem('selectedRow')
-    return storedId ? JSON.parse(storedId) : null
-  })
+  const selectedRow = applicant_id ? parseInt(applicant_id) : null;
 
-  useEffect(() => {
-    if (!applicant_id) {
-      localStorage.removeItem('selectedRow');
-      setSelectedRow(null);
-    }
-  }, [applicant_id]);
-
-  const handleRowClick = (row: any) => {
-    setSelectedRow(row.id);
-    localStorage.setItem('selectedRow', JSON.stringify(row.id));
-    if (onRowClick) {
-      onRowClick(row.original);
-    }
+const handleRowClick = (row: any) => {
+  const candidateId = row.original.id;
+  if (onRowClick) {
+    onRowClick(row.original);
   }
+}
 
   return (
     <div className="pl-2 w-full">
@@ -86,7 +72,7 @@ export function TanstackTable({columns, data, height, onRowClick}: TanstackTable
               </tr>
             ) : (
               table.getRowModel().rows.map(row => (
-                <tr key={row.id} className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${selectedRow === row.id ? 'bg-[#f4f3f3]' : ''}`} onClick={() => handleRowClick(row)}>
+                <tr key={row.id} className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${selectedRow === (row.original as { id: string | number }).id ? 'bg-[#f4f3f3]' : ''}`} onClick={() => handleRowClick(row)}>
                   {row.getVisibleCells().map(cell => (
                     <td key={cell.id} style={{ width: cell.column.getSize() }} className='text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%]' >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
