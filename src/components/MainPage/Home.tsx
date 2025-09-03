@@ -56,6 +56,7 @@ export function Home() {
         });
         return response.data;
       },
+     
       getNextPageParam: (lastPage) =>
         (lastPage && lastPage?.paginationInfo?.next_page) || undefined,
       initialPageParam: 1,
@@ -106,12 +107,9 @@ export function Home() {
 
   const handleDeleteCandidate = (id: number) => {
     deleteApplicantMutation.mutate(id, {
-      onSuccess: (deletedId) => {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["applicants"] });
         queryClient.invalidateQueries({ queryKey: ["stats"] });
-        if (String(params.applicant_id) === String(deletedId)) {
-          navigate({ to: "/applicants", replace: true });
-        }
       },
     });
   };

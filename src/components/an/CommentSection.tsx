@@ -14,12 +14,12 @@ const CardComponent = ({ name, msg, time } : {name: string, msg: string, time: s
       <Avatar className="w-7 h-7 rounded-full bg-[#c7c9cd] border flex items-center justify-center text-white">
           <p className="text-black text-sm 3xl:!text-base">{name.charAt(0).toUpperCase()}</p>
         </Avatar>
-          <h3 className="text-[15px] 3xl:!text-lg text-normal text-[#181616]">{name}</h3>
+          <h3 className="text-[15px] 3xl:!text-lg text-normal text-[#181616] capitalize">{name}</h3>
           <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">
             {time}
           </p>
         </div>
-        <p className="text-xs 3xl:!text-sm text-[#4F4F4F] font-normal pl-10">{msg}</p>
+        <p className="text-xs 3xl:!text-sm text-[#4F4F4F] font-normal pl-10 capitalize">{msg}</p>
       </CardContent>
     </Card>
   );

@@ -8,7 +8,7 @@ import { CommentDetails } from "./CommentDetails";
 export function Resume() {
   const {applicant_id: id} = useParams({strict:false})
   const queryClient = useQueryClient();
-
+console.log(id,"iddddd")
   const {data: resume, isFetching} = useQuery({
     queryKey: [`resume-${id}`, id],
     queryFn: async () => {

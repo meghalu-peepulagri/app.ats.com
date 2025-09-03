@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import React, { useState } from 'react';
 import { createUserAPI, uploadFileAPI, UserFormData, } from '~/http/services/users';
@@ -27,7 +27,6 @@ export const AddUserContainer: React.FC = () => {
   const [message, setMessage] = useState('');
   const [fileInput, setFileInput] = useState<File | null>(null);
   const queryClient = useQueryClient();
-
   const fileUploadMutation = useMutation({
     mutationFn: uploadFileAPI,
     onSuccess: (data) => {
@@ -48,9 +47,10 @@ export const AddUserContainer: React.FC = () => {
 
   const { mutateAsync: createUser, isPending: isCreating } = useMutation({
     mutationFn: (formData: UserFormData) => createUserAPI(formData),
-    onSuccess: () => {
+    onSuccess:async () => {
+      await queryClient.refetchQueries({ queryKey: ["applicants"] });
+      await queryClient.refetchQueries({ queryKey: ["stats"] });
       navigate({ to: "/applicants" });
-      queryClient.invalidateQueries({ queryKey: ["applicants"] });
     },
     onError: (error: any) => {
       if (error.status === 422) {

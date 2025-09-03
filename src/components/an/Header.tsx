@@ -32,10 +32,10 @@ export function Header({
             <div className="w-8 h-8 border border-black/30 rounded-full flex items-center justify-center bg-black/30"><ProfileIcon /></div>
             <div className="flex items-center space-x-2 leading-tight">
               <div>
-                <p className="text-[13px] 3xl:!text-sm text-[#333]">
+                <p className="text-[13px] 3xl:!text-sm text-[#333] capitalize">
                   {adminName}
                 </p>
-                <p className="text-[11px] 3xl:!text-xs text-[#444C5E]">
+                <p className="text-[11px] 3xl:!text-xs text-[#444C5E] capitalize">
                   {adminrole}
                 </p>
               </div>

@@ -1,4 +1,4 @@
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ListFilter, Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -203,21 +203,21 @@ export function CandidateTable({
     from: "/_header/_applicants",
   });
   const navigate = useNavigate();
-
+  const {applicant_id: id} = useParams({strict:false})
   const [searchValue, setSearchValue] = useState(search.search_string ?? "");
   const [selectedRole, setSelectedRole] = useState(search.role ?? "");
 
   useEffect(() => {
     const handler = setTimeout(() => {
       navigate({
-        to: "/applicants",
+        to: id !== undefined ? `/applicants/${id}` : `/applicants`,
         search: {
           ...(searchValue ? { search_string: searchValue } : {}),
           ...(selectedRole ? { role: selectedRole } : {}),
         },
         replace: true,
       });
-    }, 500);
+          }, 500);
 
     return () => clearTimeout(handler);
   }, [searchValue, selectedRole, navigate]);
