@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams, useRouter } from "@tanstack/react-router";
+import { useParams} from "@tanstack/react-router";
 import { useEffect } from "react";
 import { getApplicantById, updateApplicant } from "~/http/services/applicants";
 import Profile from "../an/Profile";
@@ -8,7 +8,6 @@ import { CommentDetails } from "./CommentDetails";
 export function Resume() {
   const {applicant_id: id} = useParams({strict:false})
   const queryClient = useQueryClient();
-console.log(id,"iddddd")
   const {data: resume, isFetching} = useQuery({
     queryKey: [`resume-${id}`, id],
     queryFn: async () => {
