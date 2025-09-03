@@ -25,6 +25,16 @@ export const getStatusColor = (status: string | null) => {
         bg: "bg-cyan-100",
         text: "text-cyan-800",
       };
+    case "SCHEDULE INTERVIEW":
+      return {
+        bg: "bg-yellow-100",
+        text: "text-yellow-800",
+      };
+    case "INTERVIEWED":
+      return {
+        bg: "bg-green-100",
+        text: "text-green-800",
+      };
     default:
       return {
         bg: "bg-gray-100",
