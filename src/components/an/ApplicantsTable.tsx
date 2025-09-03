@@ -175,7 +175,7 @@ export const columns = (
           className={`px-3 py-0.5 rounded-full text-[13px] 3xl:!text-base w-35 text-ellipsis overflow-hidden ${statusColor.bg} ${statusColor.text}`}
         >
           {(status &&
-            status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()) ||
+            status.charAt(0).toUpperCase() + status.replace(/_/g, " ").slice(1).toLowerCase()) ||
             "--"}
         </span>
       );
