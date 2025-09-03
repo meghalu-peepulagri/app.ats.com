@@ -6,7 +6,6 @@ import Profile from "../an/Profile";
 import { CommentDetails } from "./CommentDetails";
 
 export function Resume() {
-  // const { applicant_id:id } = useParams({ from: "/_header/_applicants/applicants/$applicant_id/" });
   const {applicant_id: id} = useParams({strict:false})
   const queryClient = useQueryClient();
 

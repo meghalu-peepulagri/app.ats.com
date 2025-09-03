@@ -9,7 +9,7 @@ import { deleteApplicant, getAllApplicants, getStatsAPI } from "~/http/services/
 const apiApplicantToCandidate = (records: ApiApplicant): Candidate => ({
   id: records.id,
   avatar: records.avatar,
-  name: records.firstname + " " + records.lastName,
+  name: records.firstname.charAt(0).toUpperCase()+records.firstname.slice(1).toLowerCase() + " " + records.lastName.charAt(0).toUpperCase()+records.lastName.slice(1).toLowerCase(),
   position: records.role,
   status: records.status?.toUpperCase() || null,
 });
@@ -18,7 +18,7 @@ export function Home() {
   const search: { search_string?: string; role?: string } = useSearch({ from: "/_header/_applicants" });
   const queryClient = useQueryClient();
 
-  const { data: statsData } = useQuery({
+  const { data: statsData} = useQuery({
     queryKey: ["stats"],
     queryFn: async () => {
       const response = await getStatsAPI();
@@ -26,7 +26,7 @@ export function Home() {
     },
   });
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
     useInfiniteQuery({
       queryKey: ["applicants", search.search_string, search.role],
       queryFn: async ({ pageParam = 1 }) => {
@@ -131,7 +131,7 @@ export function Home() {
           <CandidateTable 
             candidatesData={candidatesData}
             onDeleteCandidate={handleDeleteCandidate}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <div
             ref={loadMoreRef}

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import React, { useState } from 'react';
 import { AddUserCard } from '../../an/AddUser';
 import { createUserAPI, uploadFileAPI, UserFormData, } from '~/http/services/users';
@@ -49,8 +49,8 @@ export const AddUserContainer: React.FC = () => {
   const { mutateAsync: createUser, isPending } = useMutation({
     mutationFn: (formData: UserFormData) => createUserAPI(formData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["applicants"], exact: false });
       navigate({ to: "/applicants" });
+      queryClient.invalidateQueries({ queryKey: ["applicants"], exact: false });
     },
     onError: (error: any) => {
       if (error.status === 422) {

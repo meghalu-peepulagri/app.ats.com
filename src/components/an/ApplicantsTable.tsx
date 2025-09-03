@@ -1,24 +1,11 @@
-import { Button } from "../ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { ListFilter, Search, Trash2, X } from "lucide-react";
+import { ListFilter, Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { AddUploadIcon } from "../icons/AddIcon";
+import { getStatusColor } from "~/lib/helper/getColorStatus";
+import { ApiApplicant } from "~/lib/interface/applicants";
 import { TanstackTable } from "../core/table/TanstackTable";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Input } from "../ui/input";
+import { AddUploadIcon } from "../icons/AddIcon";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,9 +17,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
-import { getStatusColor } from "~/lib/helper/getColorStatus";
-import { ApiApplicant } from "~/lib/interface/applicants";
-import { useQueryClient } from "@tanstack/react-query";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 export interface Candidate {
   id: number;
@@ -50,6 +49,7 @@ interface CandidateTableProps {
     total?: number;
   };
   isLoading?: boolean;
+  isPending?: boolean;
   onRowClick?: (Candidate: Candidate) => void;
   onDeleteCandidate?: (id: number) => void;
 }
@@ -62,6 +62,7 @@ const ActionCell = ({
 }: {
   candidate: Candidate;
   onDelete?: (id: number) => void;
+  isPending?: boolean;
 }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -91,7 +92,7 @@ const ActionCell = ({
                   disabled={isDeleting}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <Trash2
+                    <Trash2
                     className={`text-red-500 ${isDeleting ? "animate-spin" : ""}`}
                     strokeWidth={1.5}
                   />
@@ -184,7 +185,7 @@ export const columns = (
     id: "actions",
     header: () => <span>Actions</span>,
     cell: ({ row }) => (
-      <ActionCell candidate={row.original} onDelete={onDeleteCandidate} />
+      <ActionCell candidate={row.original} onDelete={onDeleteCandidate}/>
     ),
     enableSorting: false,
     size: 20,

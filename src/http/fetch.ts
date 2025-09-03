@@ -8,11 +8,6 @@ interface IAPIResponse {
   message?: any;
 }
 
-interface ImportMeta {
-  env: {
-    VITE_PUBLIC_API_URL: string;
-  };
-}
 class FetchService {
   authStatusCodes: number[] = [401, 403, 404,422];
   authErrorURLs: string[] = [
