@@ -1,4 +1,4 @@
-import { LoaderCircle, TrashIcon } from "lucide-react";
+import { LoaderCircle, Plus, TrashIcon } from "lucide-react";
 import { BackIcon } from "../icons/BackIcon";
 import { UploadIcon } from "../icons/uploadicon";
 import { Button } from "../ui/button";
@@ -18,48 +18,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-
-interface UploadedFile {
-  name: string;
-  size: string;
-  type: string;
-}
-
-interface UserFormData {
-  role: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  experience: string;
-  resume_key_path?: string;
-}
-
-interface AddUserCardProps {
-  formData: UserFormData;
-  uploadedFile: UploadedFile | null;
-  errors: Record<string, string[]>;
-  isSubmitting: boolean;
-  onChange: (data: Partial<UserFormData>) => void;
-  onSave: () => void;
-  handleBackNavigate: () => void;
-  handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDeleteFile: () => void;
-  loading?: boolean;
-  message?: string;
-  roleList?: string[];
-}
+import { AddUserCardProps, UserFormData } from "~/lib/interface/user";
+import { useState } from "react";
+import { AddRoleDialog } from "~/lib/helper/AddRoleDialog";
 
 export function AddUserCard({
-  formData = {
-    role: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone: '',
-    experience: '',
-    resume_key_path: '',
-  },
+  formData,
   uploadedFile,
   errors,
   message,
@@ -71,13 +35,17 @@ export function AddUserCard({
   handleDeleteFile,
   loading = false,
   roleList = [],
+  onAddRole,
+  isAdding
 }: AddUserCardProps) {
   const fileName = uploadedFile?.name ?? '';
   const isLong = fileName?.length > 20;
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleInputChange = (field: keyof UserFormData, value: string) => {
     onChange({ [field]: value });
   };
+
   return (
     <div className="w-full max-w-3xl 3xl:!max-w-4xl h-full mx-auto">
       <CardTitle className="text-gray-700 flex items-center mb-2">
@@ -101,12 +69,12 @@ export function AddUserCard({
               >
                 Role
               </Label>
+              <div className="flex gap-2">
               <Select
                 value={formData?.role ?? ''}
                 onValueChange={(value) => handleInputChange('role', value)}
               >
                 <SelectTrigger
-                  id="role"
                   className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                 >
                   <SelectValue placeholder="Please select role" />
@@ -119,6 +87,8 @@ export function AddUserCard({
                   ))}
                 </SelectContent>
               </Select>
+              <Button className="bg-[#F6F6F6] hover:bg-[#F6F6F6] text-black cursor-pointer" onClick={() => setDialogOpen(true)}><Plus/></Button>
+              </div>
               {errors.role && (
                 <p className="text-red-500 text-xs">{errors.role}</p>
               )}
@@ -317,6 +287,20 @@ export function AddUserCard({
           <p className="text-red-500 text-xs pl-5 p-1">{message}</p>
         )}
       </Card>
+
+      <AddRoleDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onSave={async (role) => {
+          try {
+            await onAddRole(role); 
+            setDialogOpen(false);
+          } catch (error) {
+            console.error("Failed to add role", error);
+          }
+        }}
+        loading={isAdding}
+      />
       
       <div className="flex justify-end gap-2 w-full p-3 pr-0">
         <Button

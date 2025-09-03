@@ -138,6 +138,15 @@ export const createUserAPI = async (userData: UserFormData) => {
   }
 };
 
+export const addUserAPI = async({role}: {role: string}) => {
+  try {
+    const response = await $fetch.post("/roles", {role});
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const getListRolesAPI = async () => {
   try {
     const response = await $fetch.get("/roles");
