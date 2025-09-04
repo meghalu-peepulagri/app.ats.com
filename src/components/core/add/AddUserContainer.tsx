@@ -70,7 +70,6 @@
         }
       }
     }, [userData, isEditMode]);
-    console.log(userData, 'userData');
 
     useEffect(() => {
       if (candidate && !userData) {
@@ -93,7 +92,6 @@
         }
       }
     }, [candidate, userData]);
-    console.log(candidate,'candidate');
 
     const { data: roles } = useQuery({
       queryKey: ["roles"],
@@ -167,7 +165,6 @@
       setDialogOpen(false);
       },
       onError: (error: any) => {
-        console.log(error);
         setAddRoleMessage(
           error.message || "Failed to add role. Please try again."
         );
