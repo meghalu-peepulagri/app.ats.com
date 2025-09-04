@@ -1,17 +1,25 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import React, { useState } from "react";
+import { useNavigate, useRouterState, useSearch } from "@tanstack/react-router";
+import React, { useEffect, useState } from "react";
 import {
   addUserAPI,
   createUserAPI,
   getListRolesAPI,
+  updateUserAPI,
   uploadFileAPI,
   UserFormData,
 } from "~/http/services/users";
 import { AddUserCard } from "../../an/AddUser";
+import { getApplicantById } from "~/http/services/applicants";
 
 export const AddUserContainer: React.FC = () => {
   const navigate = useNavigate();
+  const routerState = useRouterState();
+  const search = useSearch({ strict: false }) as any;
+
+  const isEditMode = 'id' in search && !!search.id;
+  const candidate = (routerState.location.state as any)?.candidate;
+
   const [formData, setFormData] = useState<UserFormData>({
     role: "",
     first_name: "",
@@ -21,15 +29,68 @@ export const AddUserContainer: React.FC = () => {
     experience: "",
     resume_key_path: "",
   });
+
   const [uploadedFile, setUploadedFile] = useState<{
     name: string;
     size: string;
     type: string;
   } | null>(null);
+
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [message, setMessage] = useState("");
   const [fileInput, setFileInput] = useState<File | null>(null);
   const queryClient = useQueryClient();
+
+  const { data: userData, isLoading: isLoadingUser } = useQuery({
+    queryKey: ["user", search.id],
+    queryFn: () => getApplicantById(search.id ),
+    enabled: isEditMode && !!search?.id,
+  });
+
+  useEffect(() => {
+    if (userData && isEditMode) {
+      setFormData({
+        id: userData?.data?.id,
+        role: userData?.data?.role ?? "",
+        first_name: userData?.data?.first_name ?? "",
+        last_name: userData?.data?.last_name ?? "",
+        email: userData?.data?.email ?? "",
+        phone: userData?.data?.phone ?? "",
+        experience: userData?.data?.experience ?? "",
+        resume_key_path: userData?.data?.resume_key_path ?? "",
+      });
+
+      if (userData?.data?.resume_key_path) {
+        setUploadedFile({
+          name: userData.resume_file_name ?? "Uploaded Resume",
+          size: userData.resume_file_size ?? "",
+          type: userData.resume_file_type ?? "PDF",
+        });
+      }
+    }
+  }, [userData, isEditMode]);
+
+  useEffect(() => {
+    if (candidate && !userData) {
+      setFormData({
+        role: candidate.role ?? "",
+        first_name: candidate.first_name ?? "",
+        last_name: candidate.last_name ?? "",
+        email: candidate.email ?? "",
+        phone: candidate.phone ?? "",
+        experience: candidate.experience ?? "",
+        resume_key_path: candidate.resume_key_path ?? "",
+      });
+
+      if (candidate.resume_key_path) {
+        setUploadedFile({
+          name: candidate.resume_file_name ?? "Uploaded Resume",
+          size: candidate.resume_file_size ?? "",
+          type: candidate.resume_file_type ?? "PDF",
+        });
+      }
+    }
+  }, [candidate, userData]);
 
   const { data: roles } = useQuery({
     queryKey: ["roles"],
@@ -67,8 +128,25 @@ export const AddUserContainer: React.FC = () => {
       navigate({ to: "/applicants" });
     },
     onError: (error: any) => {
-      if (error.status === 422) {
-        if (error.errors) setErrors(error.errors);
+      if (error.status === 422 && error.errors) {
+        setErrors(error.errors);
+      } else {
+        setMessage(error?.message);
+      }
+    },
+  });
+
+  const { mutateAsync: updateUser, isPending: isUpdating } = useMutation({
+    mutationFn: (formData: UserFormData) =>
+      updateUserAPI(candidate?.id ?? "", formData),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["applicants"] });
+      await queryClient.refetchQueries({ queryKey: ["stats"] });
+      navigate({ to: "/applicants" });
+    },
+    onError: (error: any) => {
+      if (error.status === 422 && error.errors) {
+        setErrors(error.errors);
       } else {
         setMessage(error?.message);
       }
@@ -80,7 +158,7 @@ export const AddUserContainer: React.FC = () => {
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ["roles"] });
     },
-  })
+  });
 
   const handleAddRole = async (role: string) => {
     try {
@@ -104,13 +182,11 @@ export const AddUserContainer: React.FC = () => {
     if (file) {
       const allowedTypes = ["pdf", "doc", "docx"];
       const fileExtension = file.name.split(".").pop()?.toLowerCase();
-      if (!fileExtension || !allowedTypes.includes(fileExtension)) {
-        return;
-      }
+      if (!fileExtension || !allowedTypes.includes(fileExtension)) return;
+
       const maxSize = 5 * 1024 * 1024;
-      if (file.size > maxSize) {
-        return;
-      }
+      if (file.size > maxSize) return;
+
       setFileInput(file);
       setUploadedFile({
         name: file.name,
@@ -127,12 +203,8 @@ export const AddUserContainer: React.FC = () => {
     setFormData((prev) => ({ ...prev, resume_key_path: "" }));
     setErrors((prev) => ({ ...prev, resume_key_path: [] }));
 
-    const fileInput = document.getElementById(
-      "file-upload"
-    ) as HTMLInputElement;
-    if (fileInput) {
-      fileInput.value = "";
-    }
+    const fileInput = document.getElementById("file-upload") as HTMLInputElement;
+    if (fileInput) fileInput.value = "";
   };
 
   const handleFormChange = (data: Partial<UserFormData>) => {
@@ -143,15 +215,20 @@ export const AddUserContainer: React.FC = () => {
       }
     });
   };
+
   const handleSave = () => {
-    createUser(formData);
+    if (isEditMode) {
+      updateUser(formData); // ✅ call update if in edit mode
+    } else {
+      createUser(formData);
+    }
   };
 
   const handleBackNavigate = () => {
     navigate({ to: "/applicants" });
   };
 
-  const isLoading = fileUploadMutation.isPending || isCreating;
+  const isLoading = fileUploadMutation.isPending || isCreating || isUpdating || isLoadingUser;
 
   return (
     <div className="mt-4">
@@ -159,7 +236,7 @@ export const AddUserContainer: React.FC = () => {
         formData={formData}
         uploadedFile={uploadedFile}
         errors={errors}
-        isSubmitting={isCreating}
+        isSubmitting={isCreating || isUpdating}
         onChange={handleFormChange}
         onSave={handleSave}
         handleBackNavigate={handleBackNavigate}
@@ -170,6 +247,7 @@ export const AddUserContainer: React.FC = () => {
         roleList={rolesList}
         onAddRole={handleAddRole}
         isAdding={isAdding}
+        isEdit={isEditMode}
       />
     </div>
   );

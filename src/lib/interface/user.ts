@@ -29,4 +29,5 @@ export interface UploadedFile {
     roleList?: string[];
     onAddRole: (role: string) => void;
     isAdding?: boolean;
+    isEdit?: boolean;
   }

@@ -1,6 +1,7 @@
 import { $fetch } from "../fetch";
 
 export interface UserFormData {
+  id?: number;
   role: string;
   first_name: string;
   last_name: string;
@@ -125,6 +126,22 @@ export const getDownloadUrlAPI = async ({ file_key }: { file_key: string }) => {
 export const createUserAPI = async (userData: UserFormData) => {
   try {
     const response = await $fetch.post("/applicants", userData);
+    if (!response.success) {
+      throw {
+        status: response.status,
+        message: response.data?.message || response.message || "Request failed",
+        errors: response.data?.errors,
+      };
+    }
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateUserAPI = async (id: number, userData: UserFormData) => {
+  try {
+    const response = await $fetch.patch(`/applicants/${id}`, userData);
     if (!response.success) {
       throw {
         status: response.status,

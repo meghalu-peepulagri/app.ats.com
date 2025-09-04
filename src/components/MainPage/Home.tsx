@@ -17,7 +17,7 @@ import {
 import { useParams } from "@tanstack/react-router";
 import DeleteDialog from "~/lib/helper/DeleteDialog";
 
-const apiApplicantToCandidate = (records: ApiApplicant): Candidate => ({
+const apiApplicantToCandidate = (records: ApiApplicant) : any => ({
   id: records.id,
   avatar: records.avatar,
   name:
@@ -160,10 +160,13 @@ export function Home() {
   };
   const handleDeleteConfirm = () => {
     if (deleteId) {
-      deleteApplicantMutation.mutate(deleteId.id);
+      deleteApplicantMutation.mutate(deleteId.id, {
+        onSettled: () => {
+          setIsDeleteDialogOpen(false);
+        }
+      });
     }
   };
-
   return (
     <div>
       <div className="flex items-center justify-center gap-4 m-2">

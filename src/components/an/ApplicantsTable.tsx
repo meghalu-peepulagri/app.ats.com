@@ -1,6 +1,6 @@
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { ListFilter, Search, Trash2 } from "lucide-react";
+import { ListFilter, MoreVertical, Pencil, Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getStatusColor } from "~/lib/helper/getColorStatus";
 import { ApiApplicant } from "~/lib/interface/applicants";
@@ -18,6 +18,7 @@ import {
 import { TruncatedText } from "~/lib/helper/TruncatedText";
 import { useQuery } from "@tanstack/react-query";
 import { getListRolesAPI } from "~/http/services/users";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export interface Candidate {
   id: number;
@@ -25,6 +26,10 @@ export interface Candidate {
   name: string;
   position: string;
   status: string | null;
+  email: string;
+  phone: string;
+  experience: string;
+  resume_key_path: string;
 }
 
 interface CandidateTableProps {
@@ -48,22 +53,62 @@ const ActionCell = ({
   onDeleteId,
 }: {
   candidate: Candidate;
-  onDelete?: (id: number) => void;
   onDeleteId: (field: any) => void;
 }) => {
+  const navigate = useNavigate();
+
   const handleDelete = (e: any) => {
     e.stopPropagation();
     onDeleteId(candidate);
   };
 
+const handleEdit = (e: any) => {
+  e.stopPropagation();
+  
+  const fullApplicantData = {
+    id: candidate.id,
+    role: candidate.position,
+    first_name: candidate.name.split(' ')[0],
+    last_name: candidate.name.split(' ').slice(1).join(' '),
+    email: candidate.email,
+    phone: candidate.phone,
+    experience: candidate.experience,
+    resume_key_path: candidate.resume_key_path,
+  };
+  navigate({
+    to: "/add_user",
+    search: { id: candidate.id },
+    state: { candidate: fullApplicantData } as any
+  });
+};
+
   return (
-    <div className="flex items-center justify-center gap-2">
-      <Trash2
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0" onClick={(e) => e.stopPropagation()}>
+          <MoreVertical className="w-4 h-4" /> 
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-25 p-1" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-gray-100 cursor-pointer"
+          onClick={handleEdit}
+        >
+          <Pencil className="w-4 h-4" />
+          Edit
+        </button>
+        <button
+          className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm text-red-600 hover:bg-red-100 cursor-pointer"
+          onClick={handleDelete}
+        >
+          <Trash2
         className={`text-red-500 w-4 h-4 hover:bg-red-50 cursor-pointer`}
         strokeWidth={1.5}
-        onClick={(e) => handleDelete(e)}
       />
-    </div>
+          Delete
+        </button>
+      </PopoverContent>
+    </Popover>
   );
 };
 
