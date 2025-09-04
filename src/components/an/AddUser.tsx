@@ -309,7 +309,7 @@ export function AddUserCard({
           setDialogOpen(isOpen);
           if (!isOpen) setAddRoleMessage(null);
         }}
-        onSave={(roleName) => onAddRole(roleName)}
+        onSave={(roleName) => onAddRole(Number(roleName))}
         loading={isAdding}
         message={addRoleMessage}
       />

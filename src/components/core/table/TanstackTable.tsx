@@ -67,7 +67,7 @@ const handleRowClick = (row: any) => {
             {table.getRowModel().rows.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} className="text-center p-0">
-                  <NoTableDataIcon className='w-115 h-100'/>
+                  <NoTableDataIcon className='w-100 h-100'/>
                 </td>
               </tr>
             ) : (
