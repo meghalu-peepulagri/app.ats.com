@@ -102,7 +102,11 @@ export const AddUserContainer: React.FC = () => {
     },
   });
 
-  const rolesList = roles?.data?.map((role: any) => role.role);
+  const rolesList = roles?.data?.map((role: any) => ({
+    id: role.id,
+    role: role.role,
+  }));
+  const rolesNameList = roles?.data?.map((role: any) => role.role);
 
   const fileUploadMutation = useMutation({
     mutationFn: uploadFileAPI,
@@ -140,7 +144,7 @@ export const AddUserContainer: React.FC = () => {
 
   const { mutateAsync: updateUser, isPending: isUpdating } = useMutation({
     mutationFn: (formData: UserFormData) =>
-      updateUserAPI(candidate?.id ?? "", formData),
+      updateUserAPI(search.id, formData),
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ["applicants"] });
       await queryClient.refetchQueries({ queryKey: ["stats"] });
@@ -156,7 +160,7 @@ export const AddUserContainer: React.FC = () => {
   });
 
   const { mutateAsync: addRole, isPending: isAdding } = useMutation({
-    mutationFn: (role: string) => addUserRoleAPI({ role }),
+    mutationFn: ({ role, role_id }: { role: string, role_id: number}) => addUserRoleAPI({ role, role_id }),
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ["roles"] });
       setAddRoleMessage(null);
@@ -172,7 +176,15 @@ export const AddUserContainer: React.FC = () => {
 
   const handleAddRole = async (role: string) => {
     try {
-      await addRole(role);
+      const roleObject = rolesList?.find((r: any) => r.role === role);
+      
+      if (!roleObject) {
+        const newRoleId = Math.max(...(rolesList?.map((r: any) => r.id) || [0])) + 1;
+        await addRole({ role, role_id: newRoleId });
+      } else {
+        await addRole({ role, role_id: roleObject.id });
+      }
+      
       setFormData((prev) => ({ ...prev, role }));
     } catch (error) {
       console.error("Failed to add role", error);
@@ -254,7 +266,7 @@ export const AddUserContainer: React.FC = () => {
         handleDeleteFile={handleDeleteFile}
         loading={isLoading}
         message={message}
-        roleList={rolesList}
+        roleList={rolesNameList}
         onAddRole={handleAddRole}
         isAdding={isAdding}
         isEdit={isEditMode}
