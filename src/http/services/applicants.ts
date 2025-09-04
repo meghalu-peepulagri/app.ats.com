@@ -1,6 +1,5 @@
 import { $fetch } from "../fetch";
 import { ApplicantPayload, ApplicantResponse, ApplicantErrorResponse, CommentPayload, ApplicantsResponse, getAllApplicantsParams } from "../../lib/interface/applicants";
-import { UserFormData } from "./users";
 
 export const getAllApplicants = async ({ pageParam = 1, search_string, role }: getAllApplicantsParams): Promise<ApplicantsResponse> => {
   const params = new URLSearchParams({

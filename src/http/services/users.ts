@@ -94,9 +94,9 @@ export const updateUserAPI = async (id: number, userData: UserFormData) => {
   }
 };
 
-export const addUserRoleAPI = async(role: string) => {
+export const addUserRoleAPI = async(role_id: number) => {
   try {
-    const response = await $fetch.post("/roles", {role});
+    const response = await $fetch.post("/roles", {role_id});
     return response.data;
   } catch (error) {
     throw error;

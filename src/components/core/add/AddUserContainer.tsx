@@ -160,7 +160,7 @@ export const AddUserContainer: React.FC = () => {
   });
 
   const { mutateAsync: addRole, isPending: isAdding } = useMutation({
-    mutationFn: (role:string) => addUserRoleAPI(role),
+    mutationFn: (role_id:number) => addUserRoleAPI(role_id),
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ["roles"] });
       setAddRoleMessage(null);
@@ -174,9 +174,9 @@ export const AddUserContainer: React.FC = () => {
     },
   });
 
-  const handleAddRole = async (role: string) => {
+  const handleAddRole = async (role_id: number) => {
     try {
-      const newRoleResponse = await addRole(role); 
+      const newRoleResponse = await addRole(role_id); 
       const newRole = newRoleResponse?.data;
       setFormData((prev) => ({
         ...prev,

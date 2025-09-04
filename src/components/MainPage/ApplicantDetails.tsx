@@ -34,8 +34,8 @@ export function Resume() {
   });
 
   const updateRoleMutation = useMutation({
-    mutationFn: async (newRole: string) => {
-      return updateApplicantRole(id as string, { role: newRole });
+    mutationFn: async (newRoleId: number) => {
+      return updateApplicantRole(id as string, { role_id: newRoleId });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`resume-${id}`, id] });
@@ -115,11 +115,11 @@ export function Resume() {
           .replace(/, /g, " ")}
         resumeOptions={resumeOptions}
         statusValue={resume?.status === "SCHEDULE_INTERVIEW" ? "Schedule Interview" : capitalize(resume?.status)}
-        roleValue={resume?.role_id}
+        roleValue={resume?.role_id ? String(resume.role_id) : ""}
         resume_key_path={resume?.resume_key_path || ""}
         downloadUrl={resume?.presignedUrl.download_url || ""}
         onStatusChange={(newStatus) => updateStatusMutation.mutate(newStatus)}
-        onRoleChange={(newRoleId) => updateRoleMutation.mutate(newRoleId)}
+        onRoleChange={(newRoleId) => updateRoleMutation.mutate(parseInt(newRoleId))}
         roleOptions={roleOptions ?? []}
       />
       <CommentDetails applicant_id={resume?.id} />

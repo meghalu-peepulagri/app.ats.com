@@ -134,7 +134,7 @@ export const columns = (
     header: () => <span>Position</span>,
     cell: ({ row }) => <TruncatedText text={row.original?.position ?? ""} />,
     enableSorting: true,
-    size: 140,
+    size: 130,
   }),
   columnHelper.accessor("status", {
     header: () => <span>Status</span>,
@@ -156,7 +156,7 @@ export const columns = (
       );
     },
     enableSorting: false,
-    size: 135,
+    size: 150,
   }),
   columnHelper.display({
     id: "actions",
@@ -234,7 +234,7 @@ export function CandidateTable({
                 : setSelectedRole(value)
             }
           >
-            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0 p-1">
+            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-42 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0 p-1">
               <div className="flex items-center gap-1">
                 <ListFilter className="w-4 h-4" />
                 <SelectValue placeholder="Select Role" />
@@ -256,7 +256,7 @@ export function CandidateTable({
               placeholder="Search by name"
               value={searchValue}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="border rounded !h-7 text-[#4F4F4F] bg-[rgba(0,0,0,0.08)] font-normal py-1 pl-6 text-sm w-45 absolute focus:ring-0 focus-visible:ring-0 border-none"
+              className="border rounded !h-7 text-[#4F4F4F] bg-[rgba(0,0,0,0.08)] font-normal py-1 pl-6 text-sm w-42 absolute focus:ring-0 focus-visible:ring-0 border-none"
             />
           </div>
         </div>

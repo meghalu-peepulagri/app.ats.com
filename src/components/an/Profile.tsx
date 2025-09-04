@@ -51,7 +51,7 @@ export default function Profile({
   roleOptions,
 }: ProfileProps) {
   const [status, setStatus] = useState(statusValue);
-  const [roles, setRoles] = useState(roleValue);
+  const [roles, setRoles] = useState(roleValue ?? '');
 
   useEffect(() => {
     setStatus(statusValue);
