@@ -12,8 +12,7 @@ interface ValidationErrors {
   email?: string;
   password?: string;
 }
-
-export default function LoginCard({ onLogin, isLoading = false, error = "" } : any) {
+export default function LoginCard({ onLogin, isLoading = false, error = "", clearError } : any) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,6 +45,22 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
     }
   };
 
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    if (validationErrors.email) {
+      setValidationErrors((prev) => ({ ...prev, email: undefined }));
+    }
+    if (error && clearError) clearError(); 
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    if (validationErrors.password) {
+      setValidationErrors((prev) => ({ ...prev, password: undefined }));
+    }
+    if (error && clearError) clearError();
+  };
+
   return (
     <div className="relative overflow-hidden h-screen w-full bg-[url('/Login.webp')] bg-cover bg-fixed bg-no-repeat">
        <div className="absolute inset-0 grid grid-cols-2 items-center justify-items-center">
@@ -62,11 +77,6 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
                 Please Enter Login Details Below
               </CardDescription>
             </div>
-            {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-600 text-sm">
-                {error}
-              </div>
-            )}
             <form onSubmit={handleLoginClick} className="space-y-5 flex-1 max-w-sm">
               <div className="space-y-1">
                 <Input
@@ -74,7 +84,7 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
                   type="email"
                   placeholder="Email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => handleEmailChange(e.target.value)}
                   className="bg-white rounded-md py-2.5 px-3 w-full text-sm h-12"
                   disabled={isLoading}
                 />
@@ -89,7 +99,7 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => handlePasswordChange(e.target.value)}
                     className="bg-white rounded-md py-2.5 px-3 pr-10 w-full text-sm !h-12"
                     disabled={isLoading}
                   />
@@ -115,6 +125,11 @@ export default function LoginCard({ onLogin, isLoading = false, error = "" } : a
                 </div> */}
               </div>
 
+              {error && (
+              <div className="text-red-600 text-sm">
+                {error}
+              </div>
+            )}
               <div className="pt-2">
                 <Button 
                   type="submit"

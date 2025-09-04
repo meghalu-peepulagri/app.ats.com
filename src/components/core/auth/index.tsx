@@ -69,6 +69,7 @@ export function LoginContainer() {
       onLogin={login}
       isLoading={isLoadingPhone}
       error={error}
+      clearError={() => setError("")}
     />
   );
 }
