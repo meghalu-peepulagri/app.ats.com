@@ -30,4 +30,8 @@ export interface UploadedFile {
     onAddRole: (role: string) => void;
     isAdding?: boolean;
     isEdit?: boolean;
+    addRoleMessage?: string;
+    setAddRoleMessage?: React.Dispatch<React.SetStateAction<string | null>>
+    dialogOpen: boolean;
+    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
   }

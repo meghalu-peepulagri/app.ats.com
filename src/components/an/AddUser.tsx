@@ -35,13 +35,16 @@ export function AddUserCard({
   handleDeleteFile,
   loading = false,
   roleList = [],
-  onAddRole,
   isAdding,
   isEdit = false,
+  addRoleMessage,
+  setAddRoleMessage = () => {},
+  onAddRole,
+  dialogOpen,
+  setDialogOpen,
 }: AddUserCardProps) {
   const fileName = uploadedFile?.name ?? "";
   const isLong = fileName?.length > 20;
-  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleInputChange = (field: keyof UserFormData, value: string) => {
     onChange({ [field]: value });
@@ -302,16 +305,13 @@ export function AddUserCard({
 
       <AddRoleDialog
         open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSave={async (role) => {
-          try {
-            await onAddRole(role);
-            setDialogOpen(false);
-          } catch (error) {
-            console.error("Failed to add role", error);
-          }
+        onOpenChange={(isOpen) => {
+          setDialogOpen(isOpen);
+          if (!isOpen) setAddRoleMessage(null);
         }}
+        onSave={(roleName) => onAddRole(roleName)}
         loading={isAdding}
+        message={addRoleMessage}
       />
 
       <div className="flex justify-end gap-2 w-full p-3 pr-0">

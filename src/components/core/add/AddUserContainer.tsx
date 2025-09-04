@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouterState, useSearch } from "@tanstack/react-router";
 import React, { useEffect, useState } from "react";
 import {
-  addUserAPI,
+  addUserRoleAPI,
   createUserAPI,
   getListRolesAPI,
   updateUserAPI,
@@ -40,6 +40,8 @@ export const AddUserContainer: React.FC = () => {
   const [message, setMessage] = useState("");
   const [fileInput, setFileInput] = useState<File | null>(null);
   const queryClient = useQueryClient();
+  const [addRoleMessage, setAddRoleMessage] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const { data: userData, isLoading: isLoadingUser } = useQuery({
     queryKey: ["user", search.id],
@@ -154,9 +156,17 @@ export const AddUserContainer: React.FC = () => {
   });
 
   const { mutateAsync: addRole, isPending: isAdding } = useMutation({
-    mutationFn: (role: string) => addUserAPI({ role }),
+    mutationFn: (role: string) => addUserRoleAPI({ role }),
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ["roles"] });
+      setAddRoleMessage(null);
+    setDialogOpen(false);
+    },
+    onError: (error: any) => {
+      console.log(error);
+      setAddRoleMessage(
+        error.message || "Failed to add role. Please try again."
+      );
     },
   });
 
@@ -218,7 +228,7 @@ export const AddUserContainer: React.FC = () => {
 
   const handleSave = () => {
     if (isEditMode) {
-      updateUser(formData); // ✅ call update if in edit mode
+      updateUser(formData);
     } else {
       createUser(formData);
     }
@@ -248,6 +258,10 @@ export const AddUserContainer: React.FC = () => {
         onAddRole={handleAddRole}
         isAdding={isAdding}
         isEdit={isEditMode}
+        addRoleMessage={addRoleMessage ?? ''}
+        setAddRoleMessage={setAddRoleMessage}
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
       />
     </div>
   );

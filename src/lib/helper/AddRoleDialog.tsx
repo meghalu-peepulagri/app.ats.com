@@ -9,12 +9,14 @@ import {
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { useState } from "react";
+import { set } from "zod";
 
 interface AddRoleDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSave: (role: string) => void;
   loading?: boolean;
+  message?: string;
 }
 
 export const AddRoleDialog: React.FC<AddRoleDialogProps> = ({
@@ -22,29 +24,29 @@ export const AddRoleDialog: React.FC<AddRoleDialogProps> = ({
   onOpenChange,
   onSave,
   loading,
+  message
 }) => {
   const [newRole, setNewRole] = useState("");
 
   const capitalizeWords = (value: string) => {
-    const hasTrailingSpace = value.endsWith(" ");
-    let words = value
-      .split(" ")
-      .map((word) =>
-        word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : ""
-      )
-      .join(" ");
-
-    return hasTrailingSpace ? words + " " : words;
+    return value.replace(/\b\w/g, (match) => match.toUpperCase());
   };
 
   const handleSave = () => {
     if (!newRole.trim()) return;
     onSave(newRole);
-    setNewRole("");
   };
 
+  const handleOpenChange = (isOpen: boolean) => {
+    onOpenChange(isOpen);
+    if (!isOpen) {
+      setNewRole("");
+    }
+  };
+
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Add New Role</DialogTitle>
@@ -54,9 +56,18 @@ export const AddRoleDialog: React.FC<AddRoleDialogProps> = ({
           <Input
             placeholder="Enter new role"
             value={newRole}
-            onChange={(e) => setNewRole(capitalizeWords(e.target.value))}
+            onChange={(e) => {
+              const nativeEvent = e.nativeEvent as InputEvent;
+              if (nativeEvent.inputType === 'deleteContentBackward') {
+                setNewRole(e.target.value);
+              } else {
+                setNewRole(capitalizeWords(e.target.value));
+              }
+            }}
             disabled={loading}
           />
+
+          {message && <p className="text-sm text-red-500">{message}</p>}
         </div>
 
         <DialogFooter className="flex justify-end gap-2 mt-4">
