@@ -27,7 +27,7 @@ export interface UploadedFile {
     loading?: boolean;
     message?: string;
     roleList?: string[];
-    onAddRole: (role: number) => void;
+    onAddRole: (role: string) => void;
     isAdding?: boolean;
     isEdit?: boolean;
     addRoleMessage?: string;
