@@ -90,7 +90,7 @@ export function AddUserCard({
                 </Select>
                 <Button
                   className="bg-[#F6F6F6] hover:bg-[#F6F6F6] text-black cursor-pointer"
-                  onClick={() => setDialogOpen(true)}
+                  onClick={() => {setDialogOpen(true), setAddRoleMessage("")}}
                 >
                   <Plus />
                 </Button>
@@ -309,7 +309,7 @@ export function AddUserCard({
         open={dialogOpen}
         onOpenChange={(isOpen) => {
           setDialogOpen(isOpen);
-          if (!isOpen) setAddRoleMessage(null);
+          if (!isOpen) setAddRoleMessage("");
         }}
         onSave={(roleName) => onAddRole(roleName)}
         loading={isAdding}

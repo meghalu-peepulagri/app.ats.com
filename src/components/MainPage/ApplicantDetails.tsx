@@ -9,12 +9,13 @@ import {
 import Profile from "../an/Profile";
 import { CommentDetails } from "./CommentDetails";
 import { getListRolesAPI } from "~/http/services/users";
+import LoadingComponent from "~/lib/helper/LoadingComponent";
 
 export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
   const queryClient = useQueryClient();
 
-  const { data: resume, isFetching } = useQuery({
+  const { data: resume, isFetching} = useQuery({
     queryKey: [`resume-${id}`, id],
     queryFn: async () => {
       const response = await getApplicantById(id as string);
@@ -60,11 +61,11 @@ export function Resume() {
     queryClient.invalidateQueries({ queryKey: [`resume-${id}`, id] });
   }, [id, queryClient]);
 
-  if (isFetching) {
-    return (
-      <div className="flex justify-center items-center h-full">Loading...</div>
-    );
-  }
+  // if (isFetching) {
+  //   return (
+  //     <LoadingComponent loading={isFetching} />
+  //   );
+  // }
 
   const name =
     resume?.first_name.charAt(0).toUpperCase() +
@@ -94,7 +95,11 @@ export function Resume() {
   );
 
   return (
-    <div className="flex gap-2 w-[100%]">
+    <div className="flex gap-2 w-full">
+      {isFetching ? 
+        <LoadingComponent loading={isFetching} />
+        : (
+      <>
       <Profile
         key={id}
         avatarImg={avatarImg || "A"}
@@ -123,6 +128,8 @@ export function Resume() {
         roleOptions={roleOptions ?? []}
       />
       <CommentDetails applicant_id={resume?.id} />
+      </>
+      )}
     </div>
   );
 }

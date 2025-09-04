@@ -23,7 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { string } from "zod";
+import LoadingComponent from "~/lib/helper/LoadingComponent";
 
 export interface Candidate {
   id: number;
@@ -69,7 +69,6 @@ const ActionCell = ({
 
   const handleEdit = (e: any) => {
     e.stopPropagation();
-
     const fullApplicantData = {
       id: candidate.id,
       role: candidate.position,
@@ -84,6 +83,7 @@ const ActionCell = ({
       to: "/add_user",
       search: { id: candidate.id },
       state: { candidate: fullApplicantData } as any,
+      replace: true,
     });
   };
 
@@ -223,7 +223,12 @@ export function CandidateTable({
   };
 
   return (
-    <div className="bg-white rounded-lg border-none">
+    <div className="bg-white rounded-lg border-none w-full">
+      {isLoading ? (
+          <div className="flex items-center justify-center h-full text-gray-500 text-sm w-full px-[165px]">
+          </div>
+        ) : (
+          <>
       <div className="flex items-center justify-between py-2 px-1">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Select
@@ -269,18 +274,14 @@ export function CandidateTable({
         </Button>
       </div>
       <div className="overflow-auto h-[calc(100vh-180px)] rounded-sm w-full">
-        {isLoading ? (
-          <div className="flex items-center justify-center h-full text-gray-500 text-sm w-full px-[165px]">
-            Loading Applicants...
-          </div>
-        ) : (
           <TanstackTable
             data={candidatesData}
             columns={columns(onDeleteId)}
             onRowClick={handleRowClick}
           />
-        )}
       </div>
+      </>
+        )}
     </div>
   );
 }

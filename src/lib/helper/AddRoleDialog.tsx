@@ -35,6 +35,7 @@ export const AddRoleDialog: React.FC<AddRoleDialogProps> = ({
   const handleSave = () => {
     if (!newRole.trim()) return;
     onSave(newRole);
+    setNewRole("");
   };
 
   const handleOpenChange = (isOpen: boolean) => {

@@ -43,7 +43,7 @@
     const [addRoleMessage, setAddRoleMessage] = useState<string | null>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
 
-    const { data: userData, isLoading: isLoadingUser } = useQuery({
+    const { data: userData, isLoading: isLoadingUser , refetch} = useQuery({
       queryKey: ["user", search.id],
       queryFn: () => getApplicantById(search.id ),
       enabled: isEditMode && !!search?.id,
@@ -147,6 +147,7 @@
         await queryClient.refetchQueries({ queryKey: ["applicants"] });
         await queryClient.refetchQueries({ queryKey: ["stats"] });
         navigate({ to: "/applicants" });
+        refetch();
       },
       onError: (error: any) => {
         if (error.status === 422 && error.errors) {
@@ -175,7 +176,6 @@
       try {
         const newRoleResponse = await addRole(role);
         const newRole = newRoleResponse?.data;
-    
         if (newRole?.id) {
           setFormData((prev) => ({
             ...prev,
