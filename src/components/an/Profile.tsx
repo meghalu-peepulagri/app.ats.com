@@ -127,7 +127,7 @@ export default function Profile({
               <SelectTrigger className="px-3 rounded border border-black/30 shadow-none !h-8 w-45 text-sm 3xl:!text-base font-normal focus:ring-0 focus-visible:ring-0">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="max-h-[250px] overflow-y-auto">
                 {roleOptions.map((role : any) => (
                   <SelectItem key={role.id} value={String(role.id)}>
                     {role.name}
@@ -141,7 +141,7 @@ export default function Profile({
               >
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="max-h-[250px] overflow-y-auto">
                 {resumeOptions.map((option, index) => (
                   <SelectItem key={index} value={option}>
                     {option}

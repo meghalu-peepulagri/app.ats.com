@@ -240,7 +240,7 @@ export function CandidateTable({
                 <SelectValue placeholder="Select Role" />
               </div>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-[250px] overflow-y-auto">
               <SelectItem value="All">All</SelectItem>
               {roleList?.map((role: any) => (
                 <SelectItem key={role.id} value={String(role.id)}>
