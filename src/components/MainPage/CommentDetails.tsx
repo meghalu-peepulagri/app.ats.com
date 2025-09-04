@@ -56,7 +56,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const commentsData = comments?.pages
-    ?.flatMap((page: any) => page.records ?? [])
+    ?.flatMap((page: any) => page?.records ?? [])
     .map((comment: any) => ({
       id: comment?.id,
       name: comment?.user?.name,

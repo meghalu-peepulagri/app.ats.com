@@ -1,66 +1,5 @@
+import { FileUploadResponse, UserFormData } from "~/lib/interface/user";
 import { $fetch } from "../fetch";
-
-export interface UserFormData {
-  id?: number;
-  role: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  experience: string;
-  resume_key_path?: string;
-}
-
-export interface FileUploadPayload {
-  file_type: string;
-  file_name: string;
-}
-
-export interface FileUploadResponse {
-  status: number;
-  success: boolean;
-  message: string;
-  data: {
-    data: {
-      file_path: string;
-      file_name: string;
-      upload_url?: string;
-      file_key: string;
-    };
-  };
-}
-
-export interface CreateUserResponse {
-  status: number;
-  success: boolean;
-  message: string;
-  data: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone: string;
-    role: string;
-    resume_key_path: string;
-    experience: string;
-    created_at: string;
-  };
-}
-
-export interface UserErrorResponse {
-  status: number;
-  success: false;
-  message: string;
-  errData: {
-    role?: string[];
-    first_name?: string[];
-    last_name?: string[];
-    email?: string[];
-    phone?: string[];
-    experience?: string[];
-    resume_key_path?: string[];
-  };
-}
 
 export const uploadFileAPI = async (
   file: File
@@ -155,9 +94,9 @@ export const updateUserAPI = async (id: number, userData: UserFormData) => {
   }
 };
 
-export const addUserRoleAPI = async({role, role_id}: {role: string, role_id: number}) => {
+export const addUserRoleAPI = async(role: string) => {
   try {
-    const response = await $fetch.post("/roles", {role, role_id});
+    const response = await $fetch.post("/roles", {role});
     return response.data;
   } catch (error) {
     throw error;

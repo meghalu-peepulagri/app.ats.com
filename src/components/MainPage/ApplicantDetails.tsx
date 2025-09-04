@@ -9,7 +9,6 @@ import {
 import Profile from "../an/Profile";
 import { CommentDetails } from "./CommentDetails";
 import { getListRolesAPI } from "~/http/services/users";
-import { getStatusColor } from "~/lib/helper/getColorStatus";
 
 export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
@@ -52,7 +51,10 @@ export function Resume() {
       return response;
     },
   });
-  const roleOptions = roles?.data?.map((role: any) => role.role);
+  const roleOptions = roles?.data?.map((role: any) => ({
+    id: role.id,
+    name: role.role
+  }));
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: [`resume-${id}`, id] });
@@ -113,12 +115,12 @@ export function Resume() {
           .replace(/, /g, " ")}
         resumeOptions={resumeOptions}
         statusValue={resume?.status === "SCHEDULE_INTERVIEW" ? "Schedule Interview" : capitalize(resume?.status)}
-        roleValue={resume?.role || ""}
+        roleValue={resume?.role_id}
         resume_key_path={resume?.resume_key_path || ""}
         downloadUrl={resume?.presignedUrl.download_url || ""}
         onStatusChange={(newStatus) => updateStatusMutation.mutate(newStatus)}
-        onRoleChange={(newRole) => updateRoleMutation.mutate(newRole)}
-        roleOptions={roleOptions || []}
+        onRoleChange={(newRoleId) => updateRoleMutation.mutate(newRoleId)}
+        roleOptions={roleOptions ?? []}
       />
       <CommentDetails applicant_id={resume?.id} />
     </div>

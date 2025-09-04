@@ -7,10 +7,10 @@ import {
   getListRolesAPI,
   updateUserAPI,
   uploadFileAPI,
-  UserFormData,
 } from "~/http/services/users";
 import { AddUserCard } from "../../an/AddUser";
 import { getApplicantById } from "~/http/services/applicants";
+import { UserFormData } from "~/lib/interface/user";
 
 export const AddUserContainer: React.FC = () => {
   const navigate = useNavigate();
@@ -21,12 +21,12 @@ export const AddUserContainer: React.FC = () => {
   const candidate = (routerState.location.state as any)?.candidate;
 
   const [formData, setFormData] = useState<UserFormData>({
-    role: "",
+    role_id: 0,
     first_name: "",
     last_name: "",
     email: "",
     phone: "",
-    experience: "",
+    experience: 0,
     resume_key_path: "",
   });
 
@@ -52,13 +52,12 @@ export const AddUserContainer: React.FC = () => {
   useEffect(() => {
     if (userData && isEditMode) {
       setFormData({
-        id: userData?.data?.id,
-        role: userData?.data?.role ?? "",
+        role_id: userData?.data?.role_id ?? 0,
         first_name: userData?.data?.first_name ?? "",
         last_name: userData?.data?.last_name ?? "",
         email: userData?.data?.email ?? "",
         phone: userData?.data?.phone ?? "",
-        experience: userData?.data?.experience ?? "",
+        experience: userData?.data?.experience ?? 0,
         resume_key_path: userData?.data?.resume_key_path ?? "",
       });
 
@@ -71,16 +70,17 @@ export const AddUserContainer: React.FC = () => {
       }
     }
   }, [userData, isEditMode]);
+   console.log(userData, 'userData');
 
   useEffect(() => {
     if (candidate && !userData) {
       setFormData({
-        role: candidate.role ?? "",
+        role_id: candidate.role_id ?? undefined,
         first_name: candidate.first_name ?? "",
         last_name: candidate.last_name ?? "",
         email: candidate.email ?? "",
         phone: candidate.phone ?? "",
-        experience: candidate.experience ?? "",
+        experience: candidate.experience ?? 0,
         resume_key_path: candidate.resume_key_path ?? "",
       });
 
@@ -93,6 +93,7 @@ export const AddUserContainer: React.FC = () => {
       }
     }
   }, [candidate, userData]);
+  console.log(candidate,'candidate');
 
   const { data: roles } = useQuery({
     queryKey: ["roles"],
@@ -104,9 +105,8 @@ export const AddUserContainer: React.FC = () => {
 
   const rolesList = roles?.data?.map((role: any) => ({
     id: role.id,
-    role: role.role,
+    name: role.role,
   }));
-  const rolesNameList = roles?.data?.map((role: any) => role.role);
 
   const fileUploadMutation = useMutation({
     mutationFn: uploadFileAPI,
@@ -160,7 +160,7 @@ export const AddUserContainer: React.FC = () => {
   });
 
   const { mutateAsync: addRole, isPending: isAdding } = useMutation({
-    mutationFn: ({ role, role_id }: { role: string, role_id: number}) => addUserRoleAPI({ role, role_id }),
+    mutationFn: (role:string) => addUserRoleAPI(role),
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ["roles"] });
       setAddRoleMessage(null);
@@ -176,16 +176,12 @@ export const AddUserContainer: React.FC = () => {
 
   const handleAddRole = async (role: string) => {
     try {
-      const roleObject = rolesList?.find((r: any) => r.role === role);
-      
-      if (!roleObject) {
-        const newRoleId = Math.max(...(rolesList?.map((r: any) => r.id) || [0])) + 1;
-        await addRole({ role, role_id: newRoleId });
-      } else {
-        await addRole({ role, role_id: roleObject.id });
-      }
-      
-      setFormData((prev) => ({ ...prev, role }));
+      const newRoleResponse = await addRole(role); 
+      const newRole = newRoleResponse?.data;
+      setFormData((prev) => ({
+        ...prev,
+        role_id: newRole?.id,
+      }));
     } catch (error) {
       console.error("Failed to add role", error);
     }
@@ -236,7 +232,7 @@ export const AddUserContainer: React.FC = () => {
         setErrors((prev) => ({ ...prev, [key]: [] }));
       }
     });
-  };
+  };  
 
   const handleSave = () => {
     if (isEditMode) {
@@ -266,7 +262,7 @@ export const AddUserContainer: React.FC = () => {
         handleDeleteFile={handleDeleteFile}
         loading={isLoading}
         message={message}
-        roleList={rolesNameList}
+        roleList={rolesList}
         onAddRole={handleAddRole}
         isAdding={isAdding}
         isEdit={isEditMode}

@@ -18,7 +18,12 @@ import {
 import { TruncatedText } from "~/lib/helper/TruncatedText";
 import { useQuery } from "@tanstack/react-query";
 import { getListRolesAPI } from "~/http/services/users";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { string } from "zod";
 
 export interface Candidate {
   id: number;
@@ -62,31 +67,35 @@ const ActionCell = ({
     onDeleteId(candidate);
   };
 
-const handleEdit = (e: any) => {
-  e.stopPropagation();
-  
-  const fullApplicantData = {
-    id: candidate.id,
-    role: candidate.position,
-    first_name: candidate.name.split(' ')[0],
-    last_name: candidate.name.split(' ').slice(1).join(' '),
-    email: candidate.email,
-    phone: candidate.phone,
-    experience: candidate.experience,
-    resume_key_path: candidate.resume_key_path,
+  const handleEdit = (e: any) => {
+    e.stopPropagation();
+
+    const fullApplicantData = {
+      id: candidate.id,
+      role: candidate.position,
+      first_name: candidate.name.split(" ")[0],
+      last_name: candidate.name.split(" ").slice(1).join(" "),
+      email: candidate.email,
+      phone: candidate.phone,
+      experience: candidate.experience,
+      resume_key_path: candidate.resume_key_path,
+    };
+    navigate({
+      to: "/add_user",
+      search: { id: candidate.id },
+      state: { candidate: fullApplicantData } as any,
+    });
   };
-  navigate({
-    to: "/add_user",
-    search: { id: candidate.id },
-    state: { candidate: fullApplicantData } as any
-  });
-};
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0" onClick={(e) => e.stopPropagation()}>
-          <MoreVertical className="w-4 h-4" /> 
+        <Button
+          variant="ghost"
+          className="h-8 w-8 p-0"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <MoreVertical className="w-4 h-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-25 p-1" onClick={(e) => e.stopPropagation()}>
@@ -102,9 +111,9 @@ const handleEdit = (e: any) => {
           onClick={handleDelete}
         >
           <Trash2
-        className={`text-red-500 w-4 h-4 hover:bg-red-50 cursor-pointer`}
-        strokeWidth={1.5}
-      />
+            className={`text-red-500 w-4 h-4 hover:bg-red-50 cursor-pointer`}
+            strokeWidth={1.5}
+          />
           Delete
         </button>
       </PopoverContent>
@@ -171,17 +180,20 @@ export function CandidateTable({
   const navigate = useNavigate();
   const { applicant_id: id } = useParams({ strict: false });
   const [searchValue, setSearchValue] = useState(search.search_string ?? "");
-  const [selectedRole, setSelectedRole] = useState(search.role ?? "");
+  const [selectedRole, setSelectedRole] = useState(search.role);
 
-  const {data: roles} = useQuery({
+  const { data: roles } = useQuery({
     queryKey: ["roles"],
     queryFn: async () => {
       const response = await getListRolesAPI();
       return response;
-    }
-  })
+    },
+  });
 
-  const roleList = roles?.data?.map((role: any) => role.role); 
+  const roleList = roles?.data?.map((role: any) => ({
+    id: role.id,
+    name: role.role,
+  }));
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -215,9 +227,11 @@ export function CandidateTable({
       <div className="flex items-center justify-between py-2 px-1">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Select
-            value={selectedRole}
+            value={selectedRole ? String(selectedRole) : ""}
             onValueChange={(value) =>
-              value === "All" ? setSelectedRole("") : setSelectedRole(value)
+              value === "All"
+                ? setSelectedRole("")
+                : setSelectedRole(value)
             }
           >
             <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0 p-1">
@@ -228,9 +242,9 @@ export function CandidateTable({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="All">All</SelectItem>
-              {roleList?.map((role: string) => (
-                <SelectItem key={role} value={role}>
-                  {role}
+              {roleList?.map((role: any) => (
+                <SelectItem key={role.id} value={String(role.id)}>
+                  {role.name}
                 </SelectItem>
               ))}
             </SelectContent>

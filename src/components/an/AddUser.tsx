@@ -75,16 +75,16 @@ export function AddUserCard({
               </Label>
               <div className="flex gap-2">
                 <Select
-                  value={formData?.role ?? ""}
-                  onValueChange={(value) => handleInputChange("role", value)}
+                  value={formData.role_id ? String(formData.role_id) : ""}
+                  onValueChange={(value) => onChange({ role_id: Number(value) })}
                 >
                   <SelectTrigger className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0">
                     <SelectValue placeholder="Please select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    {roleList.map((role) => (
-                      <SelectItem key={role} value={role}>
-                        {role}
+                    {roleList.map((role: any) => (
+                      <SelectItem key={role.id} value={String(role.id)}>
+                        {role.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
