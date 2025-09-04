@@ -45,7 +45,7 @@ export function AddUserCard({
   const fileName = uploadedFile?.name ?? "";
   const isLong = fileName?.length > 20;
 
-  const handleInputChange = (field: keyof UserFormData, value: String | number) => {
+  const handleInputChange = (field: keyof UserFormData, value: string | number) => {
     onChange({ [field]: value });
   };
 
@@ -201,7 +201,7 @@ export function AddUserCard({
                 <Input
                   id="experience"
                   placeholder="Enter candidate experience"
-                  value={formData.experience}
+                  value={formData?.experience ?? ""}
                   onChange={(e) =>
                     handleInputChange(
                       "experience",

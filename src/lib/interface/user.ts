@@ -5,12 +5,12 @@ export interface UploadedFile {
   }
   
   export interface UserFormData {
-    role_id: number;
+    role_id: number | null;
     first_name: string;
     last_name: string;
     email: string;
     phone: string;
-    experience?: number;
+    experience?: number | null;
     resume_key_path?: string;
   }
   
@@ -67,7 +67,7 @@ export interface UploadedFile {
       phone: string;
       role_id: number;
       resume_key_path: string;
-      experience: number;
+      experience: number | null;
       created_at: string;
     };
   }
@@ -82,7 +82,7 @@ export interface UploadedFile {
       last_name?: string[];
       email?: string[];
       phone?: string[];
-      experience?: number;
+      experience?: number | null;
       resume_key_path?: string[];
     };
   }

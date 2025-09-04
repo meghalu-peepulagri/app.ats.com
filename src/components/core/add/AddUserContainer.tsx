@@ -21,12 +21,12 @@
     const candidate = (routerState.location.state as any)?.candidate;
 
     const [formData, setFormData] = useState<UserFormData>({
-      role_id: 0,
+      role_id: null,
       first_name: "",
       last_name: "",
       email: "",
       phone: "",
-      experience: 0,
+      experience: null,
       resume_key_path: "",
     });
 
