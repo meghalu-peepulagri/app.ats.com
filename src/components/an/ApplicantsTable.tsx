@@ -181,6 +181,14 @@ export function CandidateTable({
   const { applicant_id: id } = useParams({ strict: false });
   const [searchValue, setSearchValue] = useState(search.search_string ?? "");
   const [selectedRole, setSelectedRole] = useState(search.role);
+  const [debouncedValue, setDebouncedValue] = useState(searchValue);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(searchValue);
+    }, 500);
+  
+    return () => clearTimeout(handler);
+  }, [searchValue]);
 
   const { data: roles } = useQuery({
     queryKey: ["roles"],
