@@ -52,6 +52,7 @@ export function Resume() {
       return response;
     },
   });
+
   const roleOptions = roles?.data?.map((role: any) => ({
     id: role.id,
     name: role.role

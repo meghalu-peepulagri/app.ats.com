@@ -3,10 +3,11 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  ColumnDef,
+  Row,
 } from "@tanstack/react-table";
-import { FC } from "react";
 import { NoTableDataIcon } from "~/components/icons/NoTableDataIcon";
-import { Skeleton } from "~/components/ui/skeleton"; 
+import { Skeleton } from "~/components/ui/skeleton";
 
 export type Person = {
   firstName: string;
@@ -18,22 +19,24 @@ export type Person = {
   id: string | number;
 };
 
-interface TanstackTableProps {
-  columns: any;
-  data: any;
+interface TanstackTableProps<T> {
+  columns: ColumnDef<T, any>[];
+  data: T[];
   loading?: boolean;
   height?: string | number;
-  onRowClick?: (row: any) => void;
+  onRowClick?: (row: Row<T>) => void;
   lastRowRef?: (node: HTMLTableRowElement | null) => void;
+  isFetchingNextPage?: boolean;
 }
 
-export const TanstackTable: FC<TanstackTableProps> = ({
+export const TanstackTable = <T,>({
   columns,
   data,
   loading = false,
   lastRowRef,
   onRowClick,
-}) => {
+  isFetchingNextPage,
+}: TanstackTableProps<T>) => {
   const { applicant_id } = useParams({ strict: false });
 
   const table = useReactTable({
@@ -45,16 +48,10 @@ export const TanstackTable: FC<TanstackTableProps> = ({
 
   const selectedRow = applicant_id ? parseInt(applicant_id) : null;
 
-  const handleRowClick = (row: any) => {
-    if (onRowClick) {
-      onRowClick(row.original);
-    }
-  };
-
   return (
     <div className="pl-2 w-full overflow-auto h-[calc(100vh-180px)]">
       <table className="w-full border-none overflow-auto">
-        <thead className="sticky top-0 z-30 text-left h-10 bg-[#DBFCD9] font-normal !rounded-sm">
+        <thead className="sticky top-0 z-30 text-left h-10 bg-[#DBFCD9] font-normal rounded-sm">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -72,12 +69,11 @@ export const TanstackTable: FC<TanstackTableProps> = ({
             </tr>
           ))}
         </thead>
-
         <tbody>
-          {loading ? (
+          {loading && !isFetchingNextPage ? (
             Array.from({ length: 6 }).map((_, rowIndex) => (
               <tr key={`skeleton-${rowIndex}`} className="border-b border-[#F1F1F1] h-10">
-                {columns.map((col: any, colIndex: number) => (
+                {columns.map((_, colIndex) => (
                   <td key={`skeleton-cell-${colIndex}`} className="p-2">
                     <Skeleton className="h-6 w-full rounded-md" />
                   </td>
@@ -96,29 +92,35 @@ export const TanstackTable: FC<TanstackTableProps> = ({
               </td>
             </tr>
           ) : (
-            table.getRowModel().rows.map((row: any) => (
-              <tr
-                key={row.id}
-                ref={lastRowRef && row.index === data.length - 1 ? lastRowRef : undefined}
-                className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${
-                  selectedRow === row.original.id ? "bg-[#f4f3f3]" : ""
-                }`}
-                onClick={() => handleRowClick(row)}
-              >
-                {row.getVisibleCells().map((cell: any) => (
-                  <td
-                    key={cell.id}
-                    style={{ width: cell.column.getSize() }}
-                    className="text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%]"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))
+            table.getRowModel().rows.map((row, idx) => {
+              const isLast = idx === data.length - 1;
+              return (
+                <tr
+                  key={row.id}
+                  ref={isLast && lastRowRef ? lastRowRef : undefined}
+                  className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${
+                    selectedRow === (row.original as any).id ? "bg-[#f4f3f3]" : ""
+                  }`}
+                  onClick={() => onRowClick?.(row)}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      style={{ width: cell.column.getSize() }}
+                      className="text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%]"
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>
+      {isFetchingNextPage && (
+        <div className="text-center py-2 text-gray-500">Loading more...</div>
+      )}
     </div>
   );
 };

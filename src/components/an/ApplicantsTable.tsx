@@ -1,9 +1,16 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ListFilter, MoreVertical, Pencil, Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import { getListRolesAPI } from "~/http/services/users";
 import { getStatusColor } from "~/lib/helper/getColorStatus";
-import { ApiApplicant } from "~/lib/interface/applicants";
+import { TruncatedText } from "~/lib/helper/TruncatedText";
 import { TanstackTable } from "../core/table/TanstackTable";
 import { AddUploadIcon } from "../icons/AddIcon";
 import { Button } from "../ui/button";
@@ -15,15 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { TruncatedText } from "~/lib/helper/TruncatedText";
-import { useQuery } from "@tanstack/react-query";
-import { getListRolesAPI } from "~/http/services/users";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "~/components/ui/popover";
-import LoadingComponent from "~/lib/helper/LoadingComponent";
 
 export interface Candidate {
   id: number;
@@ -39,17 +37,11 @@ export interface Candidate {
 
 interface CandidateTableProps {
   candidatesData?: Candidate[];
-  rawResponse?: {
-    records: ApiApplicant[];
-    paginationInfo?: any;
-    total?: number;
-  };
   isLoading?: boolean;
-  isPending?: boolean;
   onRowClick?: (Candidate: Candidate) => void;
-  onDeleteCandidate: (id: number) => void;
   onDeleteId: (field: any) => void;
   lastRowRef?: (node: HTMLTableRowElement | null) => void;
+  isFetchingNextPage?: boolean;
 }
 
 const columnHelper = createColumnHelper<Candidate>();
@@ -63,27 +55,28 @@ const ActionCell = ({
 }) => {
   const navigate = useNavigate();
 
-  const handleDelete = (e: any) => {
+  const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     onDeleteId(candidate);
   };
 
-  const handleEdit = (e: any) => {
+  const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const fullApplicantData = {
-      id: candidate.id,
-      role: candidate.position,
-      first_name: candidate.name.split(" ")[0],
-      last_name: candidate.name.split(" ").slice(1).join(" "),
-      email: candidate.email,
-      phone: candidate.phone,
-      experience: candidate.experience,
-      resume_key_path: candidate.resume_key_path,
-    };
     navigate({
       to: "/add_user",
       search: { id: candidate.id },
-      state: { candidate: fullApplicantData } as any,
+      state: {
+        candidate: {
+          id: candidate.id,
+          role: candidate.position,
+          first_name: candidate.name.split(" ")[0],
+          last_name: candidate.name.split(" ").slice(1).join(" "),
+          email: candidate.email,
+          phone: candidate.phone,
+          experience: candidate.experience,
+          resume_key_path: candidate.resume_key_path,
+        },
+      } as any,
       replace: true,
     });
   };
@@ -104,17 +97,13 @@ const ActionCell = ({
           className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-gray-100 cursor-pointer"
           onClick={handleEdit}
         >
-          <Pencil className="w-4 h-4" />
-          Edit
+          <Pencil className="w-4 h-4" /> Edit
         </button>
         <button
           className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm text-red-600 hover:bg-red-100 cursor-pointer"
           onClick={handleDelete}
         >
-          <Trash2
-            className={`text-red-500 w-4 h-4 hover:bg-red-50 cursor-pointer`}
-            strokeWidth={1.5}
-          />
+          <Trash2 className="text-red-500 w-4 h-4" strokeWidth={1.5} />
           Delete
         </button>
       </PopoverContent>
@@ -129,13 +118,13 @@ export const columns = (
     header: () => <span className="pl-1">Name</span>,
     cell: ({ row }) => <TruncatedText text={row.original?.name ?? ""} />,
     enableSorting: false,
-    size: 90,
+    size: 120,
   }),
   columnHelper.accessor("position", {
     header: () => <span>Position</span>,
     cell: ({ row }) => <TruncatedText text={row.original?.position ?? ""} />,
     enableSorting: true,
-    size: 130,
+    size: 120,
   }),
   columnHelper.accessor("status", {
     header: () => <span>Status</span>,
@@ -144,7 +133,7 @@ export const columns = (
       const statusColor = getStatusColor(status);
       return (
         <span
-          className={`px-2 py-0.5 rounded-full text-[13px] 3xl:!text-base text-ellipsis overflow-hidden ${statusColor.bg} ${statusColor.text}`}
+          className={`px-2 py-0.5 rounded-full text-[13px] text-ellipsis overflow-hidden ${statusColor.bg} ${statusColor.text}`}
         >
           {status
             ? status
@@ -157,7 +146,7 @@ export const columns = (
       );
     },
     enableSorting: false,
-    size: 150,
+    size: 160,
   }),
   columnHelper.display({
     id: "actions",
@@ -175,76 +164,57 @@ export function CandidateTable({
   isLoading,
   onDeleteId,
   lastRowRef,
+  isFetchingNextPage,
 }: CandidateTableProps) {
   const search: { search_string?: string; role?: string } = useSearch({
     from: "/_header/_applicants",
   });
   const navigate = useNavigate();
   const { applicant_id: id } = useParams({ strict: false });
+
   const [searchValue, setSearchValue] = useState(search.search_string ?? "");
   const [selectedRole, setSelectedRole] = useState(search.role);
-  const [debouncedValue, setDebouncedValue] = useState(searchValue);
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(searchValue);
-    }, 500);
-  
-    return () => clearTimeout(handler);
-  }, [searchValue]);
-
-  const { data: roles } = useQuery({
-    queryKey: ["roles"],
-    queryFn: async () => {
-      const response = await getListRolesAPI();
-      return response;
-    },
-  });
-
-  const roleList = roles?.data?.map((role: any) => ({
-    id: role.id,
-    name: role.role,
-  }));
 
   useEffect(() => {
     const handler = setTimeout(() => {
       navigate({
-        to: id !== undefined ? `/applicants/${id}` : `/applicants`,
+        to: id ? `/applicants/${id}` : `/applicants`,
         search: {
           ...(searchValue ? { search_string: searchValue } : {}),
           ...(selectedRole ? { role: selectedRole } : {}),
         },
         replace: true,
       });
-    }, 500);
-
+    }, 400);
     return () => clearTimeout(handler);
-  }, [searchValue, selectedRole, navigate]);
+  }, [searchValue, selectedRole, id, navigate]);
 
-  const handleSearchChange = (value: string) => {
-    setSearchValue(value);
-  };
+  const { data: roles } = useQuery({
+    queryKey: ["roles"],
+    queryFn: async () => (await getListRolesAPI()).data,
+  });
 
-  const handleRowClick = (candidate: Candidate) => {
-    navigate({
-      to: `/applicants/${candidate.id}`,
-      search,
-      replace: true,
-    });
+  const roleList = roles?.map((role: any) => ({
+    id: role.id,
+    name: role.role,
+  }));
+
+  const handleRowClick = (row: any) => {
+    const candidate = row.original;
+    navigate({ to: `/applicants/${candidate.id}`, search, replace: true });
   };
 
   return (
-    <div className="bg-white rounded-lg border-none w-full">
+    <div className="bg-white rounded-lg w-full">
       <div className="flex items-center justify-between py-2 px-1">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Select
-            value={selectedRole ? String(selectedRole) : ""}
+            value={selectedRole ?? ""}
             onValueChange={(value) =>
-              value === "All"
-                ? setSelectedRole("")
-                : setSelectedRole(value)
+              setSelectedRole(value === "All" ? "" : value)
             }
           >
-            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0 p-1">
+            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 p-1">
               <div className="flex items-center gap-1">
                 <ListFilter className="w-4 h-4" />
                 <SelectValue placeholder="Select position" />
@@ -259,35 +229,35 @@ export function CandidateTable({
               ))}
             </SelectContent>
           </Select>
+
           <div className="relative flex items-center">
             <Search className="w-4.5 h-4.5 pl-1 text-gray-500" />
             <Input
               type="search"
               placeholder="Search by name"
               value={searchValue}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              className="border rounded !h-7 text-[#4F4F4F] bg-[rgba(0,0,0,0.08)] font-normal py-1 pl-6 text-sm w-42 absolute focus:ring-0 focus-visible:ring-0 border-none"
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="border rounded !h-7 text-[#4F4F4F] bg-[rgba(0,0,0,0.08)] font-normal py-1 pl-6 text-sm w-42 absolute focus:ring-0 border-none"
             />
           </div>
         </div>
         <Button
           onClick={() => navigate({ to: "/add_user" })}
-          className="flex items-center gap-1 h-7 text-white  bg-[#05A155] hover:bg-[#05A155] cursor-pointer rounded-sm"
+          className="flex items-center gap-1 h-7 text-white bg-[#05A155] hover:bg-[#05A155] rounded-sm cursor-pointer"
         >
           <AddUploadIcon />
           Add
         </Button>
       </div>
-      <div className="rounded-sm w-full">
-          <TanstackTable
-            data={candidatesData}
-            columns={columns(onDeleteId)}
-            onRowClick={handleRowClick}
-            lastRowRef={lastRowRef}
-            loading={isLoading}
-          />
-      </div>
-      </div>
+      <TanstackTable
+        data={candidatesData ?? []}
+        columns={columns(onDeleteId)}
+        onRowClick={handleRowClick}
+        lastRowRef={lastRowRef}
+        loading={isLoading}
+        isFetchingNextPage={isFetchingNextPage}
+      />
+    </div>
   );
 }
 

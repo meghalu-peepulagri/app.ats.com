@@ -128,7 +128,7 @@ export default function Profile({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="max-h-[250px] overflow-y-auto">
-                {roleOptions.map((role : any) => (
+                {roleOptions?.map((role : any) => (
                   <SelectItem key={role.id} value={String(role.id)}>
                     {role.name}
                   </SelectItem>
@@ -142,7 +142,7 @@ export default function Profile({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="max-h-[250px] overflow-y-auto">
-                {resumeOptions.map((option, index) => (
+                {resumeOptions?.map((option, index) => (
                   <SelectItem key={index} value={option}>
                     {option}
                   </SelectItem>

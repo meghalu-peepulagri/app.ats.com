@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCommentsAPI, updateCommentById } from "~/http/services/applicants";
 import CommentsSection from "../an/CommentSection";
-import { useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import Cookies from "js-cookie";
 
 export function CommentDetails({ applicant_id }: { applicant_id: number }) {
@@ -14,11 +14,17 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
         const response = await getCommentsAPI(applicant_id, pageParam);
         return response.data;
       },
-      getNextPageParam: (lastPage) => {
-        const nextPage = lastPage?.paginationInfo?.next_page;
-        return nextPage || undefined;
-      },
       initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        if (!lastPage || !lastPage.paginationInfo) return undefined;
+        if (lastPage.paginationInfo.current_page < lastPage.paginationInfo.total_pages) {
+          return lastPage.paginationInfo.current_page + 1;
+        }
+        return undefined;
+      },
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
     });
 
   const addCommentMutation = useMutation({
@@ -33,30 +39,26 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
     },
   });
 
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    const currentRef = loadMoreRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastRowRef = useCallback(
+    (node: HTMLTableRowElement | null) => {
+      if (isFetching || isFetchingNextPage || !hasNextPage) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasNextPage) {
+            fetchNextPage();
+          }
+        },
+        { root: null, rootMargin: "0px", threshold: 1.0 }
+      );
+      if (node) observer.current.observe(node);
+    },
+    [isFetching, isFetchingNextPage, hasNextPage, fetchNextPage]
+  );
 
   const name = Cookies.get("name");
+  const commentsTotal = comments?.pages?.flatMap((page: any) => page?.records ?? []).length;
 
   const commentsData = comments?.pages
     ?.flatMap((page: any) => page?.records ?? [])
@@ -85,15 +87,10 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
           comments={commentsData}
           onSubmitComment={(newComment) => addCommentMutation.mutate(newComment)}
           isLoading={isFetching || addCommentMutation.isPending}
+          isFetchingNextPage={isFetchingNextPage}
+          lastRowRef={lastRowRef}
+          commentsTotal = {commentsTotal}
         />
-      )}
-      
-      {hasNextPage && (
-        <div ref={loadMoreRef} className="w-full bg-transparent flex items-center justify-center">
-          {isFetchingNextPage && (
-            <div className="text-sm text-gray-500">Loading more comments...</div>
-          )}
-        </div>
       )}
     </div>
   );

@@ -5,8 +5,13 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import CandidateTable, { Candidate } from "../an/ApplicantsTable";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Outlet, useNavigate, useSearch } from "@tanstack/react-router";
+import { useCallback, useRef, useState } from "react";
+import {
+  Outlet,
+  useNavigate,
+  useSearch,
+  useParams,
+} from "@tanstack/react-router";
 import { CandidateCountCard } from "../an/SingleCard";
 import { ApiApplicant } from "~/lib/interface/applicants";
 import {
@@ -14,7 +19,6 @@ import {
   getAllApplicants,
   getStatsAPI,
 } from "~/http/services/applicants";
-import { useParams } from "@tanstack/react-router";
 import DeleteDialog from "~/lib/helper/DeleteDialog";
 import { HiredIcon } from "../icons/stats/HiredIcon";
 import { GroupIcon } from "../icons/stats/GroupIcon";
@@ -22,7 +26,7 @@ import { ScreenedIcon } from "../icons/stats/ScreenedIcon";
 import { InterviewScheduledIcon } from "../icons/stats/InterviewScheduledIcon";
 import { InterviewedIcon } from "../icons/stats/InterviewedIcon";
 
-const apiApplicantToCandidate = (records: ApiApplicant) : any => ({
+const apiApplicantToCandidate = (records: ApiApplicant): any => ({
   id: records.id,
   avatar: records.avatar,
   name:
@@ -42,6 +46,7 @@ export function Home() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { applicant_id: id } = useParams({ strict: false });
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<any | null>(null);
 
@@ -64,9 +69,17 @@ export function Home() {
         });
         return response.data;
       },
-      getNextPageParam: (lastPage) =>
-        (lastPage && lastPage?.paginationInfo?.next_page) || undefined,
       initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        if (!lastPage || !lastPage.paginationInfo) return undefined;
+        if (lastPage.paginationInfo.current_page < lastPage.paginationInfo.total_pages) {
+          return lastPage.paginationInfo.current_page + 1;
+        }
+        return undefined;
+      },
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
     });
 
   const deleteApplicantMutation = useMutation({
@@ -76,7 +89,9 @@ export function Home() {
       return response.data;
     },
     onMutate: async (deletedId) => {
-      await queryClient.cancelQueries({ queryKey: ["applicants"] });
+      await queryClient.cancelQueries({
+        queryKey: ["applicants", search.search_string, search.role],
+      });
       const previousData = queryClient.getQueryData([
         "applicants",
         search.search_string,
@@ -101,7 +116,7 @@ export function Home() {
 
       return { previousData };
     },
-    onError: (error, deletedId, context) => {
+    onError: (_error, _deletedId, context) => {
       if (context?.previousData) {
         queryClient.setQueryData(
           ["applicants", search.search_string, search.role],
@@ -112,7 +127,6 @@ export function Home() {
     onSuccess: (_, deletedId) => {
       queryClient.invalidateQueries({
         queryKey: ["applicants", search.search_string, search.role],
-        exact: false,
       });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
       setIsDeleteDialogOpen(false);
@@ -129,50 +143,6 @@ export function Home() {
       page?.records?.map(apiApplicantToCandidate)
     ) || [];
 
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 1 }
-    );
-
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-    return () => {
-      if (loadMoreRef.current) {
-        observer.unobserve(loadMoreRef.current);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const handleDeleteCandidate = (id: number) => {
-    deleteApplicantMutation.mutate(id);
-  };
-
-  const handleDeleteCancel = () => {
-    setIsDeleteDialogOpen(false);
-  };
-  const onDeleteId = (field: any) => {
-    setDeleteId(field);
-    setIsDeleteDialogOpen(true);
-  };
-  const handleDeleteConfirm = () => {
-    if (deleteId) {
-      deleteApplicantMutation.mutate(deleteId.id, {
-        onSettled: () => {
-          setIsDeleteDialogOpen(false);
-        }
-      });
-    }
-  };
-
   const observer = useRef<IntersectionObserver | null>(null);
   const lastRowRef = useCallback(
     (node: HTMLTableRowElement | null) => {
@@ -184,12 +154,27 @@ export function Home() {
             fetchNextPage();
           }
         },
-        { root: null, rootMargin: "0px", threshold: 0.1 }
+        { root: null, rootMargin: "0px", threshold: 1.0 }
       );
       if (node) observer.current.observe(node);
     },
     [isFetching, isFetchingNextPage, hasNextPage, fetchNextPage]
   );
+
+  const onDeleteId = (field: any) => {
+    setDeleteId(field);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteId) {
+      deleteApplicantMutation.mutate(deleteId.id, {
+        onSettled: () => {
+          setIsDeleteDialogOpen(false);
+        },
+      });
+    }
+  };
 
   return (
     <div>
@@ -199,58 +184,58 @@ export function Home() {
           number={statsData?.totalApplicants || 0}
           lineColor="border-[#9C1C24]"
           iconBgColor="bg-[#9C1C24]"
-          icon= {<GroupIcon/>}
+          icon={<GroupIcon />}
         />
         <CandidateCountCard
           name="Screened"
           number={statsData?.screened || 0}
           lineColor="border-[#2F80ED]"
           iconBgColor="bg-[#2F80ED]"
-          icon= {<ScreenedIcon/>}
+          icon={<ScreenedIcon />}
         />
         <CandidateCountCard
-          name="Scheduled Interview "
+          name="Scheduled Interview"
           number={statsData?.interview_scheduled || 0}
           lineColor="border-[#556B2F]"
           iconBgColor="bg-[#556B2F]"
-          icon= {<InterviewScheduledIcon/>}
+          icon={<InterviewScheduledIcon />}
         />
         <CandidateCountCard
           name="Interviewed"
           number={statsData?.interviewed || 0}
           lineColor="border-[#F2994A]"
           iconBgColor="bg-[#F2994A]"
-          icon= {<InterviewedIcon/>}
+          icon={<InterviewedIcon />}
         />
         <CandidateCountCard
           name="Hired"
           number={statsData?.hired || 0}
-          lineColor="border-[#556B2F]"
+          lineColor="border-[#556B2F]"  
           iconBgColor="bg-[#556B2F]"
-          icon= {<HiredIcon/>}
+          icon={<HiredIcon />}
         />
       </div>
+
       <div className="grid grid-cols-[1fr_2.5fr] border-t pt-2">
         <div className="flex-1 flex flex-col">
           <CandidateTable
             candidatesData={candidatesData}
-            onDeleteCandidate={handleDeleteCandidate}
-            isLoading={isFetching}
+            isLoading={isFetching && !isFetchingNextPage}
             onDeleteId={onDeleteId}
             lastRowRef={lastRowRef}
+            isFetchingNextPage={isFetchingNextPage}
           />
-          <div ref={loadMoreRef} className="flex items-center justify-center">
-            {isFetchingNextPage}
-          </div>
         </div>
+
         <DeleteDialog
           openOrNot={isDeleteDialogOpen}
-          label="Are you sure you want to delete this field?"
-          onCancelClick={handleDeleteCancel}
+          label="Are you sure you want to delete this candidate?"
+          onCancelClick={() => setIsDeleteDialogOpen(false)}
           onOKClick={handleDeleteConfirm}
           deleteLoading={deleteApplicantMutation.isPending}
           buttonLable="Yes! Delete"
         />
+
         <Outlet />
       </div>
     </div>

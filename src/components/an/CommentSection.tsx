@@ -6,26 +6,52 @@ import { Avatar } from "../ui/avatar";
 import { Card, CardContent } from "../ui/card";
 import { LoaderCircle } from "lucide-react";
 
-const CardComponent = ({ name, msg, time } : {name: string, msg: string, time: string}) => {
-  return (
-    <Card className="w-full rounded-lg max-w-md shadow-none border-none bg-[#F4F7FC] p-0">
-      <CardContent className="flex flex-col p-1">
-      <div className="flex items-center gap-2 px-2">
-      <Avatar className="w-7 h-7 rounded-full bg-[#c7c9cd] border flex items-center justify-center text-white">
-          <p className="text-black text-sm 3xl:!text-base">{name.charAt(0).toUpperCase()}</p>
-        </Avatar>
-          <h3 className="text-[15px] 3xl:!text-lg text-normal text-[#181616] capitalize">{name}</h3>
-          <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">
-            {time}
-          </p>
-        </div>
-        <p className="text-xs 3xl:!text-sm text-[#4F4F4F] font-normal pl-10 capitalize">{msg}</p>
-      </CardContent>
-    </Card>
-  );
-};
+import { forwardRef } from "react";
 
-const CommentsSection = ({ comments, onSubmitComment, isLoading }: { comments: any[], onSubmitComment: (comment: string) => void, isLoading: boolean}) => {
+const CardComponent = forwardRef<HTMLDivElement, { name: string; msg: string; time: string }>(
+  ({ name, msg, time }, ref) => {
+    return (
+      <Card
+        ref={ref}
+        className="w-full rounded-lg max-w-md shadow-none border-none bg-[#F4F7FC] p-0"
+      >
+        <CardContent className="flex flex-col p-1">
+          <div className="flex items-center gap-2 px-2">
+            <Avatar className="w-7 h-7 rounded-full bg-[#c7c9cd] border flex items-center justify-center text-white">
+              <p className="text-black text-sm 3xl:!text-base">
+                {name.charAt(0).toUpperCase()}
+              </p>
+            </Avatar>
+            <h3 className="text-[15px] 3xl:!text-lg text-normal text-[#181616] capitalize">
+              {name}
+            </h3>
+            <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">{time}</p>
+          </div>
+          <p className="text-xs 3xl:!text-sm text-[#4F4F4F] font-normal pl-10 capitalize">
+            {msg}
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+);
+
+
+const CommentsSection = ({
+  comments,
+  onSubmitComment,
+  isLoading,
+  isFetchingNextPage,
+  lastRowRef,
+  commentsTotal,
+}: {
+  comments: any[];
+  onSubmitComment: (comment: string) => void;
+  isLoading: boolean;
+  isFetchingNextPage: boolean;
+  lastRowRef?: (node: HTMLTableRowElement | null) => void;
+  commentsTotal?: number;
+}) => {
   const [newComment, setNewComment] = useState("");
   const [commentList, setCommentList] = useState(comments);
 
@@ -39,51 +65,70 @@ const CommentsSection = ({ comments, onSubmitComment, isLoading }: { comments: a
 
   const handleCommentSubmit = () => {
     if (newComment.trim()) {
-      onSubmitComment(newComment); 
-      const newCommentObj = { 
-        name: "Hr", 
-        msg: newComment, 
-        time: new Date().toLocaleString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true,
-        }).replace(/\//g, '.').replace(/, /g, ' ')
+      onSubmitComment(newComment);
+      const newCommentObj = {
+        name: "Hr",
+        msg: newComment,
+        time: new Date()
+          .toLocaleString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })
+          .replace(/\//g, ".")
+          .replace(/, /g, " "),
       };
-      setCommentList(prev => [...prev, newCommentObj]);
+      setCommentList((prev) => [...prev, newCommentObj]);
       setNewComment("");
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleCommentSubmit();
     }
   };
-
+  
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <MessageIcon />
-          <span className="text-xs 2xl:text-sm 3xl:!text-base font-normal text-[#000]">Comments <span className="bg-black text-white rounded-full px-3 ml-3 py-0 text-xs 3xl:!text-sm">{commentList?.length}</span></span>
+          <span className="text-xs 2xl:text-sm 3xl:!text-base font-normal text-[#000]">
+            Comments{" "}
+            <span className="bg-black text-white rounded-full px-3 ml-3 py-0 text-xs 3xl:!text-sm">
+              {commentsTotal}
+            </span>
+          </span>
         </div>
       </div>
       <div className="h-[calc(100vh-260px)] overflow-y-auto gap-1 flex flex-col">
         {commentList?.length > 0 ? (
           commentList?.map((comment: any, index: number) => (
-            <CardComponent key={index} name={comment?.name} msg={comment?.msg} time={comment?.time} />
+            <CardComponent
+              key={index}
+              name={comment?.name}
+              msg={comment?.msg}
+              time={comment?.time}
+              ref={index === commentList.length - 1 ? lastRowRef : null}
+            />
           ))
         ) : (
           <div className="flex flex-col items-center justify-center mt-[30%]">
-          <NoCommentIcon />
-          <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">No comments</p>
+            <NoCommentIcon />
+            <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">
+              No comments
+            </p>
           </div>
         )}
       </div>
+      {isFetchingNextPage && (
+        <div className="text-center py-2 text-gray-500">Loading more...</div>
+      )}
       <div className="mt-4 flex items-center gap-4">
         <div className="relative w-full">
           <textarea
@@ -92,7 +137,7 @@ const CommentsSection = ({ comments, onSubmitComment, isLoading }: { comments: a
             rows={3}
             value={newComment}
             onChange={handleCommentChange}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyDown}
           ></textarea>
           <div
             className="absolute top-2 right-2 bg-[#4F4F4F] w-10.5 h-6.5 rounded flex items-center justify-center cursor-pointer"
@@ -100,9 +145,9 @@ const CommentsSection = ({ comments, onSubmitComment, isLoading }: { comments: a
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
-              <LoaderCircle className="text-white animate-spin w-5 h-5"/>
+                <LoaderCircle className="text-white animate-spin w-5 h-5" />
               </div>
-            ): (
+            ) : (
               <CommentIcon className="!w-3.5 !h-3.5" />
             )}
           </div>
