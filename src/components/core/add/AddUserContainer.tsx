@@ -107,7 +107,6 @@
       id: role.id,
       name: role.role,
     }));
-
     const fileUploadMutation = useMutation({
       mutationFn: uploadFileAPI,
       onSuccess: async (data, file) => {
@@ -283,7 +282,7 @@
       navigate({ to: "/applicants" });
     };
 
-    const isLoading = fileUploadMutation.isPending || isCreating || isUpdating || isLoadingUser;
+    const isLoading = fileUploadMutation.isPending;
 
     return (
       <div className="mt-4">
