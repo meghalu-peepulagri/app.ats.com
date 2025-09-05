@@ -10,7 +10,7 @@ const LoadingComponent = ({
       role="alert"
       aria-live="assertive"
       className={cn(
-        "absolute inset-0 flex flex-col items-center justify-center bg-opacity-30 z-50",
+        "absolute inset-0 flex flex-col items-center justify-center bg-opacity-30 z-50 bg-[#f8f8f8]",
         className
       )}
     >
