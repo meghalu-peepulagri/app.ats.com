@@ -95,11 +95,9 @@ export function AddUserCard({
                   <Plus />
                 </Button>
               </div>
-              {errors.role?.map((err, idx) => (
-                <p key={idx} className="text-red-500 text-xs">
-                  {err}
-                </p>
-              ))}
+              {errors.role_id && (
+                    <p className="text-red-500 text-xs">{errors.role_id}</p>
+                  )}
             </div>
 
             <div className="flex flex-col">
