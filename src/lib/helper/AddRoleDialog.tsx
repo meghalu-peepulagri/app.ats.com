@@ -5,11 +5,10 @@ import {
   DialogFooter,
   DialogClose,
   Dialog,
-} from "@/components/ui/dialog";
+} from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { useState } from "react";
-import { set } from "zod";
 
 interface AddRoleDialogProps {
   open: boolean;

@@ -22,8 +22,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import LoadingComponent from "~/lib/helper/LoadingComponent";
+} from "~/components/ui/popover";
 
 export interface Candidate {
   id: number;
