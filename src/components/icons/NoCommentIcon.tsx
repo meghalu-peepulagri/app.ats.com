@@ -7,7 +7,7 @@ export function NoCommentIcon() {
       viewBox="0 0 181 121"
       fill="none"
     >
-      <g clip-path="url(#clip0_630_3269)">
+      <g clipPath="url(#clip0_630_3269)">
         <path
           d="M43.8281 40.1241C50.3313 43.3501 58.9627 39.2021 58.9627 39.2021C58.9627 39.2021 57.0445 29.8257 50.5377 26.6043C44.0345 23.3783 35.4065 27.5217 35.4065 27.5217C35.4065 27.5217 37.3249 36.8981 43.8281 40.1241Z"
           fill="url(#paint0_linear_630_3269)"
@@ -51,58 +51,58 @@ export function NoCommentIcon() {
         <path
           d="M76.1843 64.1047V70.1211C76.1843 81.2689 82.5543 86.0464 92.1095 86.0464H123.96C133.515 86.0464 139.886 81.2689 139.886 70.1211V51.0106C139.886 39.863 133.515 35.0854 123.96 35.0854H114.405C114.865 36.4302 115.113 37.9166 115.113 39.509V53.311C115.113 56.7438 113.98 59.6458 111.963 61.663C109.946 63.6802 107.044 64.8126 103.611 64.8126V69.7318C103.611 71.5368 101.559 72.6335 100.037 71.6427L89.8093 64.8126H80.6079C79.0155 64.8126 77.5291 64.5647 76.1843 64.1047Z"
           stroke="#E1E4E5"
-          stroke-width="4.8"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="4.8"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M69.1064 39.5092V53.3112C69.1064 58.5842 71.796 62.5476 76.1844 64.1048C77.5292 64.5648 79.0154 64.8128 80.608 64.8128H89.8092L100.037 71.6428C101.559 72.6336 103.611 71.537 103.611 69.732V64.8128C107.044 64.8128 109.946 63.6804 111.963 61.6632C113.98 59.646 115.113 56.744 115.113 53.3112V39.5092C115.113 37.9168 114.865 36.4304 114.405 35.0856C112.848 30.6972 108.884 28.0076 103.611 28.0076H80.608C73.707 28.0076 69.1064 32.6082 69.1064 39.5092Z"
           fill="#E1E4E5"
           stroke="#E1E4E5"
-          stroke-width="4.8"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="4.8"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M120.775 98.7868H95.2949M108.035 86.0466V98.7868"
           stroke="#E1E4E5"
-          stroke-width="4.8"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="4.8"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M81.5086 46.5872H81.4766M91.4168 46.5872H91.385M101.327 46.5872H101.295"
           stroke="white"
-          stroke-width="6.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="6.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M61.1063 61.6073V75.4093C61.1063 80.6823 58.4166 84.6457 54.0283 86.2029C52.6835 86.6629 51.1973 86.9109 49.6047 86.9109H40.4035L30.1759 93.7409C28.6541 94.7317 26.6015 93.6351 26.6015 91.8301V86.9109C23.1687 86.9109 20.2667 85.7785 18.2495 83.7613C16.2323 81.7441 15.0999 78.8421 15.0999 75.4093V61.6073C15.0999 60.0149 15.3477 58.5285 15.8077 57.1837C17.3649 52.7953 21.3285 50.1057 26.6015 50.1057H49.6047C56.5057 50.1057 61.1063 54.7063 61.1063 61.6073Z"
           fill="#8D8D8D"
           stroke="#8D8D8D"
-          stroke-width="6.4"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="6.4"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M48.7041 68.6855H48.7359M38.7957 68.6855H38.8275M28.8855 68.6855H28.9173"
           stroke="white"
-          stroke-width="6.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="6.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M145.603 89.9787C135.829 89.9787 127.906 82.0555 127.906 72.2817C127.906 62.5079 135.829 54.5847 145.603 54.5847C155.377 54.5847 163.3 62.5079 163.3 72.2817C163.3 82.0555 155.377 89.9787 145.603 89.9787Z"
           fill="#8D8D8D"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M151.706 78.4731V79.3439C151.706 79.575 151.614 79.7965 151.45 79.9598C151.287 80.1231 151.065 80.2148 150.834 80.2147H140.373C140.142 80.2148 139.92 80.1231 139.757 79.9598C139.593 79.7965 139.501 79.575 139.501 79.3439V78.4591C139.501 75.8241 142.516 74.1123 145.603 74.1123C148.691 74.1123 151.706 75.8251 151.706 78.4591M147.761 66.4625C148.952 67.6541 148.952 69.5859 147.761 70.7775C146.569 71.9691 144.637 71.9691 143.446 70.7775C142.254 69.5859 142.254 67.6541 143.446 66.4625C144.637 65.2709 146.569 65.2709 147.761 66.4625Z"
           fill="white"
         />
@@ -116,8 +116,8 @@ export function NoCommentIcon() {
           y2="7.75829"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#EEEEEE" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#EEEEEE" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_630_3269"
@@ -127,8 +127,8 @@ export function NoCommentIcon() {
           y2="49.4117"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#EEEEEE" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#EEEEEE" />
         </linearGradient>
         <clipPath id="clip0_630_3269">
           <rect
