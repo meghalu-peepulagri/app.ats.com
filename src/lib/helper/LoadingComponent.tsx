@@ -14,7 +14,7 @@ const LoadingComponent = ({
         className
       )}
     >
-      <object data={"/public/loading-icon.svg"} className="w-80 h-80"></object>
+      <object data={"/loading-icon.svg"} className="w-80 h-80"></object>
     </div>
   );
 };
