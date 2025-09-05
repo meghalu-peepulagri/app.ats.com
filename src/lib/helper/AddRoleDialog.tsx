@@ -59,9 +59,9 @@ export const AddRoleDialog: React.FC<AddRoleDialogProps> = ({
             onChange={(e) => {
               const nativeEvent = e.nativeEvent as InputEvent;
               if (nativeEvent.inputType === 'deleteContentBackward') {
-                setNewRole(e.target.value);
+                setNewRole(e.target.value.trimStart());
               } else {
-                setNewRole(capitalizeWords(e.target.value));
+                setNewRole(capitalizeWords(e.target.value.trimStart()));
               }
             }}
             disabled={loading}

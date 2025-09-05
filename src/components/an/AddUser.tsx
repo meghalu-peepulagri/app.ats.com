@@ -117,7 +117,7 @@ export function AddUserCard({
                     placeholder="First name of applicant"
                     value={formData.first_name}
                     onChange={(e) =>
-                      handleInputChange("first_name", e.target.value)
+                      handleInputChange("first_name", e.target.value.trimStart())
                     }
                     className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                     disabled={loading}
@@ -138,7 +138,7 @@ export function AddUserCard({
                     placeholder="Last name of applicant"
                     value={formData.last_name}
                     onChange={(e) =>
-                      handleInputChange("last_name", e.target.value)
+                      handleInputChange("last_name", e.target.value.trimStart())
                     }
                     className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                     disabled={loading}
@@ -159,7 +159,7 @@ export function AddUserCard({
                     placeholder="Enter email"
                     type="email"
                     value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    onChange={(e) => handleInputChange("email", e.target.value.trimStart())}
                     className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                     disabled={loading}
                   />
@@ -178,7 +178,7 @@ export function AddUserCard({
                     id="mobile"
                     placeholder="Enter mobile number"
                     value={formData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    onChange={(e) => handleInputChange("phone", e.target.value.trimStart())}
                     maxLength={10}
                     className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                     disabled={loading}
@@ -204,7 +204,7 @@ export function AddUserCard({
                   onChange={(e) =>
                     handleInputChange(
                       "experience",
-                      e.target.value === "" ? null : Number(e.target.value)
+                      e.target.value === "" ? null : Number(e.target.value.trimStart())
                     )
                   }
                   className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
