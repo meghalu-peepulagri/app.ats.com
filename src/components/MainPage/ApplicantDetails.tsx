@@ -15,7 +15,7 @@ export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
   const queryClient = useQueryClient();
 
-  const { data: resume, isLoading} = useQuery({
+  const { data: resume, isFetching} = useQuery({
     queryKey: [`resume-${id}`, id],
     queryFn: async () => {
       const response = await getApplicantById(id as string);
@@ -61,11 +61,6 @@ export function Resume() {
     queryClient.invalidateQueries({ queryKey: [`resume-${id}`, id] });
   }, [id, queryClient]);
 
-  // if (isFetching) {
-  //   return (
-  //     <LoadingComponent loading={isFetching} />
-  //   );
-  // }
 
   const name =
     resume?.first_name.charAt(0).toUpperCase() +
@@ -96,8 +91,8 @@ export function Resume() {
 
   return (
     <div className="flex gap-2 w-full">
-      {isLoading ? 
-          <LoadingComponent loading={isLoading} />
+      {isFetching ? 
+          <LoadingComponent loading={isFetching} />
         : (
       <>
       <Profile

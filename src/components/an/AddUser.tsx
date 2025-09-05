@@ -197,6 +197,7 @@ export function AddUserCard({
                   Experience
                 </Label>
                 <Input
+                  type="number"
                   id="experience"
                   placeholder="Enter applicant experience"
                   value={formData.experience?.toString()}
