@@ -97,7 +97,9 @@ export function Resume() {
   return (
     <div className="flex gap-2 w-full">
       {isFetching ? 
-        <LoadingComponent loading={isFetching} />
+        <div className="flex items-center justify-center">
+          <LoadingComponent loading={isFetching} />
+        </div>
         : (
       <>
       <Profile

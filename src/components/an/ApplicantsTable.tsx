@@ -225,6 +225,7 @@ export function CandidateTable({
     <div className="bg-white rounded-lg border-none w-full">
       {isLoading ? (
           <div className="flex items-center justify-center h-full text-gray-500 text-sm w-full px-[165px]">
+            
           </div>
         ) : (
           <>

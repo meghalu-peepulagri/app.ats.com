@@ -22,7 +22,6 @@ interface TanstackTableProps {
   data: any;
   height?: string | number;
   onRowClick?: (row: any) => void;
-  isLoading?: boolean
 }
 
 export function TanstackTable({columns, data, height, onRowClick}: TanstackTableProps) {
