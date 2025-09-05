@@ -10,7 +10,7 @@ export interface UploadedFile {
     last_name: string;
     email: string;
     phone: string;
-    experience?: number | null;
+    experience: number | null;
     resume_key_path?: string;
   }
   

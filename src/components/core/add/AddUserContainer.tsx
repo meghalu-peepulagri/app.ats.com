@@ -57,7 +57,7 @@
           last_name: userData?.data?.last_name ?? "",
           email: userData?.data?.email ?? "",
           phone: userData?.data?.phone ?? "",
-          experience: userData?.data?.experience,
+          experience: userData?.data?.experience ?? null,
           resume_key_path: userData?.data?.resume_key_path ?? "",
         });
 
@@ -79,7 +79,7 @@
           last_name: candidate.last_name ?? "",
           email: candidate.email ?? "",
           phone: candidate.phone ?? "",
-          experience: candidate.experience,
+          experience: candidate.experience ?? null,
           resume_key_path: candidate.resume_key_path ?? "",
         });
 
