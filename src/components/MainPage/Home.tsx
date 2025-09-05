@@ -16,6 +16,9 @@ import {
 } from "~/http/services/applicants";
 import { useParams } from "@tanstack/react-router";
 import DeleteDialog from "~/lib/helper/DeleteDialog";
+import { ApplicationIcon } from "../icons/stats/ApplicationIcon";
+import { HiredIcon } from "../icons/stats/HiredIcon";
+import { GroupIcon } from "../icons/stats/GroupIcon";
 
 const apiApplicantToCandidate = (records: ApiApplicant) : any => ({
   id: records.id,
@@ -175,33 +178,38 @@ export function Home() {
           number={statsData?.totalApplicants || 0}
           lineColor="border-[#9C1C24]"
           iconBgColor="bg-[#9C1C24]"
+          icon= {<GroupIcon/>}
         />
         <CandidateCountCard
           name="Screened"
           number={statsData?.screened || 0}
           lineColor="border-[#2F80ED]"
           iconBgColor="bg-[#2F80ED]"
+          icon= {<ApplicationIcon/>}
         />
         <CandidateCountCard
           name="Interview Scheduled"
           number={statsData?.interview_scheduled || 0}
           lineColor="border-[#556B2F]"
           iconBgColor="bg-[#556B2F]"
+          icon= {<ApplicationIcon/>}
         />
         <CandidateCountCard
           name="Interviewed"
           number={statsData?.interviewed || 0}
           lineColor="border-[#F2994A]"
           iconBgColor="bg-[#F2994A]"
+          icon= {<ApplicationIcon/>}
         />
         <CandidateCountCard
           name="Hired"
           number={statsData?.hired || 0}
           lineColor="border-[#556B2F]"
           iconBgColor="bg-[#556B2F]"
+          icon= {<HiredIcon/>}
         />
       </div>
-      <div className="grid grid-cols-[auto_1fr] border-t pt-2">
+      <div className="grid grid-cols-[1fr_2.5fr] border-t pt-2">
         <div className="flex-1 flex flex-col">
           <CandidateTable
             candidatesData={candidatesData}

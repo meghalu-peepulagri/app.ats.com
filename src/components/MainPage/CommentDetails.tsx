@@ -2,6 +2,7 @@ import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-q
 import { getCommentsAPI, updateCommentById } from "~/http/services/applicants";
 import CommentsSection from "../an/CommentSection";
 import { useEffect, useRef } from "react";
+import Cookies from "js-cookie";
 
 export function CommentDetails({ applicant_id }: { applicant_id: number }) {
   const queryClient = useQueryClient();
@@ -55,11 +56,13 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  const name = Cookies.get("name");
+
   const commentsData = comments?.pages
     ?.flatMap((page: any) => page?.records ?? [])
     .map((comment: any) => ({
       id: comment?.id,
-      name: comment?.user?.name,
+      name: comment?.user?.name === name ? "You" : comment?.user?.name,
       msg: comment?.comment_description || "",
       time: new Date(comment?.commented_at)
         .toLocaleString("en-US", {
