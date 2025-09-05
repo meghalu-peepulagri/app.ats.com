@@ -87,7 +87,7 @@ const CommentsSection = ({ comments, onSubmitComment, isLoading }: { comments: a
       <div className="mt-4 flex items-center gap-4">
         <div className="relative w-full">
           <textarea
-            className="w-full p-2 h-20 bg-[#EFEFF1] placeholder:text-[#828282] font-(--an-card-comments-weight) text-xs 3xl:!text-sm rounded resize-none pr-12 focus:ring-0 focus:outline-none border border-[rgba(0,0,0,0.08)]"
+            className="w-full p-2 h-20 bg-[#EFEFF1] placeholder:text-[#828282] font-(--an-card-comments-weight) text-xs 3xl:!text-sm rounded resize-none pr-6 focus:ring-0 focus:outline-none border border-[rgba(0,0,0,0.08)]"
             placeholder="Write a comment..."
             rows={3}
             value={newComment}
