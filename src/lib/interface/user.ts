@@ -51,6 +51,7 @@ export interface UploadedFile {
         file_name: string;
         upload_url?: string;
         file_key: string;
+        target_url: string;
       };
     };
   }

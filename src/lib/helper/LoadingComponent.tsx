@@ -6,15 +6,10 @@ const LoadingComponent = ({
 }: { loading: boolean; message?: string; className?: string }) => {
   if (!loading) return null;
   return (
-    <div
-      role="alert"
-      aria-live="assertive"
-      className={cn(
-        "absolute inset-0 flex flex-col items-center justify-center bg-opacity-30 z-50 bg-[#f8f8f8]",
-        className
-      )}
-    >
+    <div className="fixed inset-0 z-30 flex items-center justify-center bg-white/20 backdrop-blur">
+      <div className="flex flex-col items-center justify-center gap-8">
       <object data={"/loading-icon.svg"} className="w-80 h-80"></object>
+      </div>
     </div>
   );
 };

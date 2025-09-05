@@ -17,8 +17,6 @@ export const uploadFileAPI = async (
     if (!target_url) {
       throw new Error("Presigned URL is missing");
     }
-    await uploadTos3({ url: target_url, file });
-
     return {
       ...data,
       message: data.message || "File uploaded successfully",
@@ -28,7 +26,7 @@ export const uploadFileAPI = async (
   }
 };
 
-const uploadTos3 = async ({ url, file }: { url: string; file: File }) => {
+export const uploadTos3 = async ({ url, file }: { url: string; file: File }) => {
   try {
     const response = await uploadToS3API(url, file);
     if (!response.ok) {

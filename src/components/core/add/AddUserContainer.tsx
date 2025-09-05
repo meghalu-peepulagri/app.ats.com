@@ -7,6 +7,7 @@
     getListRolesAPI,
     updateUserAPI,
     uploadFileAPI,
+    uploadTos3,
   } from "~/http/services/users";
   import { AddUserCard } from "../../an/AddUser";
   import { getApplicantById } from "~/http/services/applicants";
@@ -109,21 +110,44 @@
 
     const fileUploadMutation = useMutation({
       mutationFn: uploadFileAPI,
-      onSuccess: (data) => {
-        const fileKey = data?.data?.data?.file_key;
-        setFormData((prev) => ({
-          ...prev,
-          resume_key_path: fileKey,
-        }));
+      onSuccess: async (data, file) => {
+        try {
+          const targetUrl = data?.data?.data?.target_url;
+          if (!targetUrl) throw new Error("No presigned URL found");
+    
+          await uploadTos3({ url: targetUrl, file });
+    
+          const fileKey = data?.data?.data?.file_key;
+          setFormData((prev) => ({
+            ...prev,
+            resume_key_path: fileKey,
+          }));
+          setMessage("");
+        } catch (error: any) {
+          setErrors((prev) => ({
+            ...prev,
+            resume_key_path: [error.message || "Failed to upload to S3"],
+          }));
+          setUploadedFile(null);
+          setFormData((prev) => ({ ...prev, resume_key_path: "" }));
+          setMessage(error.message || "Failed to upload to S3");
+        }
       },
       onError: (error: any) => {
-        setMessage(error?.message);
+        const apiError =
+          error?.errors?.file_type ||
+          error?.message ||
+          "File upload failed. Please try again.";
         setErrors((prev) => ({
           ...prev,
-          resume_key_path: [error?.message || "File upload failed"],
+          resume_key_path: [apiError],
         }));
+        setUploadedFile(null);
+        setFormData((prev) => ({ ...prev, resume_key_path: "" }));
+        setMessage(apiError);
       },
     });
+    
 
     const { mutateAsync: createUser, isPending: isCreating } = useMutation({
       mutationFn: (formData: UserFormData) => createUserAPI(formData),
@@ -199,12 +223,24 @@
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
       if (file) {
-        const allowedTypes = ["pdf", "doc", "docx"];
+        const allowedTypes = ["pdf"];
         const fileExtension = file.name.split(".").pop()?.toLowerCase();
-        if (!fileExtension || !allowedTypes.includes(fileExtension)) return;
+        if (!fileExtension || !allowedTypes.includes(fileExtension)) {
+          setErrors(prev => ({
+            ...prev,
+            resume_key_path: ["Only PDF files are allowed."],
+          }));
+          return;
+        }
 
         const maxSize = 5 * 1024 * 1024;
-        if (file.size > maxSize) return;
+    if (file.size > maxSize) {
+      setErrors(prev => ({
+        ...prev,
+        resume_key_path: ["File size exceeds 5MB limit."],
+      }));
+      return;
+    }
 
         setFileInput(file);
         setUploadedFile({
@@ -242,7 +278,7 @@
         createUser(formData);
       }
     };
-
+    
     const handleBackNavigate = () => {
       navigate({ to: "/applicants" });
     };
