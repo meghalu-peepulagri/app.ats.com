@@ -242,7 +242,7 @@ export function CandidateTable({
             <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-42 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0 p-1">
               <div className="flex items-center gap-1">
                 <ListFilter className="w-4 h-4" />
-                <SelectValue placeholder="Select Role" />
+                <SelectValue placeholder="Select position" />
               </div>
             </SelectTrigger>
             <SelectContent className="max-h-[250px] overflow-y-auto">

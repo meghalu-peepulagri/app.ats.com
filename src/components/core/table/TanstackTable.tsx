@@ -64,9 +64,14 @@ const handleRowClick = (row: any) => {
         </thead>
         <tbody>
             {table.getRowModel().rows.length === 0 ? (
-              <tr>
-                <td colSpan={columns.length} className="text-center p-0">
-                  <NoTableDataIcon className='w-100 h-100'/>
+                <tr>
+                <td colSpan={columns.length} className="text-center py-[30%]">
+                  <div className="flex flex-col items-center justify-center">
+                    <NoTableDataIcon />
+                    <p className="text-sm 3xl:!text-base text-[#828282] font-normal">
+                      No applicants found
+                    </p>
+                  </div>
                 </td>
               </tr>
             ) : (

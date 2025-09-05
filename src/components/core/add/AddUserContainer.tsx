@@ -62,8 +62,9 @@
         });
 
         if (userData?.data?.resume_key_path) {
+          const fileName = userData.data.resume_key_path.split('/').pop().replace(/_.*/g, '');
           setUploadedFile({
-            name: userData.resume_file_name ?? "Uploaded Resume",
+            name: fileName ?? "Uploaded Resume",
             size: userData.resume_file_size ?? "",
             type: userData.resume_file_type ?? "PDF",
           });

@@ -67,10 +67,10 @@ export function AddUserCard({
           <div className="!px-0 flex flex-col gap-6">
             <div>
               <Label
-                htmlFor="role"
+                htmlFor="position"
                 className="text-[15px] 3xl:!text-base text-[#333] font-medium after:content-['_*'] after:text-red-500"
               >
-                Role
+                Position
               </Label>
               <div className="flex gap-2">
                 <Select
@@ -78,7 +78,7 @@ export function AddUserCard({
                   onValueChange={(value) => onChange({ role_id: Number(value) })}
                 >
                   <SelectTrigger className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0">
-                    <SelectValue placeholder="Please select role" />
+                    <SelectValue placeholder="Please select position" />
                   </SelectTrigger>
                   <SelectContent className="max-h-[250px] overflow-y-auto">
                     {roleList.map((role: any) => (
@@ -114,7 +114,7 @@ export function AddUserCard({
                   </Label>
                   <Input
                     id="firstName"
-                    placeholder="First name of candidate"
+                    placeholder="First name of applicant"
                     value={formData.first_name}
                     onChange={(e) =>
                       handleInputChange("first_name", e.target.value)
@@ -135,7 +135,7 @@ export function AddUserCard({
                   </Label>
                   <Input
                     id="lastName"
-                    placeholder="Last name of candidate"
+                    placeholder="Last name of applicant"
                     value={formData.last_name}
                     onChange={(e) =>
                       handleInputChange("last_name", e.target.value)
@@ -198,7 +198,7 @@ export function AddUserCard({
                 </Label>
                 <Input
                   id="experience"
-                  placeholder="Enter candidate experience"
+                  placeholder="Enter applicant experience"
                   value={formData.experience?.toString()}
                   onChange={(e) =>
                     handleInputChange(

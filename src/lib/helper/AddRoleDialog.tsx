@@ -49,12 +49,12 @@ export const AddRoleDialog: React.FC<AddRoleDialogProps> = ({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add New Role</DialogTitle>
+          <DialogTitle>Add New Position</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-3">
           <Input
-            placeholder="Enter new role"
+            placeholder="Enter new position"
             value={newRole}
             onChange={(e) => {
               const nativeEvent = e.nativeEvent as InputEvent;
@@ -72,7 +72,7 @@ export const AddRoleDialog: React.FC<AddRoleDialogProps> = ({
 
         <DialogFooter className="flex justify-end gap-2 mt-4">
           <DialogClose asChild>
-            <Button variant="outline" disabled={loading}>
+            <Button variant="outline" disabled={loading} className="cursor-pointer">
               Cancel
             </Button>
           </DialogClose>
