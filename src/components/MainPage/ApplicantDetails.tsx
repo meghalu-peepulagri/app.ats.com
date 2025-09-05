@@ -90,7 +90,7 @@ export function Resume() {
   );
 
   return (
-    <div className="flex gap-2 w-full">
+    <div className="flex gap-2 w-full bg-[#f8f8f8]">
       {isFetching ? 
           <LoadingComponent loading={isFetching} />
         : (
