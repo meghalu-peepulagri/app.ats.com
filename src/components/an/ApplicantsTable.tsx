@@ -23,6 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+import LoadingComponent from "~/lib/helper/LoadingComponent";
 
 export interface Candidate {
   id: number;
@@ -223,12 +224,6 @@ export function CandidateTable({
 
   return (
     <div className="bg-white rounded-lg border-none w-full">
-      {isLoading ? (
-          <div className="flex items-center justify-center h-full text-gray-500 text-sm w-full px-[165px]">
-            
-          </div>
-        ) : (
-          <>
       <div className="flex items-center justify-between py-2 px-1">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Select
@@ -273,16 +268,21 @@ export function CandidateTable({
           Add
         </Button>
       </div>
-      <div className="overflow-auto h-[calc(100vh-180px)] rounded-sm w-full">
+      <div className="rounded-sm w-full">
+      {isLoading ? (
+          <div className="flex items-center justify-center h-screen text-gray-500 text-sm">
+            {/* Loading Applicants.... */}
+            <LoadingComponent loading={isLoading} />
+          </div>
+        ) : (
           <TanstackTable
             data={candidatesData}
             columns={columns(onDeleteId)}
             onRowClick={handleRowClick}
           />
-      </div>
-      </>
         )}
-    </div>
+      </div>
+      </div>
   );
 }
 

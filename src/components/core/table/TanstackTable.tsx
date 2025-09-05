@@ -4,7 +4,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { useEffect, useState } from 'react'
 import { NoTableDataIcon } from '~/components/icons/NoTableDataIcon'
 
 export type Person = {
@@ -43,10 +42,9 @@ const handleRowClick = (row: any) => {
 }
 
   return (
-    <div className="pl-2 w-full">
-      <div className='overflow-auto'>
-      <table className='w-full h-full border-none'>
-        <thead className='sticky top-0 z-30 text-left h-9 bg-[#DBFCD9] font-normal !rounded-sm'>
+    <div className="pl-2 w-full overflow-auto h-[calc(100vh-180px)]">
+      <table className='w-full border-none overflow-auto'>
+        <thead className='sticky top-0 z-30 text-left h-10 bg-[#DBFCD9] font-normal !rounded-sm'>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
@@ -87,7 +85,6 @@ const handleRowClick = (row: any) => {
             )}
           </tbody>
       </table> 
-      </div> 
     </div>
   )
 }

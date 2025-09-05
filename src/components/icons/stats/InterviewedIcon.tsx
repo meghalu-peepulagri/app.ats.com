@@ -18,8 +18,8 @@ export function InterviewedIcon() {
         <path
           id="XMLID_502_"
           style={{
-            fill: 'none',
-            stroke: '#000000',
+            fill: 'fff',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -32,7 +32,7 @@ export function InterviewedIcon() {
           id="XMLID_501_"
           style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -48,7 +48,7 @@ export function InterviewedIcon() {
           id="XMLID_500_"
           style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -62,7 +62,7 @@ export function InterviewedIcon() {
         <path
           style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -74,7 +74,7 @@ export function InterviewedIcon() {
         <polyline
           style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -87,7 +87,7 @@ export function InterviewedIcon() {
           id="XMLID_410_"
           style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -98,7 +98,7 @@ export function InterviewedIcon() {
         <path
           style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -111,7 +111,7 @@ export function InterviewedIcon() {
           id="XMLID_18_"
           style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -123,7 +123,7 @@ export function InterviewedIcon() {
           <path
             style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -135,7 +135,7 @@ export function InterviewedIcon() {
           <line
             style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -152,7 +152,7 @@ export function InterviewedIcon() {
             id="XMLID_499_"
             style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -168,7 +168,7 @@ export function InterviewedIcon() {
             id="XMLID_409_"
             style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -185,7 +185,7 @@ export function InterviewedIcon() {
           id="XMLID_408_"
           style={{
             fill: 'none',
-            stroke: '#000000',
+            stroke: '#fff',
             strokeWidth: 20,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
