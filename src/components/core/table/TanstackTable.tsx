@@ -1,90 +1,124 @@
-import { useParams } from '@tanstack/react-router'
+import { useParams } from "@tanstack/react-router";
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from '@tanstack/react-table'
-import { NoTableDataIcon } from '~/components/icons/NoTableDataIcon'
+} from "@tanstack/react-table";
+import { FC } from "react";
+import { NoTableDataIcon } from "~/components/icons/NoTableDataIcon";
+import { Skeleton } from "~/components/ui/skeleton"; 
 
 export type Person = {
-  firstName: string
-  lastName: string
-  age: number
-  visits: number
-  status: string
-  progress: number
-  id: string | number
-}
+  firstName: string;
+  lastName: string;
+  age: number;
+  visits: number;
+  status: string;
+  progress: number;
+  id: string | number;
+};
 
 interface TanstackTableProps {
   columns: any;
   data: any;
+  loading?: boolean;
   height?: string | number;
   onRowClick?: (row: any) => void;
+  lastRowRef?: (node: HTMLTableRowElement | null) => void;
 }
 
-export function TanstackTable({columns, data, height, onRowClick}: TanstackTableProps) {
-  const {applicant_id} = useParams({strict:false})
-    const table = useReactTable({
+export const TanstackTable: FC<TanstackTableProps> = ({
+  columns,
+  data,
+  loading = false,
+  lastRowRef,
+  onRowClick,
+}) => {
+  const { applicant_id } = useParams({ strict: false });
+
+  const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    columnResizeMode: 'onChange',
-  })
+    columnResizeMode: "onChange",
+  });
 
   const selectedRow = applicant_id ? parseInt(applicant_id) : null;
 
-const handleRowClick = (row: any) => {
-  const candidateId = row.original.id;
-  if (onRowClick) {
-    onRowClick(row.original);
-  }
-}
+  const handleRowClick = (row: any) => {
+    if (onRowClick) {
+      onRowClick(row.original);
+    }
+  };
 
   return (
     <div className="pl-2 w-full overflow-auto h-[calc(100vh-180px)]">
-      <table className='w-full border-none overflow-auto'>
-        <thead className='sticky top-0 z-30 text-left h-10 bg-[#DBFCD9] font-normal !rounded-sm'>
-          {table.getHeaderGroups().map(headerGroup => (
+      <table className="w-full border-none overflow-auto">
+        <thead className="sticky top-0 z-30 text-left h-10 bg-[#DBFCD9] font-normal !rounded-sm">
+          {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
-                <th key={header.id} colSpan={header.colSpan} style={{ width: header.getSize() }} className='text-[#333] text-[13px] 3xl:!text-base font-medium leading-[100%] p-1'>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  colSpan={header.colSpan}
+                  style={{ width: header.getSize() }}
+                  className="text-[#333] text-[13px] 3xl:!text-base font-medium leading-[100%] p-1"
+                >
                   {header.isPlaceholder
                     ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                    : flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
               ))}
             </tr>
           ))}
         </thead>
+
         <tbody>
-            {table.getRowModel().rows.length === 0 ? (
-                <tr>
-                <td colSpan={columns.length} className="text-center py-[30%]">
-                  <div className="flex flex-col items-center justify-center">
-                    <NoTableDataIcon />
-                    <p className="text-sm 3xl:!text-base text-[#828282] font-normal">
-                      No applicants found
-                    </p>
-                  </div>
-                </td>
+          {loading ? (
+            Array.from({ length: 6 }).map((_, rowIndex) => (
+              <tr key={`skeleton-${rowIndex}`} className="border-b border-[#F1F1F1] h-10">
+                {columns.map((col: any, colIndex: number) => (
+                  <td key={`skeleton-cell-${colIndex}`} className="p-2">
+                    <Skeleton className="h-6 w-full rounded-md" />
+                  </td>
+                ))}
               </tr>
-            ) : (
-              table.getRowModel().rows.map(row => (
-                <tr key={row.id} className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${selectedRow === (row.original as { id: string | number }).id ? 'bg-[#f4f3f3]' : ''}`} onClick={() => handleRowClick(row)}>
-                  {row.getVisibleCells().map(cell => (
-                    <td key={cell.id} style={{ width: cell.column.getSize() }} className='text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%]' >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
-              ))
-            )}
-          </tbody>
-      </table> 
+            ))
+          ) : table.getRowModel().rows.length === 0 ? (
+            <tr>
+              <td colSpan={columns.length} className="text-center py-[30%]">
+                <div className="flex flex-col items-center justify-center">
+                  <NoTableDataIcon />
+                  <p className="text-sm 3xl:!text-base text-[#828282] font-normal">
+                    No applicants found
+                  </p>
+                </div>
+              </td>
+            </tr>
+          ) : (
+            table.getRowModel().rows.map((row: any) => (
+              <tr
+                key={row.id}
+                ref={lastRowRef && row.index === data.length - 1 ? lastRowRef : undefined}
+                className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${
+                  selectedRow === row.original.id ? "bg-[#f4f3f3]" : ""
+                }`}
+                onClick={() => handleRowClick(row)}
+              >
+                {row.getVisibleCells().map((cell: any) => (
+                  <td
+                    key={cell.id}
+                    style={{ width: cell.column.getSize() }}
+                    className="text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%]"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
-  )
-}
+  );
+};

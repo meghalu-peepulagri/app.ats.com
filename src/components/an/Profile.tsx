@@ -166,7 +166,7 @@ export default function Profile({
               />
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center h-[calc(100vh-263px)]">
               <NoResumeIcon />
               <p className="text-sm 3xl:!text-base text-[#828282] font-normal">
                 No Resume

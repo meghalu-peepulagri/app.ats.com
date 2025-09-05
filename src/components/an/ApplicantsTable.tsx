@@ -49,6 +49,7 @@ interface CandidateTableProps {
   onRowClick?: (Candidate: Candidate) => void;
   onDeleteCandidate: (id: number) => void;
   onDeleteId: (field: any) => void;
+  lastRowRef?: (node: HTMLTableRowElement | null) => void;
 }
 
 const columnHelper = createColumnHelper<Candidate>();
@@ -173,6 +174,7 @@ export function CandidateTable({
   candidatesData,
   isLoading,
   onDeleteId,
+  lastRowRef,
 }: CandidateTableProps) {
   const search: { search_string?: string; role?: string } = useSearch({
     from: "/_header/_applicants",
@@ -242,7 +244,7 @@ export function CandidateTable({
                 : setSelectedRole(value)
             }
           >
-            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-42 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0 p-1">
+            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 focus-visible:ring-0 p-1">
               <div className="flex items-center gap-1">
                 <ListFilter className="w-4 h-4" />
                 <SelectValue placeholder="Select position" />
@@ -270,25 +272,20 @@ export function CandidateTable({
         </div>
         <Button
           onClick={() => navigate({ to: "/add_user" })}
-          className="flex items-center gap-2 h-7 text-white font-(--an-card-table-add-weight) bg-[#05A155] hover:bg-[#05A155] cursor-pointer rounded-sm"
+          className="flex items-center gap-1 h-7 text-white  bg-[#05A155] hover:bg-[#05A155] cursor-pointer rounded-sm"
         >
           <AddUploadIcon />
           Add
         </Button>
       </div>
       <div className="rounded-sm w-full">
-      {isLoading ? (
-          <div className="flex items-center justify-center h-screen text-gray-500 text-sm">
-            {/* Loading Applicants.... */}
-            <LoadingComponent loading={isLoading} />
-          </div>
-        ) : (
           <TanstackTable
             data={candidatesData}
             columns={columns(onDeleteId)}
             onRowClick={handleRowClick}
+            lastRowRef={lastRowRef}
+            loading={isLoading}
           />
-        )}
       </div>
       </div>
   );

@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import CandidateTable, { Candidate } from "../an/ApplicantsTable";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate, useSearch } from "@tanstack/react-router";
 import { CandidateCountCard } from "../an/SingleCard";
 import { ApiApplicant } from "~/lib/interface/applicants";
@@ -172,6 +172,25 @@ export function Home() {
       });
     }
   };
+
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastRowRef = useCallback(
+    (node: HTMLTableRowElement | null) => {
+      if (isFetching || isFetchingNextPage || !hasNextPage) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasNextPage) {
+            fetchNextPage();
+          }
+        },
+        { root: null, rootMargin: "0px", threshold: 0.1 }
+      );
+      if (node) observer.current.observe(node);
+    },
+    [isFetching, isFetchingNextPage, hasNextPage, fetchNextPage]
+  );
+
   return (
     <div>
       <div className="flex items-center justify-center gap-4 m-2">
@@ -218,6 +237,7 @@ export function Home() {
             onDeleteCandidate={handleDeleteCandidate}
             isLoading={isFetching}
             onDeleteId={onDeleteId}
+            lastRowRef={lastRowRef}
           />
           <div ref={loadMoreRef} className="flex items-center justify-center">
             {isFetchingNextPage}
