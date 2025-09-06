@@ -194,7 +194,7 @@ export function Home() {
           icon={<ScreenedIcon />}
         />
         <CandidateCountCard
-          name="Scheduled Interview"
+          name="Scheduled Interviews"
           number={statsData?.interview_scheduled || 0}
           lineColor="border-[#556B2F]"
           iconBgColor="bg-[#556B2F]"
