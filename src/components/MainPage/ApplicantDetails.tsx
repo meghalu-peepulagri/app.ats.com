@@ -101,7 +101,7 @@ export function Resume() {
           </div>
           <Skeleton className="h-[calc(100vh-263px)] w-full rounded-md" /> 
         </div>
-        <div className="w-[300px] flex flex-col gap-2">
+        <div className="w-[32%] flex flex-col gap-2">
           <Skeleton className="h-10 w-full rounded-md" />
           <Skeleton className="h-10 w-full rounded-md" />
           <Skeleton className="h-10 w-full rounded-md" />
@@ -111,7 +111,7 @@ export function Resume() {
   }
 
   return (
-    <div className="flex gap-2 w-full bg-white">
+    <div className="flex gap-2 w-full">
       {isFetching ? 
           <div className="absolute inset-0 z-10 bg-white/60 backdrop-blur-sm flex flex-col gap-2 p-4">
           <Skeleton className="h-6 w-1/4 rounded-md" />
