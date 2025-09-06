@@ -10,6 +10,9 @@ import Profile from "../an/Profile";
 import { CommentDetails } from "./CommentDetails";
 import { getListRolesAPI } from "~/http/services/users";
 import { Skeleton } from "../ui/skeleton";
+import { NoResumeIcon } from "../icons/NoResumeIcon";
+import { NoCommentIcon } from "../icons/NoCommentIcon";
+import { InitialPage } from "./InitialPage";
 
 export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
@@ -21,6 +24,7 @@ export function Resume() {
       const response = await getApplicantById(id as string);
       return response.data;
     },
+    enabled: !!id
   });
 
   const updateStatusMutation = useMutation({
@@ -109,6 +113,15 @@ export function Resume() {
       </div>
     );
   }
+
+  if (!resume && !isFetching) {
+    return (
+      <div className="flex gap-2 w-full">
+        <InitialPage/>
+      </div>
+    );
+  }
+
 
   return (
     <div className="flex gap-2 w-full">
