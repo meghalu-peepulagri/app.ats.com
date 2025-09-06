@@ -216,7 +216,7 @@ export function Home() {
         />
       </div>
 
-      <div className="grid grid-cols-[1fr_2.5fr] border-t pt-2">
+      <div className="grid grid-cols-[450px_1fr] border-t pt-2">
         <div className="flex-1 flex flex-col">
           <CandidateTable
             candidatesData={candidatesData}

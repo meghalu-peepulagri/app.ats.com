@@ -124,7 +124,7 @@ export const columns = (
     header: () => <span>Position</span>,
     cell: ({ row }) => <TruncatedText text={row.original?.position ?? ""} />,
     enableSorting: true,
-    size: 120,
+    size: 140,
   }),
   columnHelper.accessor("status", {
     header: () => <span>Status</span>,
@@ -174,30 +174,48 @@ export function CandidateTable({
 
   const [searchValue, setSearchValue] = useState(search.search_string ?? "");
   const [selectedRole, setSelectedRole] = useState(search.role);
+  const [debouncedValue, setDebouncedValue] = useState(searchValue);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(searchValue);
+    }, 500);
+  
+    return () => clearTimeout(handler);
+  }, [searchValue]);
+
+  const { data: roles } = useQuery({
+    queryKey: ["roles"],
+    queryFn: async () => {
+      const response = await getListRolesAPI();
+      return response;
+    },
+  });
+
+  const roleList = roles?.data?.map((role: any) => ({
+    id: role.id,
+    name: role.role,
+  }));
+
 
   useEffect(() => {
     const handler = setTimeout(() => {
       navigate({
-        to: id ? `/applicants/${id}` : `/applicants`,
+        to: id !== undefined ? `/applicants/${id}` : `/applicants`,
         search: {
           ...(searchValue ? { search_string: searchValue } : {}),
           ...(selectedRole ? { role: selectedRole } : {}),
         },
         replace: true,
       });
-    }, 400);
+    }, 500);
+
     return () => clearTimeout(handler);
-  }, [searchValue, selectedRole, id, navigate]);
+  }, [searchValue, selectedRole, navigate]);
 
-  const { data: roles } = useQuery({
-    queryKey: ["roles"],
-    queryFn: async () => (await getListRolesAPI()).data,
-  });
-
-  const roleList = roles?.map((role: any) => ({
-    id: role.id,
-    name: role.role,
-  }));
+  const handleSearchChange = (value: string) => {
+    setSearchValue(value);
+  };
 
   const handleRowClick = (row: any) => {
     const candidate = row.original;
@@ -214,10 +232,10 @@ export function CandidateTable({
               setSelectedRole(value === "All" ? "" : value)
             }
           >
-            <SelectTrigger className="!h-7 rounded gap-3 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 p-1">
+            <SelectTrigger className="!h-7 rounded gap-2 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 p-1">
               <div className="flex items-center gap-1">
                 <ListFilter className="w-4 h-4" />
-                <SelectValue placeholder="Select position" />
+                <SelectValue placeholder="Select position" className="text-xs 3xl:!text-sm"/>
               </div>
             </SelectTrigger>
             <SelectContent className="max-h-[250px] overflow-y-auto">
@@ -236,7 +254,7 @@ export function CandidateTable({
               type="search"
               placeholder="Search by name"
               value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               className="border rounded !h-7 text-[#4F4F4F] bg-[rgba(0,0,0,0.08)] font-normal py-1 pl-6 text-sm w-42 absolute focus:ring-0 border-none"
             />
           </div>

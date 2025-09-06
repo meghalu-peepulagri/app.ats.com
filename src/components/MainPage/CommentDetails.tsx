@@ -1,8 +1,8 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import Cookies from "js-cookie";
+import { useCallback, useRef } from "react";
 import { getCommentsAPI, updateCommentById } from "~/http/services/applicants";
 import CommentsSection from "../an/CommentSection";
-import { useCallback, useRef } from "react";
-import Cookies from "js-cookie";
 
 export function CommentDetails({ applicant_id }: { applicant_id: number }) {
   const queryClient = useQueryClient();
@@ -50,7 +50,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
             fetchNextPage();
           }
         },
-        { root: null, rootMargin: "0px", threshold: 1.0 }
+        { root: null, rootMargin: "0px", threshold: 0.1 }
       );
       if (node) observer.current.observe(node);
     },
@@ -58,7 +58,8 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
   );
 
   const name = Cookies.get("name");
-  const commentsTotal = comments?.pages?.flatMap((page: any) => page?.records ?? []).length;
+  const commentsTotal =
+  comments?.pages?.[0]?.paginationInfo?.total_records ?? 0;
 
   const commentsData = comments?.pages
     ?.flatMap((page: any) => page?.records ?? [])

@@ -50,7 +50,7 @@ const CommentsSection = ({
   isLoading: boolean;
   isFetchingNextPage: boolean;
   lastRowRef?: (node: HTMLTableRowElement | null) => void;
-  commentsTotal?: number;
+  commentsTotal: number | null;
 }) => {
   const [newComment, setNewComment] = useState("");
   const [commentList, setCommentList] = useState(comments);
@@ -125,10 +125,10 @@ const CommentsSection = ({
             </p>
           </div>
         )}
-      </div>
-      {isFetchingNextPage && (
-        <div className="text-center py-2 text-gray-500">Loading more...</div>
+        {isFetchingNextPage && (
+        <div className="text-center text-xs 3xl:!text-sm text-gray-500">Loading more...</div>
       )}
+      </div>
       <div className="mt-4 flex items-center gap-4">
         <div className="relative w-full">
           <textarea

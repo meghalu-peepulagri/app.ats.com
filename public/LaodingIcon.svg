@@ -1,0 +1,314 @@
+<svg id="eFtoOnd1mWJ1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 832 369" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"
+    project-id="3c3a17bccc154af7ab9ee2f9e58957de" export-id="671a3a74d26e49918a556f2630b10d22" cached="false">
+    <style>
+        <![CDATA[
+        #eFtoOnd1mWJ2_to {
+            animation: eFtoOnd1mWJ2_to__to 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ2_to__to {
+            0% {
+                transform: translate(416px, 167.073997px);
+                animation-timing-function: cubic-bezier(0.5, 0.01, 0.465, 1)
+            }
+
+            80% {
+                transform: translate(224.444997px, 169.073997px)
+            }
+
+            100% {
+                transform: translate(224.444997px, 169.073997px)
+            }
+        }
+
+        #eFtoOnd1mWJ2_ts {
+            animation: eFtoOnd1mWJ2_ts__ts 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ2_ts__ts {
+            0% {
+                transform: scale(1, 1);
+                animation-timing-function: cubic-bezier(0.5, 0.01, 0.465, 1)
+            }
+
+            80% {
+                transform: scale(0.791839, 0.791839)
+            }
+
+            100% {
+                transform: scale(0.791839, 0.791839)
+            }
+        }
+
+        #eFtoOnd1mWJ10_to {
+            animation: eFtoOnd1mWJ10_to__to 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ10_to__to {
+            0% {
+                transform: translate(221.741005px, 169px);
+                animation-timing-function: cubic-bezier(0.5, 0.01, 0.465, 1)
+            }
+
+            50% {
+                transform: translate(158.875732px, 166.131854px)
+            }
+
+            100% {
+                transform: translate(158.875732px, 166.131854px)
+            }
+        }
+
+        #eFtoOnd1mWJ10_ts {
+            animation: eFtoOnd1mWJ10_ts__ts 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ10_ts__ts {
+            0% {
+                transform: scale(1, 1);
+                animation-timing-function: cubic-bezier(0.5, 0.01, 0.465, 1)
+            }
+
+            50% {
+                transform: scale(0.752672, 0.752672)
+            }
+
+            100% {
+                transform: scale(0.752672, 0.752672)
+            }
+        }
+
+        #eFtoOnd1mWJ10 {
+            animation: eFtoOnd1mWJ10_c_o 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ10_c_o {
+            0% {
+                opacity: 1
+            }
+
+            20% {
+                opacity: 1;
+                animation-timing-function: cubic-bezier(0.5, 0.01, 0.465, 1)
+            }
+
+            60% {
+                opacity: 0
+            }
+
+            100% {
+                opacity: 0
+            }
+        }
+
+        #eFtoOnd1mWJ18_to {
+            animation: eFtoOnd1mWJ18_to__to 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ18_to__to {
+            0% {
+                transform: translate(611.370189px, 170px);
+                animation-timing-function: cubic-bezier(0.5, 0.01, 0.465, 1)
+            }
+
+            80% {
+                transform: translate(421.963013px, 168.100983px)
+            }
+
+            100% {
+                transform: translate(421.963013px, 168.100983px)
+            }
+        }
+
+        #eFtoOnd1mWJ18_ts {
+            animation: eFtoOnd1mWJ18_ts__ts 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ18_ts__ts {
+            0% {
+                transform: scale(1, 1);
+                animation-timing-function: cubic-bezier(0.5, 0.01, 0.465, 1)
+            }
+
+            100% {
+                transform: scale(1.34735, 1.347352)
+            }
+        }
+
+        #eFtoOnd1mWJ34_to {
+            animation: eFtoOnd1mWJ34_to__to 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ34_to__to {
+            0% {
+                transform: translate(671.370189px, 170px)
+            }
+
+            50% {
+                transform: translate(671.370189px, 170px);
+                animation-timing-function: cubic-bezier(0.545144, 0.00888, 0.666306, 0.650281)
+            }
+
+            70% {
+                transform: translate(622.194406px, 169.028458px);
+                animation-timing-function: cubic-bezier(0.250793, 0.592914, 0.561609, 1)
+            }
+
+            80% {
+                transform: translate(610.105984px, 168.813114px)
+            }
+
+            100% {
+                transform: translate(610.105984px, 168.813114px)
+            }
+        }
+
+        #eFtoOnd1mWJ34_ts {
+            animation: eFtoOnd1mWJ34_ts__ts 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ34_ts__ts {
+            0% {
+                transform: scale(0.711721, 0.711716)
+            }
+
+            50% {
+                transform: scale(0.711721, 0.711716);
+                animation-timing-function: cubic-bezier(0.5, 0.01, 0.465, 1)
+            }
+
+            80% {
+                transform: scale(1.008808, 1.008803)
+            }
+
+            100% {
+                transform: scale(1.008808, 1.008803)
+            }
+        }
+
+        #eFtoOnd1mWJ34 {
+            animation: eFtoOnd1mWJ34_c_o 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ34_c_o {
+            0% {
+                opacity: 0
+            }
+
+            50% {
+                opacity: 0;
+                animation-timing-function: cubic-bezier(0.5, 0.01, 0.465, 1)
+            }
+
+            80% {
+                opacity: 1
+            }
+
+            100% {
+                opacity: 1
+            }
+        }
+
+        #eFtoOnd1mWJ42_to {
+            animation: eFtoOnd1mWJ42_to__to 833.3333333333334ms linear infinite normal forwards
+        }
+
+        @keyframes eFtoOnd1mWJ42_to__to {
+            0% {
+                transform: translate(428.678864px, 181.52px)
+            }
+
+            30% {
+                transform: translate(408.678864px, 171.178879px)
+            }
+
+            60% {
+                transform: translate(428.678864px, 162.178879px)
+            }
+
+            90% {
+                transform: translate(428.678864px, 182.178879px)
+            }
+
+            100% {
+                transform: translate(428.678864px, 182.178879px)
+            }
+        }
+        ]]>
+    </style>
+    <g id="eFtoOnd1mWJ2_to" transform="translate(416,167.073997)">
+        <g id="eFtoOnd1mWJ2_ts" transform="scale(1,1)">
+            <g transform="translate(-416,-167.073997)">
+                <path
+                    d="M349.259,244.944v-156.1477c0-3.4774,2.819-6.2963,6.297-6.2963h76.185l51,51v111.444c0,4.173-3.383,7.556-7.556,7.556h-118.37c-4.173,0-7.556-3.383-7.556-7.556Z"
+                    transform="translate(0-.426)" fill="#d9e3eb" />
+                <path d="M363.111,132.24v-8.185h37.148v8.185h-37.148Z" fill="#b3c1d1" />
+                <path d="M363.111,151.759v-8.185h37.148v8.185h-37.148Z" fill="#b3c1d1" />
+                <path d="M363.111,211.573v-8.815h52.889v8.815h-52.889Z" transform="translate(0-.426)" fill="#b3c1d1" />
+                <path d="M363.111,173.795v-8.815h107.037v8.815h-107.037Z" transform="translate(0-.426)"
+                    fill="#b3c1d1" />
+                <path d="M363.111,192.686v-8.815h107.037v8.815h-107.037Z" transform="translate(0-.426)"
+                    fill="#b3c1d1" />
+                <path d="M433,132.869v-49.1112l49.111,49.1112h-49.111Z" fill="#b3c1d1" />
+            </g>
+        </g>
+    </g>
+    <g id="eFtoOnd1mWJ10_to" transform="translate(221.741005,169)">
+        <g id="eFtoOnd1mWJ10_ts" transform="scale(1,1)">
+            <g id="eFtoOnd1mWJ10" transform="translate(-221.741005,-169)">
+                <path
+                    d="M170.704,228.222v-119.407c0-2.659,2.155-4.815,4.814-4.815h58.26l39,39v85.222c0,3.191-2.587,5.778-5.778,5.778h-90.519c-3.191,0-5.777-2.587-5.777-5.778Z"
+                    transform="translate(.851201 0)" fill="#d9e3eb" />
+                <path d="M181.296,142.037v-6.26h28.408v6.26h-28.408Z" transform="translate(.852201 0)" fill="#b3c1d1" />
+                <path d="M181.296,156.962v-6.259h28.408v6.259h-28.408Z" transform="translate(.852201 0)"
+                    fill="#b3c1d1" />
+                <path d="M181.296,202.702v-6.741h40.445v6.741h-40.445Z" transform="translate(.852201 0)"
+                    fill="#b3c1d1" />
+                <path d="M181.296,173.815v-6.741h81.852v6.741h-81.852Z" transform="translate(.852201 0)"
+                    fill="#b3c1d1" />
+                <path d="M181.296,188.26v-6.74h81.852v6.74h-81.852Z" transform="translate(.852201 0)" fill="#b3c1d1" />
+                <path d="M234.741,142.516v-37.555l37.555,37.555h-37.555Z" transform="translate(1.333201 0)"
+                    fill="#b3c1d1" />
+            </g>
+        </g>
+    </g>
+    <g id="eFtoOnd1mWJ18_to" transform="translate(611.370189,170)">
+        <g id="eFtoOnd1mWJ18_ts" transform="scale(1,1)">
+            <g transform="translate(-610.036987,-170)">
+                <path
+                    d="M559,229.222v-119.407c0-2.659,2.156-4.815,4.815-4.815h58.259l39,39v85.222c0,3.191-2.587,5.778-5.778,5.778h-90.518c-3.191,0-5.778-2.587-5.778-5.778Z"
+                    fill="#d9e3eb" />
+                <path d="M569.593,143.037v-6.26h28.407v6.26h-28.407Z" fill="#b3c1d1" />
+                <path d="M569.593,157.962v-6.259h28.407v6.259h-28.407Z" fill="#b3c1d1" />
+                <path d="M569.593,203.702v-6.741h40.444v6.741h-40.444Z" fill="#b3c1d1" />
+                <path d="M569.593,174.815v-6.741h81.851v6.741h-81.851Z" fill="#b3c1d1" />
+                <path d="M569.593,189.26v-6.74h81.851v6.74h-81.851Z" fill="#b3c1d1" />
+                <path d="M623.037,143.516v-37.555l37.556,37.555h-37.556Z" fill="#b3c1d1" />
+            </g>
+        </g>
+    </g>
+    <g id="eFtoOnd1mWJ34_to" transform="translate(671.370189,170)">
+        <g id="eFtoOnd1mWJ34_ts" transform="scale(0.711721,0.711716)">
+            <g id="eFtoOnd1mWJ34" transform="translate(-610.036987,-170)" opacity="0">
+                <path
+                    d="M559,229.222v-119.407c0-2.659,2.156-4.815,4.815-4.815h58.259l39,39v85.222c0,3.191-2.587,5.778-5.778,5.778h-90.518c-3.191,0-5.778-2.587-5.778-5.778Z"
+                    fill="#d9e3eb" />
+                <path d="M569.593,143.037v-6.26h28.407v6.26h-28.407Z" fill="#b3c1d1" />
+                <path d="M569.593,157.962v-6.259h28.407v6.259h-28.407Z" fill="#b3c1d1" />
+                <path d="M569.593,203.702v-6.741h40.444v6.741h-40.444Z" fill="#b3c1d1" />
+                <path d="M569.593,174.815v-6.741h81.851v6.741h-81.851Z" fill="#b3c1d1" />
+                <path d="M569.593,189.26v-6.74h81.851v6.74h-81.851Z" fill="#b3c1d1" />
+                <path d="M623.037,143.516v-37.555l37.556,37.555h-37.556Z" fill="#b3c1d1" />
+            </g>
+        </g>
+    </g>
+    <g id="eFtoOnd1mWJ42_to" transform="translate(428.678864,181.52)">
+        <g transform="translate(-421.678863,-178.178879)">
+            <path
+                d="M520.429,270.571l-6.858,6.858c-3.905,3.905-10.237,3.905-14.142,0L466,244l21-21l33.429,33.429c3.905,3.905,3.905,10.237,0,14.142Z"
+                fill="#b6bbc4" />
+            <circle r="89.5" transform="translate(409.5 165.5)" fill="none" stroke="#caced5" stroke-width="14" />
+        </g>
+    </g>
+</svg>

@@ -71,7 +71,7 @@ export const TanstackTable = <T,>({
         </thead>
         <tbody>
           {loading && !isFetchingNextPage ? (
-            Array.from({ length: 6 }).map((_, rowIndex) => (
+            Array.from({ length: 12 }).map((_, rowIndex) => (
               <tr key={`skeleton-${rowIndex}`} className="border-b border-[#F1F1F1] h-10">
                 {columns.map((_, colIndex) => (
                   <td key={`skeleton-cell-${colIndex}`} className="p-2">
