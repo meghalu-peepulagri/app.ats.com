@@ -33,8 +33,8 @@ export const getStatusColor = (status: string | null) => {
       };
     case "INTERVIEWED":
       return {
-        bg: "bg-[rgba(156,28,36,0.10)]",
-        text: "text-[#9C1C24]",
+        bg: "bg-pink-100",
+        text: "text-pink-800",
       };
     default:
       return {

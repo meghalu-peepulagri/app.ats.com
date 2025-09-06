@@ -87,7 +87,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
           key={`comments-${applicant_id}`}
           comments={commentsData}
           onSubmitComment={(newComment) => addCommentMutation.mutate(newComment)}
-          isLoading={isFetching || addCommentMutation.isPending}
+          isLoading={addCommentMutation.isPending}
           isFetchingNextPage={isFetchingNextPage}
           lastRowRef={lastRowRef}
           commentsTotal = {commentsTotal}
