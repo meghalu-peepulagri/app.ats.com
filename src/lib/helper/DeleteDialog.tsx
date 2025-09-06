@@ -24,7 +24,7 @@ const DeleteDialog = ({
 }) => {
   return (
     <AlertDialog open={openOrNot}>
-      <AlertDialogContent className="bg-white text-gray-700 max-w-100 gap-10">
+      <AlertDialogContent className="bg-white text-gray-700 max-w-110 gap-10">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-gray-700 text-md leading-relaxed 3xl:text-lg font-normal flex items-center justify-around gap-2">
             {label}

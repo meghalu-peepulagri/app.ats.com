@@ -9,7 +9,7 @@ import {
 import Profile from "../an/Profile";
 import { CommentDetails } from "./CommentDetails";
 import { getListRolesAPI } from "~/http/services/users";
-import LoadingComponent from "~/lib/helper/LoadingComponent";
+import { Skeleton } from "../ui/skeleton";
 
 export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
@@ -90,10 +90,34 @@ export function Resume() {
     option === "Schedule_interview" ? "Schedule Interview" : option
   );
 
+  if (isFetching) {
+    return (
+      <div className="flex gap-2 w-full bg-white p-2">
+        <div className="flex-1 flex flex-col gap-2 border rounded-md">
+          <Skeleton className="h-16 w-full rounded-md" /> 
+          <div className="flex items-center justify-between">
+          <Skeleton className="h-8 w-1/3 rounded-md" /> 
+          <Skeleton className="h-8 w-1/3 rounded-md" />
+          </div>
+          <Skeleton className="h-[calc(100vh-263px)] w-full rounded-md" /> 
+        </div>
+        <div className="w-[300px] flex flex-col gap-2">
+          <Skeleton className="h-10 w-full rounded-md" />
+          <Skeleton className="h-10 w-full rounded-md" />
+          <Skeleton className="h-10 w-full rounded-md" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex gap-2 w-full bg-[#f8f8f8]">
+    <div className="flex gap-2 w-full bg-white">
       {isFetching ? 
-          <LoadingComponent loading={isFetching} />
+          <div className="absolute inset-0 z-10 bg-white/60 backdrop-blur-sm flex flex-col gap-2 p-4">
+          <Skeleton className="h-6 w-1/4 rounded-md" />
+          <Skeleton className="h-6 w-1/4 rounded-md" />
+          <Skeleton className="h-[calc(100vh-263px)] w-full rounded-md" />
+        </div>
         : (
       <>
       <Profile

@@ -8,5 +8,5 @@
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
   },
-  "svg.preview.background": "custom"
+  "svg.preview.background": "transparent"
 }

@@ -4,7 +4,7 @@ import { ApplicantPayload, ApplicantResponse, ApplicantErrorResponse, CommentPay
 export const getAllApplicants = async ({ pageParam = 1, search_string, role }: getAllApplicantsParams): Promise<ApplicantsResponse> => {
   const params = new URLSearchParams({
     page: pageParam.toString(),
-    limit: "10",
+    limit: "15",
   });
   if (search_string && search_string.trim() !== "") {
     params.append("search_string", search_string);
@@ -72,7 +72,7 @@ export const getStatsAPI = async () => {
 
 export const getCommentsAPI = async (applicant_id: string | number, page: number) => {
   try {
-    const response = await $fetch.get(`/comments/${applicant_id}?page=${page}&limit=10`);
+    const response = await $fetch.get(`/comments/${applicant_id}?page=${page}&limit=15`);
     return response.data;
   } catch (error) {
     throw error;
