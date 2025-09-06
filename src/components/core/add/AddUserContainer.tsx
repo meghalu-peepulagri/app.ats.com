@@ -286,8 +286,8 @@ export const AddUserContainer: React.FC = () => {
   };
 
   const handleBackNavigate = () => {
-      navigate({ to: "/applicants" });
-      // router.history.back();
+      // navigate({ to: "/applicants" });
+      router.history.back();
   };
   
 

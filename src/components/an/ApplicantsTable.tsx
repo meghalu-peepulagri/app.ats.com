@@ -77,7 +77,6 @@ const ActionCell = ({
           resume_key_path: candidate.resume_key_path,
         },
       } as any,
-      replace: true,
     });
   };
 
@@ -176,6 +175,11 @@ export function CandidateTable({
   const [selectedRole, setSelectedRole] = useState(search.role);
   const [debouncedValue, setDebouncedValue] = useState(searchValue);
 
+  useEffect(() => {
+    setSearchValue(search.search_string ?? "");
+    setSelectedRole(search.role ?? "");
+  }, [search.search_string, search.role]);
+  
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedValue(searchValue);
