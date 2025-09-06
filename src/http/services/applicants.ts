@@ -70,9 +70,9 @@ export const getStatsAPI = async () => {
   }
 };
 
-export const getCommentsAPI = async (applicant_id: string | number, page: number) => {
+export const getCommentsAPI = async (applicant_id: string | number) => {
   try {
-    const response = await $fetch.get(`/comments/${applicant_id}?page=${page}&limit=15`);
+    const response = await $fetch.get(`/comments/${applicant_id}`);
     return response.data;
   } catch (error) {
     throw error;

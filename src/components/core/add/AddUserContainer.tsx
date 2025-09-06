@@ -286,11 +286,8 @@ export const AddUserContainer: React.FC = () => {
   };
 
   const handleBackNavigate = () => {
-    if (window.history.state?.idx > 0) {
-      router.history.back();
-    } else {
       navigate({ to: "/applicants" });
-    }
+      // router.history.back();
   };
   
 
