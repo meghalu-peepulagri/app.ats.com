@@ -49,12 +49,12 @@ const CommentsSection = ({
   const prevCountRef = useRef(comments.length);
 
   const handleCommentChange = (e: any) => setNewComment(e.target.value);
-
+  
   const handleCommentSubmit = () => {
-    const trimmed = newComment.trim();
-    if (!trimmed) return;
-    onSubmitComment(trimmed);
-    setNewComment("");
+    if (newComment.trim()) {
+      onSubmitComment(newComment);
+      setNewComment("");
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -122,12 +122,11 @@ const CommentsSection = ({
             onClick={handleCommentSubmit}
             disabled={isLoading}
           >
-            {/* {isLoading ? (
+            {isLoading ? (
               <LoaderCircle className="text-white animate-spin w-5 h-5" />
             ) : (
               <CommentIcon className="!w-3.5 !h-3.5" />
-            )} */}
-            <CommentIcon className="!w-3.5 !h-3.5" />
+            )}
           </button>
         </div>
       </div>

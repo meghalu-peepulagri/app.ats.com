@@ -17,37 +17,23 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
 
   const addCommentMutation = useMutation({
     mutationFn: async (newComment: string) => {
-      return await updateCommentById(applicant_id, {
+      const response = await updateCommentById(applicant_id, {
         comment_description: newComment,
       });
+      return response.data;
     },
-    onMutate: async (newComment) => {
-      await queryClient.cancelQueries({ queryKey: ["comments", applicant_id] });
-        const previousComments = queryClient.getQueryData<any>(["comments", applicant_id]);
+    onSuccess: (newCommentResponse) => {
+      queryClient.invalidateQueries({ queryKey: ["comments", applicant_id] });
   
-      queryClient.setQueryData(["comments", applicant_id], (old: any) => {
-        if (!old) return old;
+      queryClient.setQueryData(["comments", applicant_id], (oldData: any) => {
         return {
-          ...old,
-          records: [
-            ...old.records,
-            {
-              id: Date.now(),
-              comment_description: newComment,
-              commented_at: new Date().toISOString(),
-              user: { name },
-            },
-          ],
+          ...oldData,
+          records: [...(oldData?.records || []), newCommentResponse],
         };
       });
-  
-      return { previousComments };
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["comments", applicant_id] });
-    }
   });
-  
+
   const name = Cookies.get("name");
 
   const commentsData = comments?.records.map((comment: any) => ({
