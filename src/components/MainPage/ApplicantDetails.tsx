@@ -122,7 +122,6 @@ export function Resume() {
     );
   }
 
-
   return (
     <div className="flex gap-2 w-full">
       {isFetching ? 

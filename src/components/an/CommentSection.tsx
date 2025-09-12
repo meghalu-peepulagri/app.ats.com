@@ -25,7 +25,7 @@ const CardComponent = forwardRef<HTMLDivElement, { name: string; msg: string; ti
             </h3>
             <p className="text-xs 3xl:!text-sm text-[#828282] font-normal">{time}</p>
           </div>
-          <p className="text-xs 3xl:!text-sm text-[#4F4F4F] font-normal pl-10 capitalize">
+          <p className="text-xs 3xl:!text-sm text-[#4F4F4F] font-normal pl-10 capitalize whitespace-pre-line">
             {msg}
           </p>
         </CardContent>
