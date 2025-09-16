@@ -40,8 +40,8 @@ interface CandidateTableProps {
   isLoading?: boolean;
   onRowClick?: (Candidate: Candidate) => void;
   onDeleteId: (field: any) => void;
-  lastRowRef?: (node: HTMLTableRowElement | null) => void;
   isFetchingNextPage?: boolean;
+  handleScroll?: (e: any) => void;
 }
 
 const columnHelper = createColumnHelper<Candidate>();
@@ -162,7 +162,7 @@ export function CandidateTable({
   candidatesData,
   isLoading,
   onDeleteId,
-  lastRowRef,
+  handleScroll,
   isFetchingNextPage,
 }: CandidateTableProps) {
   const search: { search_string?: string; role?: string } = useSearch({
@@ -275,7 +275,7 @@ export function CandidateTable({
         data={candidatesData ?? []}
         columns={columns(onDeleteId)}
         onRowClick={handleRowClick}
-        lastRowRef={lastRowRef}
+        handleScroll={handleScroll}
         loading={isLoading}
         isFetchingNextPage={isFetchingNextPage}
       />

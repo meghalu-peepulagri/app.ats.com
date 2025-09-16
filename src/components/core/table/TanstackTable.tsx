@@ -24,8 +24,8 @@ interface TanstackTableProps<T> {
   data: T[];
   loading?: boolean;
   height?: string | number;
+  handleScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
   onRowClick?: (row: Row<T>) => void;
-  lastRowRef?: (node: HTMLTableRowElement | null) => void;
   isFetchingNextPage?: boolean;
 }
 
@@ -33,7 +33,7 @@ export const TanstackTable = <T,>({
   columns,
   data,
   loading = false,
-  lastRowRef,
+  handleScroll,
   onRowClick,
   isFetchingNextPage,
 }: TanstackTableProps<T>) => {
@@ -49,7 +49,7 @@ export const TanstackTable = <T,>({
   const selectedRow = applicant_id ? parseInt(applicant_id) : null;
 
   return (
-    <div className="pl-2 w-full overflow-auto h-[calc(100vh-180px)]">
+    <div className="pl-2 w-full overflow-auto h-[calc(100vh-180px)]" onScroll={handleScroll}>
       <table className="w-full border-none overflow-auto">
         <thead className="sticky top-0 z-30 text-left h-10 bg-[#DBFCD9] font-normal rounded-sm">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -92,12 +92,10 @@ export const TanstackTable = <T,>({
               </td>
             </tr>
           ) : (
-            table.getRowModel().rows.map((row, idx) => {
-              const isLast = idx === data.length - 1;
+            table.getRowModel().rows.map((row) => {
               return (
                 <tr
                   key={row.id}
-                  ref={isLast && lastRowRef ? lastRowRef : undefined}
                   className={`border-b border-[#F1F1F1] h-10 cursor-pointer ${
                     selectedRow === (row.original as any).id ? "bg-[#f4f3f3]" : ""
                   }`}

@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import CandidateTable, { Candidate } from "../an/ApplicantsTable";
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 import {
   Outlet,
   useNavigate,
@@ -46,7 +46,6 @@ export function Home() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { applicant_id: id } = useParams({ strict: false });
-
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<any | null>(null);
 
@@ -143,23 +142,16 @@ export function Home() {
       page?.records?.map(apiApplicantToCandidate)
     ) || [];
 
-  const observer = useRef<IntersectionObserver | null>(null);
-  const lastRowRef = useCallback(
-    (node: HTMLTableRowElement | null) => {
-      if (isFetching || isFetchingNextPage || !hasNextPage) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && hasNextPage) {
-            fetchNextPage();
-          }
-        },
-        { root: null, rootMargin: "0px", threshold: 1.0 }
-      );
-      if (node) observer.current.observe(node);
-    },
-    [isFetching, isFetchingNextPage, hasNextPage, fetchNextPage]
-  );
+  const handleScroll = (e : any) => {
+    const container = e.currentTarget as HTMLElement;
+    if(
+      hasNextPage && 
+      !isFetchingNextPage &&
+      container.scrollTop + container.clientHeight >= container.scrollHeight - 10
+    ) {
+      fetchNextPage();
+    }
+  }
 
   const onDeleteId = (field: any) => {
     setDeleteId(field);
@@ -222,14 +214,14 @@ export function Home() {
             candidatesData={candidatesData}
             isLoading={isFetching && !isFetchingNextPage}
             onDeleteId={onDeleteId}
-            lastRowRef={lastRowRef}
+            handleScroll={handleScroll}
             isFetchingNextPage={isFetchingNextPage}
           />
         </div>
 
         <DeleteDialog
           openOrNot={isDeleteDialogOpen}
-          label="Are you sure you want to delete this candidate?"
+          label="Are you sure you want to delete this Applicant?"
           onCancelClick={() => setIsDeleteDialogOpen(false)}
           onOKClick={handleDeleteConfirm}
           deleteLoading={deleteApplicantMutation.isPending}
