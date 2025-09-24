@@ -1,4 +1,4 @@
-import { CommentIcon } from "../icons/Commenticon";
+import { CommentIcon } from "../icons/CommentsIcon";
 import { MessageIcon } from "../icons/MessageIcon";
 import { NoCommentIcon } from "../icons/NoCommentIcon";
 import { NoResumeIcon } from "../icons/NoResumeIcon";

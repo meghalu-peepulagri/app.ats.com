@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, forwardRef } from "react";
-import { CommentIcon } from "../icons/Commenticon";
+import { CommentIcon } from "../icons/CommentsIcon";
 import { MessageIcon } from "../icons/MessageIcon";
 import { NoCommentIcon } from "../icons/NoCommentIcon";
 import { Avatar } from "../ui/avatar";

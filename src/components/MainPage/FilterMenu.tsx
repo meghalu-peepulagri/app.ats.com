@@ -44,6 +44,13 @@ const [selectedStatus, setSelectedStatus] = useState<string>(() => {
   };
 
   const selectedCount = [selectedRole, selectedStatus].filter(Boolean).length;
+
+  const unSelected = () => {
+    setSelectedStatus("");
+    setSelectedRole("");
+    onFilterChange({ status: "", role: "" });
+  }
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="focus:ring-0 focus-visible:ring-0 rounded h-7">
@@ -55,14 +62,16 @@ const [selectedStatus, setSelectedStatus] = useState<string>(() => {
           <ListFilter className="h-4 w-4" /> 
           <span className="text-neutral-500">Filter</span>
           {selectedCount > 0 && (
-            <span className="text-[11px] rounded-full bg-red-600 text-white px-2 py-0.5 absolute -top-3 right-0">
+            <span className="text-[10px] rounded-full bg-red-600 text-white h-4 w-4 absolute -top-3 -right-1 flex items-center justify-center">
               {selectedCount}
             </span>
           )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-40">
-
+        <DropdownMenuSub>
+            <DropdownMenuItem onClick={unSelected} className="text-neutral-500 px-2 py-0 flex items-center justify-end w-fit cursor-pointer ml-auto">clear</DropdownMenuItem>
+        </DropdownMenuSub>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
           <DropdownMenuSubContent className="w-50 h-50 overflow-auto">
