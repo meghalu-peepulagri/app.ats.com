@@ -1,6 +1,6 @@
 import { LoaderCircle, Plus, TrashIcon } from "lucide-react";
 import { BackIcon } from "../icons/BackIcon";
-import { UploadIcon } from "../icons/uploadicon";
+import { UploadIcon } from "../icons/UploadIcon";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
@@ -27,6 +27,7 @@ export function AddUserCard({
   errors,
   message,
   isSubmitting,
+  setErrors,
   onChange,
   onSave,
   handleBackNavigate,
@@ -89,8 +90,6 @@ export function AddUserCard({
                   onValueChange={(value) => {
                     const roleId = Number(value);
                     onChange({ role_id: roleId });
-                    localStorage.setItem("recentRoleId", String(roleId));
-                    localStorage.setItem("recentRoleSelectedAt", Date.now().toString());
                   }}
                 >
                   <SelectTrigger className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0">
@@ -103,7 +102,7 @@ export function AddUserCard({
                       if (recentRole) {
                         return (
                           <>
-                            <div className="px-2 py-1 text-xs text-gray-500 font-medium uppercase tracking-wide">
+                            <div className="px-2 py-1 text-xs text-gray-500 font-medium capitalize tracking-wide">
                               Recently Used
                             </div>
                             <SelectItem
@@ -114,7 +113,7 @@ export function AddUserCard({
                               {recentRole.name}
                             </SelectItem>
                             <hr className="my-2 border-t border-gray-200" />
-                            <div className="px-2 py-1 text-xs text-gray-500 font-medium uppercase tracking-wide">
+                            <div className="px-2 py-1 text-xs text-gray-500 font-medium capitalize tracking-wide">
                               All Positions
                             </div>
                           </>
@@ -138,7 +137,13 @@ export function AddUserCard({
                 <Button
                   className="bg-[#F6F6F6] hover:bg-[#F6F6F6] text-black cursor-pointer"
                   onClick={() => {
-                    (setDialogOpen(true), setAddRoleMessage(""));
+                    setDialogOpen(true);
+                    setAddRoleMessage("");
+
+                    onChange({});
+                    if(errors.role_id) {
+                      setErrors((prev) => ({ ...prev, role_id: [] }));
+                    }
                   }}
                 >
                   <Plus />

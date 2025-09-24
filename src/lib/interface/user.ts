@@ -18,6 +18,7 @@ export interface UploadedFile {
     formData: UserFormData;
     uploadedFile: UploadedFile | null;
     errors: Record<string, string[]>;
+    setErrors: React.Dispatch<React.SetStateAction<Record<string, string[]>>>
     isSubmitting: boolean;
     onChange: (data: Partial<UserFormData>) => void;
     onSave: () => void;

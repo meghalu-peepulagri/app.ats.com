@@ -9,6 +9,7 @@ import {
 import '../styles/app.css';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { authMiddleware } from "../lib/helper/middleware";
+import { Toaster } from "sonner";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -64,6 +65,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <body>
         {children}
         <Scripts />
+        <Toaster position='top-center' richColors closeButton/>
       </body>
     </html>
   );

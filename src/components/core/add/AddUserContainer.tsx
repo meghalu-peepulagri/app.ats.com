@@ -48,7 +48,6 @@ export const AddUserContainer: React.FC = () => {
   const getRecentRoleId = (): number | null => {
     const recentRoleId = localStorage.getItem("recentRoleId");
     const selectedAt = localStorage.getItem("recentRoleSelectedAt");
-    
     if (selectedAt) {
       const daysSinceSelection = (Date.now() - Number(selectedAt)) / (1000 * 60 * 60 * 24);
       if (daysSinceSelection > 30) {
@@ -57,7 +56,6 @@ export const AddUserContainer: React.FC = () => {
         return null;
       }
     }
-    
     return recentRoleId ? Number(recentRoleId) : null;
   };
 
@@ -240,6 +238,7 @@ export const AddUserContainer: React.FC = () => {
           ...prev,
           role_id: newRole.id,
         }));
+        setErrors((prev) => ({ ...prev, role_id: [] }));
         localStorage.setItem("recentRoleId", String(newRole.id));
         localStorage.setItem("recentRoleSelectedAt", Date.now().toString());
       }
@@ -276,7 +275,6 @@ export const AddUserContainer: React.FC = () => {
         }));
         return;
       }
-
       setFileInput(file);
       setUploadedFile({
         name: file.name,
@@ -324,7 +322,6 @@ export const AddUserContainer: React.FC = () => {
       router.history.back();
   };
   
-
   const isLoading = fileUploadMutation.isPending;
 
   return (
@@ -333,6 +330,7 @@ export const AddUserContainer: React.FC = () => {
         formData={formData}
         uploadedFile={uploadedFile}
         errors={errors}
+        setErrors={setErrors}
         isSubmitting={isCreating || isUpdating}
         onChange={handleFormChange}
         onSave={handleSave}

@@ -16,7 +16,6 @@ import { useEffect, useMemo, useState } from "react";
 import { EmailIcon } from "../icons/Email";
 import { PhoneIcon } from "../icons/Phone";
 import { getStatusColor } from "~/lib/helper/getColorStatus";
-import { NoResumeIcon } from "../icons/NoResumeIcon";
 
 interface ProfileProps {
   avatarImg: string;

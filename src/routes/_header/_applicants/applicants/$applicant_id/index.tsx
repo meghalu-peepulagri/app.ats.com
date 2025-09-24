@@ -1,4 +1,4 @@
-import { Resume } from '~/components/MainPage/ApplicantDetails'
+import { Resume } from '~/components/mainPage/ApplicantDetails'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
