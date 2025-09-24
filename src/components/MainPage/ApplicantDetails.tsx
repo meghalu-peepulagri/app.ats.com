@@ -6,12 +6,10 @@ import {
   updateApplicantRole,
   updateApplicantStatus,
 } from "~/http/services/applicants";
-import Profile from "../an/Profile";
-import { CommentDetails } from "./CommentDetails";
 import { getListRolesAPI } from "~/http/services/users";
+import Profile from "../an/Profile";
 import { Skeleton } from "../ui/skeleton";
-import { NoResumeIcon } from "../icons/NoResumeIcon";
-import { NoCommentIcon } from "../icons/NoCommentIcon";
+import { CommentDetails } from "./CommentDetails";
 import { InitialPage } from "./InitialPage";
 
 export function Resume() {
@@ -24,6 +22,9 @@ export function Resume() {
       const response = await getApplicantById(id as string);
       return response.data;
     },
+    // onError: (error : any) => {
+    //   console.log(error, 'error');
+    // },
     enabled: !!id
   });
 
@@ -87,6 +88,7 @@ export function Resume() {
     "Screened",
     "Schedule_interview",
     "Interviewed",
+    "Pipeline",
     "Rejected",
     "Hired",
     "Joined",
@@ -116,9 +118,7 @@ export function Resume() {
 
   if (!resume && !isFetching) {
     return (
-      <div className="flex gap-2 w-full">
         <InitialPage/>
-      </div>
     );
   }
 

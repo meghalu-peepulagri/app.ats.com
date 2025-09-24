@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { ListFilter, MoreVertical, Pencil, Search, Trash2 } from "lucide-react";
+import { MoreVertical, Pencil, Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Popover,
@@ -13,15 +13,9 @@ import { getStatusColor } from "~/lib/helper/getColorStatus";
 import { TruncatedText } from "~/lib/helper/TruncatedText";
 import { TanstackTable } from "../core/table/TanstackTable";
 import { AddUploadIcon } from "../icons/AddIcon";
+import FilterMenu from "../MainPage/FilterMenu";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 
 export interface Candidate {
   id: number;
@@ -145,7 +139,7 @@ export const columns = (
       );
     },
     enableSorting: false,
-    size: 160,
+    size: 170,
   }),
   columnHelper.display({
     id: "actions",
@@ -165,7 +159,7 @@ export function CandidateTable({
   lastRowRef,
   isFetchingNextPage,
 }: CandidateTableProps) {
-  const search: { search_string?: string; role?: string } = useSearch({
+  const search: { search_string?: string; role?: string; status?: string } = useSearch({
     from: "/_header/_applicants",
   });
   const navigate = useNavigate();
@@ -174,11 +168,13 @@ export function CandidateTable({
   const [searchValue, setSearchValue] = useState(search.search_string ?? "");
   const [selectedRole, setSelectedRole] = useState(search.role);
   const [debouncedValue, setDebouncedValue] = useState(searchValue);
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
 
   useEffect(() => {
     setSearchValue(search.search_string ?? "");
     setSelectedRole(search.role ?? "");
-  }, [search.search_string, search.role]);
+    setSelectedStatus(search.status ?? "");
+  }, [search.search_string, search.role, search.status]);
   
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -201,6 +197,10 @@ export function CandidateTable({
     name: role.role,
   }));
 
+  const handleFilterChange = (filters: {status: string; role: string}) => {
+    setSelectedStatus(filters.status);
+    setSelectedRole(filters.role);
+  }
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -209,13 +209,14 @@ export function CandidateTable({
         search: {
           ...(searchValue ? { search_string: searchValue } : {}),
           ...(selectedRole ? { role: selectedRole } : {}),
+          ...(selectedStatus ? { status: selectedStatus } : {}),
         },
         replace: true,
       });
     }, 500);
 
     return () => clearTimeout(handler);
-  }, [searchValue, selectedRole, navigate]);
+  }, [searchValue, selectedRole, selectedStatus, navigate]);
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -228,29 +229,22 @@ export function CandidateTable({
 
   return (
     <div className="bg-white rounded-lg w-full">
-      <div className="flex items-center justify-between py-2 px-1">
-        <div className="flex items-center gap-2 text-sm font-medium">
-          <Select
-            value={selectedRole ?? ""}
-            onValueChange={(value) =>
-              setSelectedRole(value === "All" ? "" : value)
-            }
-          >
-            <SelectTrigger className="!h-7 rounded gap-2 font-normal border-none text-[#4F4F4F] w-45 bg-[rgba(0,0,0,0.08)] focus:ring-0 p-1">
-              <div className="flex items-center gap-1">
-                <ListFilter className="w-4 h-4" />
-                <SelectValue placeholder="Select position" className="text-xs 3xl:!text-sm"/>
-              </div>
-            </SelectTrigger>
-            <SelectContent className="max-h-[250px] overflow-y-auto">
-              <SelectItem value="All">All</SelectItem>
-              {roleList?.map((role: any) => (
-                <SelectItem key={role.id} value={String(role.id)}>
-                  {role.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      <div className="flex items-center justify-between p-2 pr-1">
+        <div className="flex items-center gap-3 text-sm font-medium">
+          <FilterMenu
+            roleList={roleList ?? []}
+            statusList={[
+              { id: "APPLIED", name: "Applied" },
+              { id: "SCREENED", name: "Screened" },
+              { id: "SCHEDULE_INTERVIEW", name: "Schedule Interview" },
+              { id: "INTERVIEWED", name: "Interviewed" },
+              { id: "PIPELINE", name: "Pipeline" },
+              { id: "REJECTED", name: "Rejected" },
+              { id: "HIRED", name: "Hired" },
+              { id: "JOINED", name: "Joined" },
+            ]} 
+            onFilterChange={handleFilterChange}
+          />
 
           <div className="relative flex items-center">
             <Search className="w-4.5 h-4.5 pl-1 text-gray-500" />
