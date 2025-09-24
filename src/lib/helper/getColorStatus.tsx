@@ -38,8 +38,8 @@ export const getStatusColor = (status: string | null) => {
       };
       case "PIPELINE":
       return {
-        bg: "bg-blue-100",
-        text: "text-blue-800",
+        bg: "bg-orange-100",
+        text: "text-orange-800",
       }
     default:
       return {

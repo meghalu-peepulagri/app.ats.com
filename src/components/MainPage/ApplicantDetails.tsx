@@ -155,6 +155,17 @@ export function Resume() {
           })
           .replace(/\//g, "-")
           .replace(/, /g, " ")}
+          updatedTime={new Date(resume?.updated_at)
+            .toLocaleString("en-US", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })
+            .replace(/\//g, "-")
+            .replace(/, /g, " ")}
         resumeOptions={resumeOptions}
         statusValue={resume?.status === "SCHEDULE_INTERVIEW" ? "Schedule Interview" : capitalize(resume?.status)}
         roleValue={resume?.role_id ? String(resume.role_id) : ""}
