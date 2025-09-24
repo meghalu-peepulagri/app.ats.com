@@ -19,7 +19,7 @@ import {
 } from "../ui/tooltip";
 import { AddUserCardProps, UserFormData } from "~/lib/interface/user";
 import { AddRoleDialog } from "~/lib/helper/AddRoleDialog";
-import { UploadIcon } from "../icons/UploadIcon";
+import { UploadIcon } from "../icons/uploadicon";
 
 export function AddUserCard({
   formData,

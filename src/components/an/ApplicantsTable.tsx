@@ -15,7 +15,7 @@ import { TanstackTable } from "../core/table/TanstackTable";
 import { AddUploadIcon } from "../icons/AddIcon";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import FilterMenu from "../mainPage/FilterMenu";
+import FilterMenu from "../MainPage/FilterMenu";
 
 export interface Candidate {
   id: number;
