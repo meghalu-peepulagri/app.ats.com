@@ -35,11 +35,12 @@ export const Route = createRootRoute({
         title: "ATS",
       },
     ],
-    link: [
+    links: [
       {
         rel: "stylesheet",
         href: "../styles/app.css",
       },
+      { rel: "icon", type: "image/png", href: "/favicon_io/favicon-32x32.png" },
     ],
   }),
   component: RootComponent,
