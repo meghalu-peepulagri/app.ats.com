@@ -207,7 +207,7 @@ export function CandidateTable({
       navigate({
         to: id !== undefined ? `/applicants/${id}` : `/applicants`,
         search: {
-          ...(searchValue ? { search_string: searchValue } : {}),
+          ...(debouncedValue ? { search_string: debouncedValue } : {}),
           ...(selectedRole ? { role: selectedRole } : {}),
           ...(selectedStatus ? { status: selectedStatus } : {}),
         },
@@ -216,7 +216,7 @@ export function CandidateTable({
     }, 500);
 
     return () => clearTimeout(handler);
-  }, [searchValue, selectedRole, selectedStatus, navigate]);
+  }, [debouncedValue, selectedRole, selectedStatus, navigate, id]);
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -244,6 +244,8 @@ export function CandidateTable({
               { id: "JOINED", name: "Joined" },
             ]} 
             onFilterChange={handleFilterChange}
+            selectedRole={selectedRole}
+            selectedStatus={selectedStatus}
           />
 
           <div className="relative flex items-center">

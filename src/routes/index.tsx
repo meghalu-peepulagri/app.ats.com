@@ -4,5 +4,4 @@ import { LoginContainer } from "~/components/core/auth";
 
 export const Route = createFileRoute("/")({
   component: LoginContainer,
-  beforeLoad: authMiddleware
 });

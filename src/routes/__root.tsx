@@ -35,12 +35,12 @@ export const Route = createRootRoute({
         title: "ATS",
       },
     ],
-    // link: [
-    //   {
-    //     rel: "stylesheet",
-    //     href: tailwindCss,
-    //   },
-    // ],
+    link: [
+      {
+        rel: "stylesheet",
+        href: "../styles/app.css",
+      },
+    ],
   }),
   component: RootComponent,
   beforeLoad: authMiddleware,

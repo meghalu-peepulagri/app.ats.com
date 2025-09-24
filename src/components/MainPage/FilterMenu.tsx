@@ -11,45 +11,44 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Button } from "~/components/ui/button";
 import { Check, ListFilter } from "lucide-react";
+import { useParams } from "@tanstack/react-router";
 
 interface FilterMenuProps {
   roleList: { id: string | number; name: string }[];
   statusList: { id: string | number; name: string }[];
   onFilterChange: (filters: { status: string; role: string }) => void;
+  selectedRole?: string;
+  selectedStatus?: string;
 }
 
-export default function FilterMenu({ roleList, statusList, onFilterChange }: FilterMenuProps) {
-const [selectedStatus, setSelectedStatus] = useState<string>(() => {
-    return localStorage.getItem("selectedStatus") || "";
-  });
-  const [selectedRole, setSelectedRole] = useState<string>(() => {
-    return localStorage.getItem("selectedRole") || "";
-  });
+export default function FilterMenu({ roleList, statusList, onFilterChange, selectedRole, selectedStatus }: FilterMenuProps) {
+  const [localStatus, setLocalStatus] = useState<string>(selectedStatus ?? "");
+  const [localRole, setLocalRole] = useState<string>(selectedRole ?? "");
 
   useEffect(() => {
-    localStorage.setItem("selectedStatus", selectedStatus);
-    localStorage.setItem("selectedRole", selectedRole);
+    setLocalStatus(selectedStatus ?? "");
+    setLocalRole(selectedRole ?? "");
   }, [selectedStatus, selectedRole]);
 
   const handleStatusChange = (value: string) => {
     const newStatus = value === "All" ? "" : value;
-    setSelectedStatus(newStatus);
-    onFilterChange({ status: newStatus, role: selectedRole });
+    setLocalStatus(newStatus);
+    onFilterChange({ status: newStatus, role: localRole });
   };
 
   const handleRoleChange = (value: string) => {
     const newRole = value === "All" ? "" : value;
-    setSelectedRole(newRole);
-    onFilterChange({ status: selectedStatus, role: newRole });
+    setLocalRole(newRole);
+    onFilterChange({ status: localStatus, role: newRole });
   };
 
-  const selectedCount = [selectedRole, selectedStatus].filter(Boolean).length;
+  const selectedCount = [localRole, localStatus].filter(Boolean).length;
 
-  const unSelected = () => {
-    setSelectedStatus("");
-    setSelectedRole("");
+  const handleClear = () => {
+    setLocalStatus("");
+    setLocalRole("");
     onFilterChange({ status: "", role: "" });
-  }
+  };
   
   return (
     <DropdownMenu>
@@ -70,7 +69,7 @@ const [selectedStatus, setSelectedStatus] = useState<string>(() => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-40">
         <DropdownMenuSub>
-            <DropdownMenuItem onClick={unSelected} className="text-neutral-500 px-2 py-0 flex items-center justify-end w-fit cursor-pointer ml-auto">clear</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleClear} className="text-neutral-500 px-2 py-0 flex items-center justify-end w-fit cursor-pointer ml-auto">clear</DropdownMenuItem>
         </DropdownMenuSub>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
@@ -86,10 +85,10 @@ const [selectedStatus, setSelectedStatus] = useState<string>(() => {
               <DropdownMenuItem
                 key={status.id}
                 onClick={() => handleStatusChange(String(status.id))}
-                className={selectedStatus === String(status.id) ? "bg-muted" : ""}
+                className={localStatus === String(status.id) ? "bg-muted" : ""}
               >
                 {status.name}
-                {selectedStatus === String(status.id) && <Check className="ml-auto h-4 w-4" />}
+                {localStatus === String(status.id) && <Check className="ml-auto h-4 w-4" />}
               </DropdownMenuItem>
             ))}
           </DropdownMenuSubContent>
@@ -102,19 +101,19 @@ const [selectedStatus, setSelectedStatus] = useState<string>(() => {
           <DropdownMenuSubContent className="w-50 h-50 overflow-auto">
           <DropdownMenuItem
               onClick={() => handleRoleChange("All")}
-              className={selectedRole === "" ? "bg-muted" : ""}
+              className={localRole === "" ? "bg-muted" : ""}
             >
               All
-              {selectedRole === "" && <Check className="ml-auto h-4 w-4" />}
+              {localRole === "" && <Check className="ml-auto h-4 w-4" />}
             </DropdownMenuItem>
             {roleList.map((role) => (
               <DropdownMenuItem
                 key={role.id}
                 onClick={() => handleRoleChange(String(role.id))}
-                className={selectedRole === String(role.id) ? "bg-muted" : ""}
+                className={localRole === String(role.id) ? "bg-muted" : ""}
               >
                 {role.name}
-                {selectedRole === String(role.id) && <Check className="ml-auto h-4 w-4" />}
+                {localRole === String(role.id) && <Check className="ml-auto h-4 w-4" />}
               </DropdownMenuItem>
             ))}
           </DropdownMenuSubContent>

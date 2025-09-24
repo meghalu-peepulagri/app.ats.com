@@ -9,9 +9,9 @@ import {
 import { getListRolesAPI } from "~/http/services/users";
 import Profile from "../an/Profile";
 import { Skeleton } from "../ui/skeleton";
-import { CommentDetails } from "./CommentDetails";
-import { InitialPage } from "./InitialPage";
 import { toast } from 'sonner';
+import { InitialPage } from "./InitialPage";
+import { CommentDetails } from "./CommentDetails";
 
 export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
