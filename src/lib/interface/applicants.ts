@@ -74,4 +74,5 @@ export interface getAllApplicantsParams {
   pageParam: number;
   search_string: string;
   role: string;
+  status: string;
 }
