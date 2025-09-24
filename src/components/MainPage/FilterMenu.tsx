@@ -69,7 +69,7 @@ export default function FilterMenu({ roleList, statusList, onFilterChange, selec
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-40">
         <DropdownMenuSub>
-            <DropdownMenuItem onClick={handleClear} className="text-neutral-500 px-2 py-0 flex items-center justify-end w-fit cursor-pointer ml-auto">clear</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleClear} className="text-neutral-500 px-2 py-0 flex items-center justify-end w-fit cursor-pointer ml-auto text-xs">Clear</DropdownMenuItem>
         </DropdownMenuSub>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>

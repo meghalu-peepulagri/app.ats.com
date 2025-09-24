@@ -2,7 +2,6 @@ import { Card, CardContent } from "../ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { LogOut } from "lucide-react";
 import { PeepulAgriIcon } from "src/components/icons/Peepulagri";
-import { BellIcon } from "src/components/icons/BellIcon";
 import { ProfileIcon } from "src/components/icons/Profile";
 import { DropdownIcon } from "src/components/icons/Dropdown";
 
