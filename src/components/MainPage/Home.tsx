@@ -231,7 +231,7 @@ export function Home() {
 
         <DeleteDialog
           openOrNot={isDeleteDialogOpen}
-          label="Are you sure you want to delete this candidate?"
+          label="Are you sure you want to delete this Applicant?"
           onCancelClick={() => setIsDeleteDialogOpen(false)}
           onOKClick={handleDeleteConfirm}
           deleteLoading={deleteApplicantMutation.isPending}

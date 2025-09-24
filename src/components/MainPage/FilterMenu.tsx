@@ -89,7 +89,7 @@ const [selectedStatus, setSelectedStatus] = useState<string>(() => {
         <DropdownMenuSeparator />
 
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Role</DropdownMenuSubTrigger>
+          <DropdownMenuSubTrigger>Position</DropdownMenuSubTrigger>
           <DropdownMenuSubContent className="w-50 h-50 overflow-auto">
           <DropdownMenuItem
               onClick={() => handleRoleChange("All")}
