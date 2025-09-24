@@ -13,9 +13,9 @@ import { getStatusColor } from "~/lib/helper/getColorStatus";
 import { TruncatedText } from "~/lib/helper/TruncatedText";
 import { TanstackTable } from "../core/table/TanstackTable";
 import { AddUploadIcon } from "../icons/AddIcon";
-import FilterMenu from "../mainPage/FilterMenu";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import FilterMenu from "../MainPage/FilterMenu";
 
 export interface Candidate {
   id: number;

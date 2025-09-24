@@ -10,8 +10,8 @@ import { getListRolesAPI } from "~/http/services/users";
 import Profile from "../an/Profile";
 import { Skeleton } from "../ui/skeleton";
 import { toast } from 'sonner';
-import { InitialPage } from "./InitialPage";
-import { CommentDetails } from "./CommentDetails";
+import { InitialPage } from "../MainPage/InitialPage";
+import { CommentDetails } from "../MainPage/CommentDetails";
 
 export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });

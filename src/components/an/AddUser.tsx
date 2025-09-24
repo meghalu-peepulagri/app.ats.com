@@ -1,6 +1,5 @@
 import { LoaderCircle, Plus, TrashIcon } from "lucide-react";
 import { BackIcon } from "../icons/BackIcon";
-import { UploadIcon } from "../icons/UploadIcon";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
@@ -20,6 +19,7 @@ import {
 } from "../ui/tooltip";
 import { AddUserCardProps, UserFormData } from "~/lib/interface/user";
 import { AddRoleDialog } from "~/lib/helper/AddRoleDialog";
+import { UploadIcon } from "../icons/uploadicon";
 
 export function AddUserCard({
   formData,
