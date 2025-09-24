@@ -11,21 +11,23 @@ import Profile from "../an/Profile";
 import { Skeleton } from "../ui/skeleton";
 import { CommentDetails } from "./CommentDetails";
 import { InitialPage } from "./InitialPage";
+import { toast } from 'sonner';
 
 export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
   const queryClient = useQueryClient();
 
-  const { data: resume, isFetching} = useQuery({
+  const { data: resume, isFetching } = useQuery({
     queryKey: [`resume-${id}`, id],
     queryFn: async () => {
       const response = await getApplicantById(id as string);
-      return response.data;
+      if(response.status === 200 || response.status === 201){
+        return response.data;
+      }else{
+        toast.error(response.message);
+      }
     },
-    // onError: (error : any) => {
-    //   console.log(error, 'error');
-    // },
-    enabled: !!id
+    enabled: !!id,
   });
 
   const updateStatusMutation = useMutation({
@@ -36,6 +38,9 @@ export function Resume() {
       queryClient.invalidateQueries({ queryKey: [`resume-${id}`, id] });
       queryClient.invalidateQueries({ queryKey: ["applicants"] });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
