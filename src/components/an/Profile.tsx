@@ -87,7 +87,7 @@ export default function Profile({
   }, [downloadUrl, resume_key_path]);
 
   return (
-    <div className="border rounded-lg p-2 w-[90%]">
+    <div className="border rounded-lg p-2">
       <Card className="w-full bg-[#F8F8F8]  shadow-none rounded-lg gap-0 border-none">
         <CardHeader className="p-1 shadow-[0px_0px_11px_rgba(0,0,0,0.12)] bg-white rounded-md mx-1">
           <div className="flex justify-between bg-white  rounded-[5px] items-center px-1">

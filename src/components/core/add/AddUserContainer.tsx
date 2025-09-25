@@ -13,6 +13,7 @@ import { AddUserCard } from "../../an/AddUser";
 import { getApplicantById } from "~/http/services/applicants";
 import { UserFormData } from "~/lib/interface/user";
 import { useRouter } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 export const AddUserContainer: React.FC = () => {
   const navigate = useNavigate();
@@ -169,8 +170,8 @@ export const AddUserContainer: React.FC = () => {
     },
     onError: (error: any) => {
       const apiError =
-        error?.errors?.file_type ||
-        error?.message ||
+        error?.data.errors?.file_type ||
+        error?.data.message ||
         "File upload failed. Please try again.";
       setErrors((prev) => ({
         ...prev,
@@ -178,7 +179,6 @@ export const AddUserContainer: React.FC = () => {
       }));
       setUploadedFile(null);
       setFormData((prev) => ({ ...prev, resume_key_path: "" }));
-      setMessage(apiError);
     },
   });
 
@@ -190,10 +190,10 @@ export const AddUserContainer: React.FC = () => {
       navigate({ to: "/applicants" });
     },
     onError: (error: any) => {
-      if (error.status === 422 && error.errors) {
-        setErrors(error.errors);
+      if (error.data.status === 422 && error.data.errors) {
+        setErrors(error.data.errors);
       } else {
-        setMessage(error?.message);
+        setMessage(error.data.message);
       }
     },
   });
@@ -207,10 +207,10 @@ export const AddUserContainer: React.FC = () => {
       refetch();
     },
     onError: (error: any) => {
-      if (error.status === 422 && error.errors) {
-        setErrors(error.errors);
+      if (error.data.status === 422 && error.data.errors) {
+        setErrors(error.data.errors);
       } else {
-        setMessage(error?.message);
+        setMessage(error?.data.message);
       }
     },
   });
@@ -224,7 +224,7 @@ export const AddUserContainer: React.FC = () => {
     },
     onError: (error: any) => {
       setAddRoleMessage(
-        error.message || "Failed to add role. Please try again."
+        error.data.message || "Failed to add role. Please try again."
       );
     },
   });

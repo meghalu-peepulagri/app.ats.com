@@ -25,6 +25,7 @@ import { GroupIcon } from "../icons/stats/GroupIcon";
 import { ScreenedIcon } from "../icons/stats/ScreenedIcon";
 import { InterviewScheduledIcon } from "../icons/stats/InterviewScheduledIcon";
 import { InterviewedIcon } from "../icons/stats/InterviewedIcon";
+import { toast } from "sonner";
 
 const apiApplicantToCandidate = (records: ApiApplicant): any => ({
   id: records.id,
@@ -50,13 +51,18 @@ export function Home() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<any | null>(null);
 
-  const { data: statsData } = useQuery({
+  const { data: statsData, isError, error } = useQuery({
     queryKey: ["stats"],
     queryFn: async () => {
       const response = await getStatsAPI();
       return response.data;
     },
+    retry: false,
   });
+
+  if(isError){
+    toast.error((error as any).data.message);
+  }
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
     useInfiniteQuery({
