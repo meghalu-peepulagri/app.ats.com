@@ -36,6 +36,11 @@ export const getStatusColor = (status: string | null) => {
         bg: "bg-pink-100",
         text: "text-pink-800",
       };
+      case "PIPELINE":
+      return {
+        bg: "bg-orange-100",
+        text: "text-orange-800",
+      }
     default:
       return {
         bg: "bg-gray-100",

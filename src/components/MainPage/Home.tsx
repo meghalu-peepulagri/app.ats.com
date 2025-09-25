@@ -40,7 +40,7 @@ const apiApplicantToCandidate = (records: ApiApplicant): any => ({
 });
 
 export function Home() {
-  const search: { search_string?: string; role?: string } = useSearch({
+  const search: { search_string?: string; role?: string; status?: string } = useSearch({
     from: "/_header/_applicants",
   });
   const queryClient = useQueryClient();
@@ -60,12 +60,13 @@ export function Home() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
     useInfiniteQuery({
-      queryKey: ["applicants", search.search_string, search.role],
+      queryKey: ["applicants", search.search_string, search.role, search.status],
       queryFn: async ({ pageParam = 1 }) => {
         const response = await getAllApplicants({
           pageParam,
           search_string: search.search_string || "",
           role: search.role || "",
+          status: search.status || "",
         });
         return response.data;
       },
@@ -90,16 +91,17 @@ export function Home() {
     },
     onMutate: async (deletedId) => {
       await queryClient.cancelQueries({
-        queryKey: ["applicants", search.search_string, search.role],
+        queryKey: ["applicants", search.search_string, search.role, search.status],
       });
       const previousData = queryClient.getQueryData([
         "applicants",
         search.search_string,
         search.role,
+        search.status,
       ]);
 
       queryClient.setQueryData(
-        ["applicants", search.search_string, search.role],
+        ["applicants", search.search_string, search.role, search.status],
         (oldData: any) => {
           if (!oldData) return oldData;
           return {
@@ -119,14 +121,14 @@ export function Home() {
     onError: (_error, _deletedId, context) => {
       if (context?.previousData) {
         queryClient.setQueryData(
-          ["applicants", search.search_string, search.role],
+          ["applicants", search.search_string, search.role, search.status],
           context.previousData
         );
       }
     },
     onSuccess: (_, deletedId) => {
       queryClient.invalidateQueries({
-        queryKey: ["applicants", search.search_string, search.role],
+        queryKey: ["applicants", search.search_string, search.role, search.status],
       });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
       setIsDeleteDialogOpen(false);
@@ -229,7 +231,7 @@ export function Home() {
 
         <DeleteDialog
           openOrNot={isDeleteDialogOpen}
-          label="Are you sure you want to delete this candidate?"
+          label="Are you sure you want to delete this Applicant?"
           onCancelClick={() => setIsDeleteDialogOpen(false)}
           onOKClick={handleDeleteConfirm}
           deleteLoading={deleteApplicantMutation.isPending}

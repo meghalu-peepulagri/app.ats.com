@@ -45,6 +45,20 @@ export const AddUserContainer: React.FC = () => {
   const [addRoleMessage, setAddRoleMessage] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const getRecentRoleId = (): number | null => {
+    const recentRoleId = localStorage.getItem("recentRoleId");
+    const selectedAt = localStorage.getItem("recentRoleSelectedAt");
+    if (selectedAt) {
+      const daysSinceSelection = (Date.now() - Number(selectedAt)) / (1000 * 60 * 60 * 24);
+      if (daysSinceSelection > 30) {
+        localStorage.removeItem("recentRoleId");
+        localStorage.removeItem("recentRoleSelectedAt");
+        return null;
+      }
+    }
+    return recentRoleId ? Number(recentRoleId) : null;
+  };
+
   const {
     data: userData,
     isLoading: isLoadingUser,
@@ -115,6 +129,19 @@ export const AddUserContainer: React.FC = () => {
     id: role.id,
     name: role.role,
   }));
+
+  useEffect(() => {
+    if (!isEditMode && !candidate && roles?.data) {
+      const recentRoleId = getRecentRoleId();
+      if (recentRoleId) {
+        const roleExists = roles.data.some((role: any) => role.id === recentRoleId);
+        if (!roleExists) {
+          localStorage.removeItem("recentRoleId");
+          localStorage.removeItem("recentRoleSelectedAt");
+        }
+      }
+    }
+  }, [roles, isEditMode, candidate]);
   const fileUploadMutation = useMutation({
     mutationFn: uploadFileAPI,
     onSuccess: async (data, file) => {
@@ -211,6 +238,9 @@ export const AddUserContainer: React.FC = () => {
           ...prev,
           role_id: newRole.id,
         }));
+        setErrors((prev) => ({ ...prev, role_id: [] }));
+        localStorage.setItem("recentRoleId", String(newRole.id));
+        localStorage.setItem("recentRoleSelectedAt", Date.now().toString());
       }
     } catch (error) {
       console.error("Failed to add role", error);
@@ -245,7 +275,6 @@ export const AddUserContainer: React.FC = () => {
         }));
         return;
       }
-
       setFileInput(file);
       setUploadedFile({
         name: file.name,
@@ -270,6 +299,10 @@ export const AddUserContainer: React.FC = () => {
 
   const handleFormChange = (data: Partial<UserFormData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
+      if (data.role_id) {
+      localStorage.setItem("recentRoleId", String(data.role_id));
+      localStorage.setItem("recentRoleSelectedAt", Date.now().toString());
+    }
     Object.keys(data).forEach((key) => {
       if (errors[key]) {
         setErrors((prev) => ({ ...prev, [key]: [] }));
@@ -286,11 +319,9 @@ export const AddUserContainer: React.FC = () => {
   };
 
   const handleBackNavigate = () => {
-      // navigate({ to: "/applicants" });
       router.history.back();
   };
   
-
   const isLoading = fileUploadMutation.isPending;
 
   return (
@@ -299,6 +330,7 @@ export const AddUserContainer: React.FC = () => {
         formData={formData}
         uploadedFile={uploadedFile}
         errors={errors}
+        setErrors={setErrors}
         isSubmitting={isCreating || isUpdating}
         onChange={handleFormChange}
         onSave={handleSave}

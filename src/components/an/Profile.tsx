@@ -16,7 +16,6 @@ import { useEffect, useMemo, useState } from "react";
 import { EmailIcon } from "../icons/Email";
 import { PhoneIcon } from "../icons/Phone";
 import { getStatusColor } from "~/lib/helper/getColorStatus";
-import { NoResumeIcon } from "../icons/NoResumeIcon";
 
 interface ProfileProps {
   avatarImg: string;
@@ -25,6 +24,7 @@ interface ProfileProps {
   phone: string;
   jobTitle: string;
   applyTime: string;
+  updatedTime: string;
   resumeOptions: string[];
   roleOptions: string[];
   statusValue: string;
@@ -41,6 +41,7 @@ export default function Profile({
   email,
   phone,
   applyTime,
+  updatedTime,
   resumeOptions,
   statusValue,
   roleValue,
@@ -112,12 +113,22 @@ export default function Profile({
         </CardHeader>
         <CardContent className="px-2 py-1">
           <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
             <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
-              Applied Job
+              Applied On
             </p>
             <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
               {applyTime}
             </p>
+            </div>
+            <div className="flex items-center gap-2">
+            <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
+              Updated On
+            </p>
+            <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
+              {updatedTime}
+            </p>
+            </div>
           </div>
           <div className="flex  justify-between items-center mt-1">
             <Select

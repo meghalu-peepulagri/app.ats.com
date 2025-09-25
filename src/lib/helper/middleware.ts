@@ -7,32 +7,22 @@ const getIsAuthenticated = () => {
 
 const authRoutes = [
     "/",
-    //   "/signup",
-    //   "/signin",
-    //   "/verify",
-    //   "/forgot-password",
-    //   "/auth/reset-password",
-    //   "/company-details",
-    //   "/verify-user-document",
-    //   "/success",
-    //   "/complete",
-    //   "/workflow-response/",
 ];
 
 export const authMiddleware = async ({
     location,
-}: BeforeLoadContextOptions<any, undefined, {}, {}, any>) => {
+}: any) => {
     if (typeof window == "undefined") return;
 
-    if (!getIsAuthenticated() && !authRoutes.includes(location.pathname)) {
+    if (getIsAuthenticated() && authRoutes.includes(location.pathname)) {
         throw redirect({
             to: "/",
         });
     }
-
-    if (getIsAuthenticated() && authRoutes.includes(location.pathname)) {
+    if (!getIsAuthenticated() && !authRoutes.includes(location.pathname)) {
         throw redirect({
             to: "/applicants",
         });
     }
 };
+

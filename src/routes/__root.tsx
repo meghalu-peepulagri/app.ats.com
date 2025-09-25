@@ -9,6 +9,7 @@ import {
 import '../styles/app.css';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { authMiddleware } from "../lib/helper/middleware";
+import { Toaster } from "sonner";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -34,12 +35,13 @@ export const Route = createRootRoute({
         title: "ATS",
       },
     ],
-    // link: [
-    //   {
-    //     rel: "stylesheet",
-    //     href: tailwindCss,
-    //   },
-    // ],
+    links: [
+      {
+        rel: "stylesheet",
+        href: "../styles/app.css",
+      },
+      { rel: "icon", type: "image/png", href: "/favicon_io/favicon-32x32.png" },
+    ],
   }),
   component: RootComponent,
   beforeLoad: authMiddleware,
@@ -64,6 +66,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <body>
         {children}
         <Scripts />
+        <Toaster position='top-center' richColors closeButton/>
       </body>
     </html>
   );

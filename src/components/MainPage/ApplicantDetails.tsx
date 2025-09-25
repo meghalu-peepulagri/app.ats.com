@@ -6,25 +6,28 @@ import {
   updateApplicantRole,
   updateApplicantStatus,
 } from "~/http/services/applicants";
-import Profile from "../an/Profile";
-import { CommentDetails } from "./CommentDetails";
 import { getListRolesAPI } from "~/http/services/users";
+import Profile from "../an/Profile";
 import { Skeleton } from "../ui/skeleton";
-import { NoResumeIcon } from "../icons/NoResumeIcon";
-import { NoCommentIcon } from "../icons/NoCommentIcon";
-import { InitialPage } from "./InitialPage";
+import { toast } from 'sonner';
+import { InitialPage } from "../MainPage/InitialPage";
+import { CommentDetails } from "../MainPage/CommentDetails";
 
 export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
   const queryClient = useQueryClient();
 
-  const { data: resume, isFetching} = useQuery({
+  const { data: resume, isFetching } = useQuery({
     queryKey: [`resume-${id}`, id],
     queryFn: async () => {
       const response = await getApplicantById(id as string);
-      return response.data;
+      if(response.status === 200 || response.status === 201){
+        return response.data;
+      }else{
+        toast.error(response.message);
+      }
     },
-    enabled: !!id
+    enabled: !!id,
   });
 
   const updateStatusMutation = useMutation({
@@ -35,6 +38,9 @@ export function Resume() {
       queryClient.invalidateQueries({ queryKey: [`resume-${id}`, id] });
       queryClient.invalidateQueries({ queryKey: ["applicants"] });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
@@ -87,6 +93,7 @@ export function Resume() {
     "Screened",
     "Schedule_interview",
     "Interviewed",
+    "Pipeline",
     "Rejected",
     "Hired",
     "Joined",
@@ -116,9 +123,7 @@ export function Resume() {
 
   if (!resume && !isFetching) {
     return (
-      <div className="flex gap-2 w-full">
         <InitialPage/>
-      </div>
     );
   }
 
@@ -150,6 +155,17 @@ export function Resume() {
           })
           .replace(/\//g, "-")
           .replace(/, /g, " ")}
+          updatedTime={new Date(resume?.updated_at)
+            .toLocaleString("en-US", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })
+            .replace(/\//g, "-")
+            .replace(/, /g, " ")}
         resumeOptions={resumeOptions}
         statusValue={resume?.status === "SCHEDULE_INTERVIEW" ? "Schedule Interview" : capitalize(resume?.status)}
         roleValue={resume?.role_id ? String(resume.role_id) : ""}

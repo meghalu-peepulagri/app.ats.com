@@ -23,7 +23,7 @@ export const AddRoleDialog: React.FC<AddRoleDialogProps> = ({
   onOpenChange,
   onSave,
   loading,
-  message
+  message,
 }) => {
   const [newRole, setNewRole] = useState("");
 

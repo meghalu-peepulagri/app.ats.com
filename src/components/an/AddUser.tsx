@@ -1,6 +1,5 @@
 import { LoaderCircle, Plus, TrashIcon } from "lucide-react";
 import { BackIcon } from "../icons/BackIcon";
-import { UploadIcon } from "../icons/uploadicon";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
@@ -20,6 +19,7 @@ import {
 } from "../ui/tooltip";
 import { AddUserCardProps, UserFormData } from "~/lib/interface/user";
 import { AddRoleDialog } from "~/lib/helper/AddRoleDialog";
+import { UploadIcon } from "../icons/uploadicon";
 
 export function AddUserCard({
   formData,
@@ -27,6 +27,7 @@ export function AddUserCard({
   errors,
   message,
   isSubmitting,
+  setErrors,
   onChange,
   onSave,
   handleBackNavigate,
@@ -45,8 +46,19 @@ export function AddUserCard({
   const fileName = uploadedFile?.name ?? "";
   const isLong = fileName?.length > 20;
 
-  const handleInputChange = (field: keyof UserFormData, value: string | number | null) => {
+  const handleInputChange = (
+    field: keyof UserFormData,
+    value: string | number | null
+  ) => {
     onChange({ [field]: value });
+  };
+
+  const getRecentRole = () => {
+    const recentRoleId = localStorage.getItem("recentRoleId");
+    if (recentRoleId) {
+      return roleList.find((r: any) => r.id === Number(recentRoleId));
+    }
+    return null;
   };
 
   return (
@@ -75,29 +87,71 @@ export function AddUserCard({
               <div className="flex gap-2">
                 <Select
                   value={formData.role_id ? String(formData.role_id) : ""}
-                  onValueChange={(value) => onChange({ role_id: Number(value) })}
+                  onValueChange={(value) => {
+                    const roleId = Number(value);
+                    onChange({ role_id: roleId });
+                  }}
                 >
                   <SelectTrigger className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0">
                     <SelectValue placeholder="Please select position" />
                   </SelectTrigger>
                   <SelectContent className="max-h-[250px] overflow-y-auto">
-                    {roleList.map((role: any) => (
-                      <SelectItem key={role.id} value={String(role.id)}>
-                        {role.name}
-                      </SelectItem>
-                    ))}
+                    {(() => {
+                      const recentRole = getRecentRole() as any;
+                      
+                      if (recentRole) {
+                        return (
+                          <>
+                            <div className="px-2 py-1 text-xs text-gray-500 font-medium capitalize tracking-wide">
+                              Recently Used
+                            </div>
+                            <SelectItem
+                              key={`recent-${recentRole.id}`}
+                              value={String(recentRole.id)}
+                              className="font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 border-l-2 border-blue-500"
+                            >
+                              {recentRole.name}
+                            </SelectItem>
+                            <hr className="my-2 border-t border-gray-200" />
+                            <div className="px-2 py-1 text-xs text-gray-500 font-medium capitalize tracking-wide">
+                              All Positions
+                            </div>
+                          </>
+                        );
+                      }
+                      return null;
+                    })()}
+
+                    {(() => {
+                      const recentRoleId = localStorage.getItem("recentRoleId");
+                      return roleList
+                        .filter((role: any) => role.id !== Number(recentRoleId))
+                        .map((role: any) => (
+                          <SelectItem key={role.id} value={String(role.id)}>
+                            {role.name}
+                          </SelectItem>
+                        ));
+                    })()}
                   </SelectContent>
                 </Select>
                 <Button
                   className="bg-[#F6F6F6] hover:bg-[#F6F6F6] text-black cursor-pointer"
-                  onClick={() => {setDialogOpen(true), setAddRoleMessage("")}}
+                  onClick={() => {
+                    setDialogOpen(true);
+                    setAddRoleMessage("");
+
+                    onChange({});
+                    if(errors.role_id) {
+                      setErrors((prev) => ({ ...prev, role_id: [] }));
+                    }
+                  }}
                 >
                   <Plus />
                 </Button>
               </div>
               {errors.role_id && (
-                    <p className="text-red-500 text-xs">{errors.role_id}</p>
-                  )}
+                <p className="text-red-500 text-xs">{errors.role_id}</p>
+              )}
             </div>
 
             <div className="flex flex-col">
@@ -117,7 +171,10 @@ export function AddUserCard({
                     placeholder="First name of applicant"
                     value={formData.first_name}
                     onChange={(e) =>
-                      handleInputChange("first_name", e.target.value.trimStart())
+                      handleInputChange(
+                        "first_name",
+                        e.target.value.trimStart()
+                      )
                     }
                     className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                     disabled={loading}
@@ -159,7 +216,9 @@ export function AddUserCard({
                     placeholder="Enter email"
                     type="email"
                     value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value.trimStart())}
+                    onChange={(e) =>
+                      handleInputChange("email", e.target.value.trimStart())
+                    }
                     className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                     disabled={loading}
                   />
@@ -178,7 +237,9 @@ export function AddUserCard({
                     id="mobile"
                     placeholder="Enter mobile number"
                     value={formData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value.trimStart())}
+                    onChange={(e) =>
+                      handleInputChange("phone", e.target.value.trimStart())
+                    }
                     maxLength={10}
                     className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                     disabled={loading}
@@ -204,7 +265,9 @@ export function AddUserCard({
                   onChange={(e) =>
                     handleInputChange(
                       "experience",
-                      e.target.value === "" ? null : Number(e.target.value.trimStart())
+                      e.target.value === ""
+                        ? null
+                        : Number(e.target.value.trimStart())
                     )
                   }
                   className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
