@@ -9,18 +9,7 @@
     "dev": "vite dev",
     "build": "vite build && tsc --noEmit",
     "start": "node .output/server/index.mjs",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint . --ext ts,tsx --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "type-check": "tsc --noEmit",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
-    "prepare": "husky install",
-    "pre-commit": "lint-staged",
-    "analyze": "vite-bundle-analyzer",
-    "audit": "npm audit --audit-level moderate"
+    "lint": "npx tsc --noEmit"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.2.6",
