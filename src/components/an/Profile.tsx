@@ -86,8 +86,6 @@ export default function Profile({
     return src;
   }, [downloadUrl, resume_key_path]);
 
-  const isDocx = pdfSrc?.endsWith(".docx");
-
   return (
     <div className="border rounded-lg p-2">
       <Card className="w-full bg-[#F8F8F8]  shadow-none rounded-lg gap-0 border-none">
