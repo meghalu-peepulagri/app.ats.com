@@ -265,6 +265,11 @@ export function AddUserCard({
                   id="experience"
                   placeholder="Enter applicant experience"
                   value={formData.experience?.toString()}
+                  onKeyDown={(e) => {
+                    if (["-", "+", "e", "E"].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
                   onChange={(e) =>
                     handleInputChange(
                       "experience",
@@ -273,6 +278,7 @@ export function AddUserCard({
                         : Number(e.target.value.trimStart())
                     )
                   }
+                  min={0}
                   className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                   disabled={loading}
                 />

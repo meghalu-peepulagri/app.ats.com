@@ -103,8 +103,9 @@ export function Resume() {
     "Rejected",
     "Hired",
     "Joined",
+    "Not_yet_responded",
   ].map((option) =>
-    option === "Schedule_interview" ? "Schedule Interview" : option
+    option === "Schedule_interview" ? "Schedule Interview" : option === "Not_yet_responded" ? "Not Yet Responded" : option
   );
 
   if (isFetching) {
@@ -173,7 +174,11 @@ export function Resume() {
             .replace(/\//g, "-")
             .replace(/, /g, " ")}
         resumeOptions={resumeOptions}
-        statusValue={resume?.status === "SCHEDULE_INTERVIEW" ? "Schedule Interview" : capitalize(resume?.status)}
+        statusValue={
+          resume?.status === "SCHEDULE_INTERVIEW" ? "Schedule Interview" :
+          resume?.status === "NOT_YET_RESPONDED" ? "Not Yet Responded" :
+          capitalize(resume?.status)
+        }
         roleValue={resume?.role_id ? String(resume.role_id) : ""}
         resume_key_path={resume?.resume_key_path || ""}
         downloadUrl={resume?.presignedUrl.download_url || ""}
