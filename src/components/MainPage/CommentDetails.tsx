@@ -2,11 +2,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { getCommentsAPI, updateCommentById } from "~/http/services/applicants";
 import CommentsSection from "../an/CommentSection";
+import { toast } from "sonner";
 
 export function CommentDetails({ applicant_id }: { applicant_id: number }) {
   const queryClient = useQueryClient();
 
-  const { data: comments } =
+  const { data: comments, isError, error } =
     useQuery({
       queryKey: ["comments", applicant_id],
       queryFn: async () => {
@@ -14,6 +15,10 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
         return response.data;
       },
     });
+
+    if(isError){
+      toast.error((error as any).data.message);
+    }
 
   const addCommentMutation = useMutation({
     mutationFn: async (newComment: string) => {
@@ -32,6 +37,9 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
         };
       });
     },
+    onError: (error: any) => {
+      toast.error(error.data.message);
+    }
   });
 
   const name = Cookies.get("name");
@@ -54,7 +62,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
     }));
 
   return (
-    <div className="w-[42%]">
+    <div>
       {commentsData && (
         <CommentsSection
           key={`comments-${applicant_id}`}
