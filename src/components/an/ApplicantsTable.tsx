@@ -139,7 +139,7 @@ export const columns = (
       );
     },
     enableSorting: false,
-    size: 170,
+    size: 200,
   }),
   columnHelper.display({
     id: "actions",
@@ -242,6 +242,7 @@ export function CandidateTable({
               { id: "REJECTED", name: "Rejected" },
               { id: "HIRED", name: "Hired" },
               { id: "JOINED", name: "Joined" },
+              { id: "NOT_YET_RESPONDED", name: "Not Yet Responded" },
             ]} 
             onFilterChange={handleFilterChange}
             selectedRole={selectedRole}
