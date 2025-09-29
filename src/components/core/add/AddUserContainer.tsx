@@ -28,7 +28,7 @@ export const AddUserContainer: React.FC = () => {
     first_name: "",
     last_name: "",
     email: "",
-    phone: "",
+    phone: "+91",
     experience: null,
     resume_key_path: "",
   });
@@ -258,12 +258,12 @@ export const AddUserContainer: React.FC = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const allowedTypes = ["pdf"];
+      const allowedTypes = ["pdf", 'doc', 'docx'];
       const fileExtension = file.name.split(".").pop()?.toLowerCase();
       if (!fileExtension || !allowedTypes.includes(fileExtension)) {
         setErrors((prev) => ({
           ...prev,
-          resume_key_path: ["Only PDF files are allowed."],
+          resume_key_path: ["Only PDF, DOC, and DOCX files are allowed."],
         }));
         return;
       }
@@ -311,10 +311,15 @@ export const AddUserContainer: React.FC = () => {
   };
 
   const handleSave = () => {
+    const normalizedPhone = formData.phone.startsWith("+91") ? formData.phone.replace(/^\+91/, "") : `+91${formData.phone.replace(/^\+?91/, "")}`;
+    const payload = {
+      ...formData,
+      phone: normalizedPhone,
+    };
     if (isEditMode) {
-      updateUser(formData);
+      updateUser(payload);
     } else {
-      createUser(formData);
+      createUser(payload);
     }
   };
 
