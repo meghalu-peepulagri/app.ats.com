@@ -17,18 +17,21 @@ export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
   const queryClient = useQueryClient();
 
-  const { data: resume, isFetching } = useQuery({
+  const { data: resume, isFetching, isError, error } = useQuery({
     queryKey: [`resume-${id}`, id],
     queryFn: async () => {
       const response = await getApplicantById(id as string);
-      if(response.status === 200 || response.status === 201){
-        return response.data;
-      }else{
-        toast.error(response.message);
-      }
+      return response.data;
     },
     enabled: !!id,
+    retry: false
   });
+
+  if(isError) {
+    console.log(error.message, 'error');
+    toast.error((error as any).data.message);
+  }
+
 
   const updateStatusMutation = useMutation({
     mutationFn: async (newStatus: string) => {
@@ -40,7 +43,7 @@ export function Resume() {
       queryClient.invalidateQueries({ queryKey: ["stats"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error((error as any).data.message);
     },
   });
 
@@ -52,6 +55,9 @@ export function Resume() {
       queryClient.invalidateQueries({ queryKey: [`resume-${id}`, id] });
       queryClient.invalidateQueries({ queryKey: ["applicants"] });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
+    },
+    onError: (error) => {
+      toast.error((error as any).data.message);
     },
   });
 
@@ -97,8 +103,9 @@ export function Resume() {
     "Rejected",
     "Hired",
     "Joined",
+    "Not_yet_responded",
   ].map((option) =>
-    option === "Schedule_interview" ? "Schedule Interview" : option
+    option === "Schedule_interview" ? "Schedule Interview" : option === "Not_yet_responded" ? "Not Yet Responded" : option
   );
 
   if (isFetching) {
@@ -136,7 +143,7 @@ export function Resume() {
           <Skeleton className="h-[calc(100vh-263px)] w-full rounded-md" />
         </div>
         : (
-      <>
+      <div className="grid grid-cols-[1fr_30%] gap-2 w-full md:grid-cols-[1fr_50%] lg:grid-cols-[1fr_30%]">
       <Profile
         key={id}
         avatarImg={avatarImg || "A"}
@@ -167,7 +174,11 @@ export function Resume() {
             .replace(/\//g, "-")
             .replace(/, /g, " ")}
         resumeOptions={resumeOptions}
-        statusValue={resume?.status === "SCHEDULE_INTERVIEW" ? "Schedule Interview" : capitalize(resume?.status)}
+        statusValue={
+          resume?.status === "SCHEDULE_INTERVIEW" ? "Schedule Interview" :
+          resume?.status === "NOT_YET_RESPONDED" ? "Not Yet Responded" :
+          capitalize(resume?.status)
+        }
         roleValue={resume?.role_id ? String(resume.role_id) : ""}
         resume_key_path={resume?.resume_key_path || ""}
         downloadUrl={resume?.presignedUrl.download_url || ""}
@@ -176,7 +187,7 @@ export function Resume() {
         roleOptions={roleOptions ?? []}
       />
       <CommentDetails applicant_id={resume?.id} />
-      </>
+      </div>
       )}
     </div>
   );

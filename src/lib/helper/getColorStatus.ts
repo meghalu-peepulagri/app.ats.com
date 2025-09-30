@@ -41,6 +41,12 @@ export const getStatusColor = (status: string | null) => {
         bg: "bg-orange-100",
         text: "text-orange-800",
       }
+      case "NOT YET RESPONDED":
+        case "NOT_YET_RESPONDED":
+      return {
+        bg: "bg-red-100",
+        text: "text-red-800",
+      }
     default:
       return {
         bg: "bg-gray-100",

@@ -98,7 +98,7 @@ export function AddUserCard({
                   <SelectContent className="max-h-[250px] overflow-y-auto">
                     {(() => {
                       const recentRole = getRecentRole() as any;
-                      
+
                       if (recentRole) {
                         return (
                           <>
@@ -141,7 +141,7 @@ export function AddUserCard({
                     setAddRoleMessage("");
 
                     onChange({});
-                    if(errors.role_id) {
+                    if (errors.role_id) {
                       setErrors((prev) => ({ ...prev, role_id: [] }));
                     }
                   }}
@@ -233,17 +233,20 @@ export function AddUserCard({
                   >
                     Mobile Number
                   </Label>
-                  <Input
-                    id="mobile"
-                    placeholder="Enter mobile number"
-                    value={formData.phone}
-                    onChange={(e) =>
-                      handleInputChange("phone", e.target.value.trimStart())
-                    }
-                    maxLength={10}
-                    className="!h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
-                    disabled={loading}
-                  />
+                  <div className="flex items-center gap-2 bg-neutral-100 rounded-md border border-neutral-100">
+                    <p className="border-r border-neutral-300 px-2 text-sm">+91</p>
+                    <Input
+                      id="mobile"
+                      placeholder="Enter mobile number"
+                      value={formData.phone.replace(/^\+?91/, "")}
+                      onChange={(e) => {
+                        handleInputChange("phone", e.target.value.trimStart());
+                      }}
+                      maxLength={10}
+                      className="!h-9 shadow-none text-sm border-none px-2 placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
+                      disabled={loading}
+                    />
+                  </div>
                   {errors.phone && (
                     <p className="text-red-500 text-xs">{errors.phone}</p>
                   )}
@@ -262,6 +265,11 @@ export function AddUserCard({
                   id="experience"
                   placeholder="Enter applicant experience"
                   value={formData.experience?.toString()}
+                  onKeyDown={(e) => {
+                    if (["-", "+", "e", "E"].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
                   onChange={(e) =>
                     handleInputChange(
                       "experience",
@@ -270,6 +278,7 @@ export function AddUserCard({
                         : Number(e.target.value.trimStart())
                     )
                   }
+                  min={0}
                   className="w-[49%] !h-9 shadow-none bg-[#F6F6F6] border border-[#F2F2F2] rounded-[5px] text-sm placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
                   disabled={loading}
                 />

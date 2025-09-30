@@ -113,8 +113,9 @@ class FetchService {
             : await response.json();
         } catch {
           errorData = { message: response.statusText };
-        }
-        return {
+        }   
+        console.log(errorData);     
+        throw {
           success: false,
           status: response.status,
           data: errorData,
@@ -131,13 +132,14 @@ class FetchService {
       } catch {
         errorData = { message: response.statusText };
       }
+
       let err: any = new Error(errorData.message || response.statusText);
       err.data = errorData;
       err.status = response.status;
       throw err;
     }
 
-    if (this._fetchType === "response") {
+    if (this._fetchType === "response") {      
       return response;
     } else {
       const contentType = response.headers.get("Content-Type") || "";
