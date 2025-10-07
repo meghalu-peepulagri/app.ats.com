@@ -6,7 +6,7 @@ import { NoResumeIcon } from "../icons/NoResumeIcon";
 export function InitialPage() {
   return (
     <div className="flex items-center justify-around">
-      <div className="w-full h-full border rounded-md flex items-center justify-center">
+      <div className="w-full h-[calc(100vh-130px)] border rounded-md flex items-center justify-center">
       <div className="flex flex-col items-center justify-center p-1">
         <NoResumeIcon />
         <p className="text-sm 3xl:!text-base text-[#828282] font-normal">
