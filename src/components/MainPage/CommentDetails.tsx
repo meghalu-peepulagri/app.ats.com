@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { getCommentsAPI, updateCommentById } from "~/http/services/applicants";
 import CommentsSection from "../an/CommentSection";
 import { toast } from "sonner";
+import dayjs from "dayjs";
 
 export function CommentDetails({ applicant_id }: { applicant_id: number }) {
   const queryClient = useQueryClient();
@@ -48,17 +49,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
       id: comment?.id,
       name: comment?.user?.name === name ? "You" : comment?.user?.name,
       msg: comment?.comment_description || "",
-      time: new Date(comment?.commented_at)
-        .toLocaleString("en-US", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        })
-        .replace(/\//g, "-")
-        .replace(/, /g, " "),
+      time: dayjs(comment?.commented_at).format("DD-MM-YYYY hh:mm A"),
     }));
 
   return (
