@@ -34,7 +34,6 @@ export function Resume() {
     toast.error(error?.message);
   }
 
-
   const updateStatusMutation = useMutation({
     mutationFn: async (newStatus: string) => {
       return updateApplicantStatus(id as string, { status: newStatus });
