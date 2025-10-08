@@ -72,7 +72,7 @@ export function Home() {
   });
 
   if (isError) {
-    toast.error((error as any)?.data?.message);
+    toast.error(error.message);
   }
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =

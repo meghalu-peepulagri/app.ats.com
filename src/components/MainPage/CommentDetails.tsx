@@ -18,7 +18,7 @@ export function CommentDetails({ applicant_id }: { applicant_id: number }) {
     });
 
     if(isError){
-      toast.error((error as any).data.message);
+      toast.error(error.message);
     }
 
   const addCommentMutation = useMutation({
