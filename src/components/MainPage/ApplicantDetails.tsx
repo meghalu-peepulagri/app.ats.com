@@ -12,6 +12,8 @@ import { Skeleton } from "../ui/skeleton";
 import { toast } from 'sonner';
 import { InitialPage } from "../MainPage/InitialPage";
 import { CommentDetails } from "../MainPage/CommentDetails";
+import dayjs from "dayjs";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
 export function Resume() {
   const { applicant_id: id } = useParams({ strict: false });
@@ -29,7 +31,7 @@ export function Resume() {
 
   if(isError) {
     console.log(error.message, 'error');
-    toast.error((error as any).data.message);
+    toast.error(error?.message);
   }
 
 
@@ -98,7 +100,7 @@ export function Resume() {
     "Applied",
     "Screened",
     "Schedule_interview",
-    "Interviewed",
+    "Interviewed",  
     "Pipeline",
     "Rejected",
     "Hired",
@@ -133,7 +135,6 @@ export function Resume() {
         <InitialPage/>
     );
   }
-
   return (
     <div className="flex gap-2 w-full">
       {isFetching ? 
@@ -143,7 +144,11 @@ export function Resume() {
           <Skeleton className="h-[calc(100vh-263px)] w-full rounded-md" />
         </div>
         : (
-      <div className="grid grid-cols-[1fr_30%] gap-2 w-full md:grid-cols-[1fr_50%] lg:grid-cols-[1fr_30%]">
+      <ResizablePanelGroup
+      direction="horizontal"
+      className="w-full rounded-lg"
+    >
+      <ResizablePanel defaultSize={70} minSize={40}>
       <Profile
         key={id}
         avatarImg={avatarImg || "A"}
@@ -151,28 +156,9 @@ export function Resume() {
         email={resume?.email || ""}
         phone={resume?.phone || ""}
         jobTitle={resume?.role || ""}
-        applyTime={new Date(resume?.created_at)
-          .toLocaleString("en-US", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })
-          .replace(/\//g, "-")
-          .replace(/, /g, " ")}
-          updatedTime={new Date(resume?.updated_at)
-            .toLocaleString("en-US", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })
-            .replace(/\//g, "-")
-            .replace(/, /g, " ")}
+        applyTime={dayjs(resume?.created_at).format("DD-MM-YYYY hh:mm A")}
+        updatedTime={dayjs(resume?.status_updated_at).format("DD-MM-YYYY hh:mm A")}
+        updatedBy={resume?.status_updated_by?.name || "--"}
         resumeOptions={resumeOptions}
         statusValue={
           resume?.status === "SCHEDULE_INTERVIEW" ? "Schedule Interview" :
@@ -186,8 +172,12 @@ export function Resume() {
         onRoleChange={(newRoleId) => updateRoleMutation.mutate(parseInt(newRoleId))}
         roleOptions={roleOptions ?? []}
       />
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={30}>
       <CommentDetails applicant_id={resume?.id} />
-      </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
       )}
     </div>
   );

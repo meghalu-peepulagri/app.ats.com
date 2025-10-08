@@ -26,6 +26,12 @@ import { ScreenedIcon } from "../icons/stats/ScreenedIcon";
 import { InterviewScheduledIcon } from "../icons/stats/InterviewScheduledIcon";
 import { InterviewedIcon } from "../icons/stats/InterviewedIcon";
 import { toast } from "sonner";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { Resume } from "./ApplicantDetails";
 
 const apiApplicantToCandidate = (records: ApiApplicant): any => ({
   id: records.id,
@@ -41,9 +47,10 @@ const apiApplicantToCandidate = (records: ApiApplicant): any => ({
 });
 
 export function Home() {
-  const search: { search_string?: string; role?: string; status?: string } = useSearch({
-    from: "/_header/_applicants",
-  });
+  const search: { search_string?: string; role?: string; status?: string } =
+    useSearch({
+      from: "/_header/_applicants",
+    });
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { applicant_id: id } = useParams({ strict: false });
@@ -51,7 +58,11 @@ export function Home() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<any | null>(null);
 
-  const { data: statsData, isError, error } = useQuery({
+  const {
+    data: statsData,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["stats"],
     queryFn: async () => {
       const response = await getStatsAPI();
@@ -60,13 +71,18 @@ export function Home() {
     retry: false,
   });
 
-  if(isError){
+  if (isError) {
     toast.error((error as any)?.data?.message);
   }
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
     useInfiniteQuery({
-      queryKey: ["applicants", search.search_string, search.role, search.status],
+      queryKey: [
+        "applicants",
+        search.search_string,
+        search.role,
+        search.status,
+      ],
       queryFn: async ({ pageParam = 1 }) => {
         const response = await getAllApplicants({
           pageParam,
@@ -79,7 +95,10 @@ export function Home() {
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
         if (!lastPage || !lastPage.paginationInfo) return undefined;
-        if (lastPage.paginationInfo.current_page < lastPage.paginationInfo.total_pages) {
+        if (
+          lastPage.paginationInfo.current_page <
+          lastPage.paginationInfo.total_pages
+        ) {
           return lastPage.paginationInfo.current_page + 1;
         }
         return undefined;
@@ -97,7 +116,12 @@ export function Home() {
     },
     onMutate: async (deletedId) => {
       await queryClient.cancelQueries({
-        queryKey: ["applicants", search.search_string, search.role, search.status],
+        queryKey: [
+          "applicants",
+          search.search_string,
+          search.role,
+          search.status,
+        ],
       });
       const previousData = queryClient.getQueryData([
         "applicants",
@@ -134,7 +158,12 @@ export function Home() {
     },
     onSuccess: (_, deletedId) => {
       queryClient.invalidateQueries({
-        queryKey: ["applicants", search.search_string, search.role, search.status],
+        queryKey: [
+          "applicants",
+          search.search_string,
+          search.role,
+          search.status,
+        ],
       });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
       setIsDeleteDialogOpen(false);
@@ -218,34 +247,41 @@ export function Home() {
         <CandidateCountCard
           name="Hired"
           number={statsData?.hired || 0}
-          lineColor="border-[#556B2F]"  
+          lineColor="border-[#556B2F]"
           iconBgColor="bg-[#556B2F]"
           icon={<HiredIcon />}
         />
       </div>
 
-      <div className="grid grid-cols-[450px_1fr] border-t pt-2">
-        <div className="flex-1 flex flex-col">
-          <CandidateTable
-            candidatesData={candidatesData}
-            isLoading={isFetching && !isFetchingNextPage}
-            onDeleteId={onDeleteId}
-            lastRowRef={lastRowRef}
-            isFetchingNextPage={isFetchingNextPage}
-          />
-        </div>
+        <ResizablePanelGroup
+          direction="horizontal"
+          className="w-full rounded-lg"
+        >
+          <ResizablePanel defaultSize={30}>
+            <div className="flex-1 flex flex-col">
+              <CandidateTable
+                candidatesData={candidatesData}
+                isLoading={isFetching && !isFetchingNextPage}
+                onDeleteId={onDeleteId}
+                lastRowRef={lastRowRef}
+                isFetchingNextPage={isFetchingNextPage}
+              />
+            </div>
 
-        <DeleteDialog
-          openOrNot={isDeleteDialogOpen}
-          label="Are you sure you want to delete this Applicant?"
-          onCancelClick={() => setIsDeleteDialogOpen(false)}
-          onOKClick={handleDeleteConfirm}
-          deleteLoading={deleteApplicantMutation.isPending}
-          buttonLable="Yes! Delete"
-        />
-
-        <Outlet />
+            <DeleteDialog
+              openOrNot={isDeleteDialogOpen}
+              label="Are you sure you want to delete this Applicant?"
+              onCancelClick={() => setIsDeleteDialogOpen(false)}
+              onOKClick={handleDeleteConfirm}
+              deleteLoading={deleteApplicantMutation.isPending}
+              buttonLable="Yes! Delete"
+            />
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel defaultSize={70}>
+            <Outlet />
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
-    </div>
   );
 }

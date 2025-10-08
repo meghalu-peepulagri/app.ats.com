@@ -24,7 +24,8 @@ interface ProfileProps {
   phone: string;
   jobTitle: string;
   applyTime: string;
-  updatedTime: string;
+  updatedTime: string | null;
+  updatedBy: string | null;
   resumeOptions: string[];
   roleOptions: string[];
   statusValue: string;
@@ -42,6 +43,7 @@ export default function Profile({
   phone,
   applyTime,
   updatedTime,
+  updatedBy,
   resumeOptions,
   statusValue,
   roleValue,
@@ -121,6 +123,7 @@ export default function Profile({
               {applyTime}
             </p>
             </div>
+            <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
             <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
               Updated On
@@ -128,6 +131,15 @@ export default function Profile({
             <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
               {updatedTime}
             </p>
+            </div>
+            <div className="flex items-center gap-2">
+            <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
+              Updated By
+            </p>
+            <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
+              {updatedBy}
+            </p>
+            </div>
             </div>
           </div>
           <div className="flex  justify-between items-center mt-1">
@@ -166,7 +178,7 @@ export default function Profile({
       <div className="border rounded-t-md bg-[#F9F9F9] mt-1">
         <div className="bg-white border-t">
           {pdfSrc && (
-            <div className="relative h-[calc(100vh-263px)]">
+            <div className="relative h-[calc(100vh-288px)]">
               <iframe
                 src={`https://docs.google.com/viewer?url=${encodeURIComponent(pdfSrc)}&embedded=true`}
                 className="w-full h-full border-none"
