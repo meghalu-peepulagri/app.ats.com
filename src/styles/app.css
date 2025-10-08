@@ -174,9 +174,19 @@ input:-webkit-autofill:active {
   height: 32px !important;
 }
 
-.docx-container {
+.docx-container{
   line-height: 1.5;
   color: #333;
+}
+
+.docx-container .docx-preview-wrapper{
+  line-height: 1.5;
+  color: #333;
+  padding: 0 !important;
+}
+
+.docx-container .docx-preview-wrapper .docx-preview{
+  padding: 50px !important;
 }
 
 .docx-preview {

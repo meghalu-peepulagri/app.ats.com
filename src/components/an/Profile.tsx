@@ -16,9 +16,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { EmailIcon } from "../icons/Email";
 import { PhoneIcon } from "../icons/Phone";
 import { getStatusColor } from "~/lib/helper/getColorStatus";
-import { renderAsync } from  'docx-preview';
+import { renderAsync } from "docx-preview";
 import { Button } from "../ui/button";
-import { Download } from "lucide-react";
+import { Download, Minus, Plus } from "lucide-react";
 
 interface ProfileProps {
   avatarImg: string;
@@ -57,9 +57,12 @@ export default function Profile({
   roleOptions,
 }: ProfileProps) {
   const [status, setStatus] = useState(statusValue);
-  const [roles, setRoles] = useState(roleValue ?? '');
+  const [roles, setRoles] = useState(roleValue ?? "");
   const docxContainerRef = useRef<HTMLDivElement>(null);
-  const [fileType, setFileType] = useState<"pdf" | "docx" | "unknown">("unknown");
+  const [fileType, setFileType] = useState<"pdf" | "docx" | "unknown">(
+    "unknown"
+  );
+  const [zoomLevel, setZoomLevel] = useState(100);
 
   useEffect(() => {
     setStatus(statusValue);
@@ -115,7 +118,11 @@ export default function Profile({
     if (fileType === "docx" && pdfSrc && docxContainerRef.current) {
       fetch(pdfSrc)
         .then((res) => res.blob())
-        .then((blob) => renderAsync(blob, docxContainerRef.current!, undefined, { className: "docx-preview" }))
+        .then((blob) =>
+          renderAsync(blob, docxContainerRef.current!, undefined, {
+            className: "docx-preview",
+          })
+        )
         .catch((err) => console.error("DOCX render error:", err));
     }
   }, [fileType, pdfSrc]);
@@ -133,8 +140,16 @@ export default function Profile({
     document.body.removeChild(link);
   };
 
+  const handleZoomIn = () => {
+    setZoomLevel((prev) => Math.min(prev + 10, 200));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel((prev) => Math.max(prev - 10, 50));
+  };
+
   return (
-    <div className="border rounded-lg p-2">
+    <div className="border rounded-lg p-1.5">
       <Card className="w-full bg-[#F8F8F8]  shadow-none rounded-lg gap-0 border-none">
         <CardHeader className="p-1 shadow-[0px_0px_11px_rgba(0,0,0,0.12)] bg-white rounded-md mx-1">
           <div className="flex justify-between bg-white  rounded-[5px] items-center px-1">
@@ -161,42 +176,39 @@ export default function Profile({
         <CardContent className="px-2 py-1">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-            <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
-              Applied On
-            </p>
-            <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
-              {applyTime}
-            </p>
+              <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
+                Applied On
+              </p>
+              <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
+                {applyTime}
+              </p>
             </div>
             <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-            <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
-              Updated On
-            </p>
-            <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
-              {updatedTime}
-            </p>
-            </div>
-            <div className="flex items-center gap-2">
-            <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
-              Updated By
-            </p>
-            <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
-              {updatedBy}
-            </p>
-            </div>
+              <div className="flex items-center gap-2">
+                <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
+                  Updated On
+                </p>
+                <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
+                  {updatedTime}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="text-lg 2xl:text-xs 3xl:!text-sm text-[#828282] font-normal">
+                  Updated By
+                </p>
+                <p className="text-[13px] 3xl:!text-base  text-[#454545] font-normal">
+                  {updatedBy}
+                </p>
+              </div>
             </div>
           </div>
           <div className="flex  justify-between items-center mt-1">
-            <Select
-              value={roles}
-              onValueChange={handleRolesChange}
-            >
+            <Select value={roles} onValueChange={handleRolesChange}>
               <SelectTrigger className="px-3 rounded border border-black/30 shadow-none !h-8 w-45 text-sm 3xl:!text-base font-normal focus:ring-0 focus-visible:ring-0">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="max-h-[250px] overflow-y-auto">
-                {roleOptions?.map((role : any) => (
+                {roleOptions?.map((role: any) => (
                   <SelectItem key={role.id} value={String(role.id)}>
                     {role.name}
                   </SelectItem>
@@ -220,10 +232,38 @@ export default function Profile({
           </div>
         </CardContent>
       </Card>
-      <div className="border rounded-t-md bg-zinc-50 mt-1">
-        <div className="bg-white border-t">
-        {pdfSrc && (
-            <div className="relative h-[calc(100vh-288px)] overflow-auto">
+      <div className="border rounded-t-md mt-1">
+        <div className={`bg-neutral-600 border-t ${fileType !== "pdf" && "relative p-1"}`}>
+          {fileType !== "pdf" && (
+            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-center gap-2">
+              <Button
+                onClick={handleZoomOut}
+                className="bg-transparent shadow-none hover:bg-gray-700 cursor-pointer"
+                title="Zoom Out"
+              >
+                <Minus strokeWidth={2} className="!w-5 !h-5 text-white" />
+              </Button>
+              <span className="text-white text-sm">{zoomLevel}%</span>
+              <Button
+                onClick={handleZoomIn}
+                className="bg-transparent shadow-none hover:bg-gray-700 cursor-pointer"
+                title="Zoom In"
+              >
+                <Plus strokeWidth={2} className="!w-5 !h-5 text-white" />
+              </Button>
+            </div>
+            <Button
+              onClick={handleDownload}
+              className="bg-transparent p-2 shadow-none hover:bg-gray-700 cursor-pointer"
+              title="Download Resume"
+            >
+              <Download strokeWidth={2} className="!w-5 !h-5 text-white" />
+            </Button>
+          </div>
+          )}
+          {pdfSrc && (
+            <div className={`relative overflow-auto h-[calc(100vh-275px)] ${fileType !== "pdf" && "h-[calc(100vh-320px)]"}`}>
               {fileType === "pdf" ? (
                 <iframe
                   src={pdfSrc}
@@ -231,26 +271,18 @@ export default function Profile({
                   title="Resume PDF"
                 />
               ) : fileType === "docx" ? (
-                <div className="relative w-full h-full">
-                  <Button
-                    onClick={handleDownload}
-                    className="absolute top-1 right-8 bg-transparent p-2 shadow-none hover:bg-transparent cursor-pointer"
-                    title="Download Resume"
-                  >
-                    <Download strokeWidth={2} className="!w-5 !h-5"/>
-                  </Button>
-                  <div
-                    ref={docxContainerRef}
-                    className="docx-container w-full h-full p-2 bg-white overflow-auto"
-                  />
-                </div>
+                <div
+                  ref={docxContainerRef}
+                  className="docx-container w-full h-full bg-white overflow-auto"
+                  style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: "top center" }}
+                />
               ) : (
                 <p className="text-center text-gray-500 mt-4">
                   Unsupported file format
                 </p>
               )}
-        </div>
-        )}
+            </div>
+          )}
         </div>
       </div>
     </div>
