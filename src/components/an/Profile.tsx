@@ -12,10 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { EmailIcon } from "../icons/Email";
 import { PhoneIcon } from "../icons/Phone";
 import { getStatusColor } from "~/lib/helper/getColorStatus";
+import { renderAsync } from  'docx-preview';
+import { Button } from "../ui/button";
+import { Download } from "lucide-react";
 
 interface ProfileProps {
   avatarImg: string;
@@ -55,6 +58,8 @@ export default function Profile({
 }: ProfileProps) {
   const [status, setStatus] = useState(statusValue);
   const [roles, setRoles] = useState(roleValue ?? '');
+  const docxContainerRef = useRef<HTMLDivElement>(null);
+  const [fileType, setFileType] = useState<"pdf" | "docx" | "unknown">("unknown");
 
   useEffect(() => {
     setStatus(statusValue);
@@ -87,6 +92,46 @@ export default function Profile({
     }
     return src;
   }, [downloadUrl, resume_key_path]);
+
+  useEffect(() => {
+    if (!pdfSrc) return;
+    if (pdfSrc.toLowerCase().includes(".pdf")) {
+      setFileType("pdf");
+    } else if (pdfSrc.toLowerCase().includes(".docx")) {
+      setFileType("docx");
+    } else {
+      fetch(pdfSrc, { method: "HEAD" })
+        .then((res) => {
+          const type = res.headers.get("content-type");
+          if (type?.includes("pdf")) setFileType("pdf");
+          else if (type?.includes("word")) setFileType("docx");
+          else setFileType("unknown");
+        })
+        .catch(() => setFileType("unknown"));
+    }
+  }, [pdfSrc]);
+
+  useEffect(() => {
+    if (fileType === "docx" && pdfSrc && docxContainerRef.current) {
+      fetch(pdfSrc)
+        .then((res) => res.blob())
+        .then((blob) => renderAsync(blob, docxContainerRef.current!, undefined, { className: "docx-preview" }))
+        .catch((err) => console.error("DOCX render error:", err));
+    }
+  }, [fileType, pdfSrc]);
+
+  const handleDownload = () => {
+    if (!pdfSrc) {
+      console.error("No document URL provided");
+      return;
+    }
+    const link = document.createElement("a");
+    link.href = pdfSrc;
+    link.download = `${name.replace(/\s+/g, "_")}_resume.${fileType === "pdf" ? "pdf" : "docx"}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="border rounded-lg p-2">
@@ -175,20 +220,37 @@ export default function Profile({
           </div>
         </CardContent>
       </Card>
-      <div className="border rounded-t-md bg-[#F9F9F9] mt-1">
+      <div className="border rounded-t-md bg-zinc-50 mt-1">
         <div className="bg-white border-t">
-          {pdfSrc && (
-            <div className="relative h-[calc(100vh-288px)]">
-              <iframe
-                src={`https://docs.google.com/viewer?url=${encodeURIComponent(pdfSrc)}&embedded=true`}
-                className="w-full h-full border-none"
-                title="Resume PDF"
-                onLoad={() => {
-                  console.log("PDF loaded successfully");
-                }}
-              />
-            </div>
-          )}
+        {pdfSrc && (
+            <div className="relative h-[calc(100vh-288px)] overflow-auto">
+              {fileType === "pdf" ? (
+                <iframe
+                  src={pdfSrc}
+                  className="w-full h-full border-none"
+                  title="Resume PDF"
+                />
+              ) : fileType === "docx" ? (
+                <div className="relative w-full h-full">
+                  <Button
+                    onClick={handleDownload}
+                    className="absolute top-1 right-8 bg-transparent p-2 shadow-none hover:bg-transparent cursor-pointer"
+                    title="Download Resume"
+                  >
+                    <Download strokeWidth={2} className="!w-5 !h-5"/>
+                  </Button>
+                  <div
+                    ref={docxContainerRef}
+                    className="docx-container w-full h-full p-2 bg-white overflow-auto"
+                  />
+                </div>
+              ) : (
+                <p className="text-center text-gray-500 mt-4">
+                  Unsupported file format
+                </p>
+              )}
+        </div>
+        )}
         </div>
       </div>
     </div>

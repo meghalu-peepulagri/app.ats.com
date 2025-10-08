@@ -173,3 +173,13 @@ input:-webkit-autofill:active {
 #toolbar{
   height: 32px !important;
 }
+
+.docx-container {
+  line-height: 1.5;
+  color: #333;
+}
+
+.docx-preview {
+  max-width: 100%;
+  margin: 0 auto;
+}
