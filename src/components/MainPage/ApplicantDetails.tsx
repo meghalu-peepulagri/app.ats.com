@@ -155,7 +155,7 @@ export function Resume() {
         phone={resume?.phone || ""}
         jobTitle={resume?.role || ""}
         applyTime={dayjs(resume?.created_at).format("DD-MM-YYYY hh:mm A")}
-        updatedTime={dayjs(resume?.status_updated_at).format("DD-MM-YYYY hh:mm A")}
+        updatedTime={dayjs(resume?.status_updated_at || '--').format("DD-MM-YYYY hh:mm A")}
         updatedBy={resume?.status_updated_by?.name || "--"}
         resumeOptions={resumeOptions}
         statusValue={

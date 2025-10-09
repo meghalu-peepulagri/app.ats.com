@@ -193,3 +193,15 @@ input:-webkit-autofill:active {
   max-width: 100%;
   margin: 0 auto;
 }
+
+.docx-scroll-wrapper::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.docx-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+.docx-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
