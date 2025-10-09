@@ -30,10 +30,8 @@ export function Resume() {
   });
 
   if(isError) {
-    console.log(error.message, 'error');
     toast.error(error?.message);
   }
-
 
   const updateStatusMutation = useMutation({
     mutationFn: async (newStatus: string) => {
@@ -45,7 +43,7 @@ export function Resume() {
       queryClient.invalidateQueries({ queryKey: ["stats"] });
     },
     onError: (error) => {
-      toast.error((error as any).data.message);
+      toast.error(error.message);
     },
   });
 
@@ -59,7 +57,7 @@ export function Resume() {
       queryClient.invalidateQueries({ queryKey: ["stats"] });
     },
     onError: (error) => {
-      toast.error((error as any).data.message);
+      toast.error(error.message);
     },
   });
 
@@ -157,7 +155,7 @@ export function Resume() {
         phone={resume?.phone || ""}
         jobTitle={resume?.role || ""}
         applyTime={dayjs(resume?.created_at).format("DD-MM-YYYY hh:mm A")}
-        updatedTime={dayjs(resume?.status_updated_at).format("DD-MM-YYYY hh:mm A")}
+        updatedTime={dayjs(resume?.status_updated_at || '--').format("DD-MM-YYYY hh:mm A")}
         updatedBy={resume?.status_updated_by?.name || "--"}
         resumeOptions={resumeOptions}
         statusValue={

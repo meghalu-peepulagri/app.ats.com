@@ -173,3 +173,35 @@ input:-webkit-autofill:active {
 #toolbar{
   height: 32px !important;
 }
+
+.docx-container{
+  line-height: 1.5;
+  color: #333;
+}
+
+.docx-container .docx-preview-wrapper{
+  line-height: 1.5;
+  color: #333;
+  padding: 0 !important;
+}
+
+.docx-container .docx-preview-wrapper .docx-preview{
+  padding: 50px !important;
+}
+
+.docx-preview {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.docx-scroll-wrapper::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.docx-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+.docx-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
