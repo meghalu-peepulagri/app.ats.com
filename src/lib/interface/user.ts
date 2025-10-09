@@ -88,3 +88,22 @@ export interface UploadedFile {
       resume_key_path?: string[];
     };
   }
+
+  export interface ProfileProps {
+    avatarImg: string;
+    name: string;
+    email: string;
+    phone: string;
+    jobTitle: string;
+    applyTime: string;
+    updatedTime: string | null;
+    updatedBy: string | null;
+    resumeOptions: string[];
+    roleOptions: string[];
+    statusValue: string;
+    roleValue: string;
+    downloadUrl?: string;
+    resume_key_path?: string;
+    onStatusChange?: (newStatus: string) => void;
+    onRoleChange?: (newRoles: string) => void;
+  }
