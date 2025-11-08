@@ -238,7 +238,7 @@ export function AddUserCard({
                     <Input
                       id="mobile"
                       placeholder="Enter mobile number"
-                      value={formData.phone.replace(/^\+?91/, "")}
+                      value={formData.phone.replace(/^\+91/, "")}
                       onChange={(e) => {
                         handleInputChange("phone", e.target.value.trimStart());
                       }}

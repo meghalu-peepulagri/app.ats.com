@@ -50,7 +50,8 @@ export const AddUserContainer: React.FC = () => {
     const recentRoleId = localStorage.getItem("recentRoleId");
     const selectedAt = localStorage.getItem("recentRoleSelectedAt");
     if (selectedAt) {
-      const daysSinceSelection = (Date.now() - Number(selectedAt)) / (1000 * 60 * 60 * 24);
+      const daysSinceSelection =
+        (Date.now() - Number(selectedAt)) / (1000 * 60 * 60 * 24);
       if (daysSinceSelection > 30) {
         localStorage.removeItem("recentRoleId");
         localStorage.removeItem("recentRoleSelectedAt");
@@ -135,7 +136,9 @@ export const AddUserContainer: React.FC = () => {
     if (!isEditMode && !candidate && roles?.data) {
       const recentRoleId = getRecentRoleId();
       if (recentRoleId) {
-        const roleExists = roles.data.some((role: any) => role.id === recentRoleId);
+        const roleExists = roles.data.some(
+          (role: any) => role.id === recentRoleId
+        );
         if (!roleExists) {
           localStorage.removeItem("recentRoleId");
           localStorage.removeItem("recentRoleSelectedAt");
@@ -258,7 +261,7 @@ export const AddUserContainer: React.FC = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const allowedTypes = ["pdf", 'doc', 'docx'];
+      const allowedTypes = ["pdf", "doc", "docx"];
       const fileExtension = file.name.split(".").pop()?.toLowerCase();
       if (!fileExtension || !allowedTypes.includes(fileExtension)) {
         setErrors((prev) => ({
@@ -299,7 +302,7 @@ export const AddUserContainer: React.FC = () => {
 
   const handleFormChange = (data: Partial<UserFormData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
-      if (data.role_id) {
+    if (data.role_id) {
       localStorage.setItem("recentRoleId", String(data.role_id));
       localStorage.setItem("recentRoleSelectedAt", Date.now().toString());
     }
@@ -311,7 +314,8 @@ export const AddUserContainer: React.FC = () => {
   };
 
   const handleSave = () => {
-    const normalizedPhone = formData.phone.startsWith("+91") ? formData.phone.replace(/^\+91/, "") : `+91${formData.phone.replace(/^\+?91/, "")}`;
+  
+    const normalizedPhone = formData.phone.startsWith("+91") ? formData.phone.replace(/^\+91/, "") : `+91${formData.phone.replace(/^\+91/, "")}`;  
     const payload = {
       ...formData,
       phone: normalizedPhone,
@@ -324,9 +328,9 @@ export const AddUserContainer: React.FC = () => {
   };
 
   const handleBackNavigate = () => {
-      router.history.back();
+    router.history.back();
   };
-  
+
   const isLoading = fileUploadMutation.isPending;
 
   return (
