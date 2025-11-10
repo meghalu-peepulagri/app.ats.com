@@ -1,3 +1,11 @@
+import { renderAsync } from "docx-preview";
+import { Download, Minus, Plus } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { getStatusColor } from "~/lib/helper/getColorStatus";
+import { ProfileProps } from "~/lib/interface/user";
+import { EmailIcon } from "../icons/Email";
+import { PhoneIcon } from "../icons/Phone";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
@@ -12,14 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { EmailIcon } from "../icons/Email";
-import { PhoneIcon } from "../icons/Phone";
-import { getStatusColor } from "~/lib/helper/getColorStatus";
-import { renderAsync } from "docx-preview";
-import { Button } from "../ui/button";
-import { Download, Minus, Plus } from "lucide-react";
-import { ProfileProps } from "~/lib/interface/user";
 
 export default function Profile({
   avatarImg,
@@ -126,6 +126,8 @@ export default function Profile({
   const handleZoomOut = () => {
     setZoomLevel((prev) => Math.max(prev - 10, 10));
   };
+
+  console.log("updatedTime", updatedTime);
 
   return (
     <div className="border rounded-lg p-1.5">
