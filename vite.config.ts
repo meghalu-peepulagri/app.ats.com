@@ -1,21 +1,18 @@
-import { defineConfig } from 'vite'
-import tsConfigPaths from 'vite-tsconfig-paths'
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import viteReact from '@vitejs/plugin-react'
-import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin'
+import { nitroV2Plugin } from "@tanstack/nitro-v2-vite-plugin";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import viteTsConfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
-  server: {
-    port: 3000,
-  },
+const config = defineConfig({
   plugins: [
-    tsConfigPaths(),
-    tanstackStart({
-
+    viteTsConfigPaths({
+      projects: ["./tsconfig.json"],
     }),
-    nitroV2Plugin({
-      preset: 'vercel', 
-    }),
+    tanstackStart(),
+    nitroV2Plugin(),
     viteReact(),
   ],
-})
+});
+
+export default config;
