@@ -114,7 +114,6 @@ class FetchService {
         } catch {
           errorData = { message: response.statusText };
         }   
-        console.log(errorData);     
         throw {
           success: false,
           status: response.status,
