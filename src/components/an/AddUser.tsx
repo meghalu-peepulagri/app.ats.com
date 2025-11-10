@@ -234,13 +234,17 @@ export function AddUserCard({
                     Mobile Number
                   </Label>
                   <div className="flex items-center gap-2 bg-neutral-100 rounded-md border border-neutral-100">
-                    <p className="border-r border-neutral-300 px-2 text-sm">+91</p>
+                    <p className="border-r border-neutral-300 px-2 text-sm">
+                      +91
+                    </p>
                     <Input
                       id="mobile"
                       placeholder="Enter mobile number"
-                      value={formData.phone.replace(/^\+?91/, "")}
+                      value={formData.phone.replace(/^\+91/, "")}
                       onChange={(e) => {
-                        handleInputChange("phone", e.target.value.trimStart());
+                        const value = e.target.value.trimStart();
+                        const digitsOnly = value.replace(/\D/g, "");
+                        handleInputChange("phone", digitsOnly);
                       }}
                       maxLength={10}
                       className="!h-9 shadow-none text-sm border-none px-2 placeholder:text-[#A3A3AB] text-[#333] font-normal focus:ring-0 focus-visible:ring-0"
