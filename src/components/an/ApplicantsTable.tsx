@@ -126,7 +126,7 @@ export const columns = (
       const statusColor = getStatusColor(status);
       return (
         <span
-          className={`px-2 py-0.5 rounded-full text-[13px] text-ellipsis overflow-hidden ${statusColor.bg} ${statusColor.text}`}
+          className={`px-2 py-0.5 rounded-full text-[13px] whitespace-nowrap overflow-hidden text-ellipsis ${statusColor.bg} ${statusColor.text}`}
         >
           {status
             ? status
@@ -139,7 +139,9 @@ export const columns = (
       );
     },
     enableSorting: false,
-    size: 200,
+    size: 110,
+    minSize: 110,
+    maxSize: 110,
   }),
   columnHelper.display({
     id: "actions",
@@ -148,7 +150,9 @@ export const columns = (
       <ActionCell candidate={row.original} onDeleteId={onDeleteId} />
     ),
     enableSorting: false,
-    size: 10,
+    size: 60,
+    minSize: 60,
+    maxSize: 60,
   }),
 ];
 

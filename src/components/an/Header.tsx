@@ -26,7 +26,7 @@ export function Header({
         <div className="relative group">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 cursor-pointer">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 border border-black/30 rounded-full flex items-center justify-center bg-black/30"><ProfileIcon /></div>
             <div className="flex items-center space-x-2 leading-tight">

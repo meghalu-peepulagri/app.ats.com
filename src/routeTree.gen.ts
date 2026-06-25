@@ -49,9 +49,9 @@ const HeaderApplicantsApplicantsApplicant_idIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/add_user': typeof HeaderAdd_userIndexRoute
-  '/applicants': typeof HeaderApplicantsApplicantsIndexRoute
-  '/applicants/$applicant_id': typeof HeaderApplicantsApplicantsApplicant_idIndexRoute
+  '/add_user/': typeof HeaderAdd_userIndexRoute
+  '/applicants/': typeof HeaderApplicantsApplicantsIndexRoute
+  '/applicants/$applicant_id/': typeof HeaderApplicantsApplicantsApplicant_idIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,7 +70,7 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/add_user' | '/applicants' | '/applicants/$applicant_id'
+  fullPaths: '/' | '/add_user/' | '/applicants/' | '/applicants/$applicant_id/'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/add_user' | '/applicants' | '/applicants/$applicant_id'
   id:
@@ -93,7 +93,7 @@ declare module '@tanstack/react-router' {
     '/_header': {
       id: '/_header'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof HeaderRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -107,28 +107,28 @@ declare module '@tanstack/react-router' {
     '/_header/_applicants': {
       id: '/_header/_applicants'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof HeaderApplicantsRouteImport
       parentRoute: typeof HeaderRoute
     }
     '/_header/add_user/': {
       id: '/_header/add_user/'
       path: '/add_user'
-      fullPath: '/add_user'
+      fullPath: '/add_user/'
       preLoaderRoute: typeof HeaderAdd_userIndexRouteImport
       parentRoute: typeof HeaderRoute
     }
     '/_header/_applicants/applicants/': {
       id: '/_header/_applicants/applicants/'
       path: '/applicants'
-      fullPath: '/applicants'
+      fullPath: '/applicants/'
       preLoaderRoute: typeof HeaderApplicantsApplicantsIndexRouteImport
       parentRoute: typeof HeaderApplicantsRoute
     }
     '/_header/_applicants/applicants/$applicant_id/': {
       id: '/_header/_applicants/applicants/$applicant_id/'
       path: '/applicants/$applicant_id'
-      fullPath: '/applicants/$applicant_id'
+      fullPath: '/applicants/$applicant_id/'
       preLoaderRoute: typeof HeaderApplicantsApplicantsApplicant_idIndexRouteImport
       parentRoute: typeof HeaderApplicantsRoute
     }
