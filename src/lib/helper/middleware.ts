@@ -16,12 +16,12 @@ export const authMiddleware = async ({
 
     if (getIsAuthenticated() && authRoutes.includes(location.pathname)) {
         throw redirect({
-            to: "/",
+            to: "/applicants",
         });
     }
     if (!getIsAuthenticated() && !authRoutes.includes(location.pathname)) {
         throw redirect({
-            to: "/applicants",
+            to: "/",
         });
     }
 };

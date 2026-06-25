@@ -50,7 +50,7 @@ export const TanstackTable = <T,>({
 
   return (
     <div className="pl-2 w-full overflow-auto h-[calc(100vh-180px)]">
-      <table className="w-full border-none overflow-auto">
+      <table className="w-full border-none overflow-auto table-fixed">
         <thead className="sticky top-0 z-30 text-left h-10 bg-[#DBFCD9] font-normal rounded-sm">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -58,7 +58,7 @@ export const TanstackTable = <T,>({
                 <th
                   key={header.id}
                   colSpan={header.colSpan}
-                  style={{ width: header.getSize() }}
+                  style={{ width: header.getSize(), maxWidth: header.column.columnDef.maxSize }}
                   className="text-[#333] text-[13px] 3xl:!text-base font-medium leading-[100%] p-1"
                 >
                   {header.isPlaceholder
@@ -106,8 +106,8 @@ export const TanstackTable = <T,>({
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      style={{ width: cell.column.getSize() }}
-                      className="text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%]"
+                      style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
+                      className="text-[#454545] text-[13px] 3xl:!text-base font-normal leading-[100%] overflow-hidden"
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>

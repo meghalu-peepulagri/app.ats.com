@@ -25,7 +25,7 @@ export const TruncatedText = ({ text }: { text: string }) => {
   const span = (
     <span
       ref={textRef}
-      className="text-sm truncate max-w-[120px] cursor-default pl-1 inline-block align-middle"
+      className="text-sm truncate max-w-full w-full pl-1 inline-block align-middle cursor-pointer"
     >
       {text}
     </span>

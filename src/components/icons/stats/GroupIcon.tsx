@@ -1,8 +1,8 @@
 export function GroupIcon() {
   return (
     <svg
-      clip-rule="evenodd"
-      fill-rule="evenodd"
+      clipRule="evenodd"
+      fillRule="evenodd"
       height="20"
       imageRendering="optimizeQuality"
       shapeRendering="geometricPrecision"

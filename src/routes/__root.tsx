@@ -45,8 +45,20 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootComponent,
+  notFoundComponent: NotFoundComponent,
   beforeLoad: authMiddleware,
 });
+
+function NotFoundComponent() {
+  return (
+    <div className="flex flex-col items-center justify-center h-screen gap-3">
+      <p className="text-2xl font-semibold text-gray-700">404 — Page Not Found</p>
+      <a href="/" className="text-sm text-[#45A845] hover:underline">
+        Go back to home
+      </a>
+    </div>
+  );
+}
 
 function RootComponent() {
   return (
